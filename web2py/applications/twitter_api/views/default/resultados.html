@@ -1,0 +1,53 @@
+{{extend 'layout.html'}}
+
+<link rel="stylesheet" type="text/css" href="{{ = URL('static/css', 'app.css') }}" />
+<link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
+<script src="{{ = URL('static','js/vue.min.js') }}"></script>
+
+<script>
+    let getResultsURL = "{{ = URL('api', 'get_results') }}";
+</script>
+
+
+<div id="app_resultados">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Alert!</strong> You should check in on some of those fields below.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+
+    <div v-for='item in parejas_grupos'>
+        <div v-if="(item != null)">
+
+            <h1>Grupo ${item[0].grupo}</h1>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Pareja</th>
+                        <th scope="col">Jugadores</th>
+                        <th scope="col">Partidos ganados</th>
+                        <th scope="col">Partidos perdidos</th>
+                        <th scope="col">Juegos a favor</th>
+                        <th scope="col">Juegos en contra</th>
+                        <th scope="col">Diferencia de juegos</th>
+                    </tr>
+                </thead>
+                <tbody v-for='element in item'>
+                    <tr>
+                        <td>${element.id}</td>
+                        <td>${element.nombre_jugador_uno} & ${element.nombre_jugador_dos}</td>
+                        <td>${element.partidos_ganados}</td>
+                        <td>${element.partidos_perdidos}</td>
+                        <td>${element.juegos_favor}</td>
+                        <td>${element.juegos_contra}</td>
+                        <td>(${element.juegos_favor - element.juegos_contra})</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="{{ = URL('static/js', 'resultados.js') }}">
+</script>

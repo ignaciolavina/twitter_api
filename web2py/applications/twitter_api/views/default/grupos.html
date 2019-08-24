@@ -1,0 +1,86 @@
+{{extend 'layout.html'}}
+
+<link rel="stylesheet" type="text/css" href="{{ = URL('static/css', 'app.css') }}" />
+<link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
+<script src="{{ = URL('static','js/vue.min.js') }}"></script>
+
+<script>
+    let getGruposURL = "{{ = URL('api', 'get_grupos') }}";
+    let saveGroupURL = "{{ = URL('api', 'update_group_for_pareja') }}";
+</script>
+
+
+<div id="app_grupos">
+
+    <div v-if="(parejas_sin_grupo.length != 0)" class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Hay parejas sin grupo asignado!</strong> Por favor, asigne una grupo a cada pareja.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <template v-if="(parejas_sin_grupo.length != 0)">
+        <div class="grupos_card">
+
+            <h1>Parejas sin grupo</h1>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <!-- <th scope="col">Ranking</th> -->
+                        <th scope="col">Id</th>
+                        <th scope="col">Pareja</th>
+                        <th scope="col">Grupo</th>
+                        <th scope="col">Restricciones 1</th>
+                        <th scope="col">Restricciones 2</th>
+                    </tr>
+                </thead>
+                <tbody v-for="pareja in parejas_sin_grupo">
+                    <tr>
+                        <!-- <td>${pareja.ranking}</td> -->
+                        <td>${pareja.id}</td>
+                        <td>${pareja.nombre_jugador_uno} & ${pareja.nombre_jugador_dos}</td>
+                        <td>${pareja.grupo}</td>
+                        <td> Por implementar</td>
+                        <td> Por implementar</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </template>
+
+    <template v-for='grupo in grupos'>
+        <div class="grupos_card">
+            <div v-if="(grupo != null)">
+
+                <h1>Grupo ${grupo[0].grupo}</h1>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Pareja</th>
+                        <th scope="col">Grupo</th>
+                        <th scope="col">Restricciones 1</th>
+                        <th scope="col">Restricciones 2</th>
+                        </tr>
+                    </thead>
+                    <tbody v-for='pareja in grupo'>
+                        <tr>
+                            <td>${pareja.id}</td>
+                            <td>${pareja.nombre_jugador_uno} & ${pareja.nombre_jugador_dos}</td>
+                            <td>${pareja.grupo}</td>
+                            <td> Por implementar</td>
+                            <td> Por implementar</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </template>
+
+
+</div>
+<script src="{{ = URL('static/js', 'grupos.js') }}">
+</script>

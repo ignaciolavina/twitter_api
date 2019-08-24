@@ -1,0 +1,74 @@
+{{extend 'layout.html'}}
+
+<link rel="stylesheet" type="text/css" href="{{ = URL('static/css', 'app.css') }}" />
+<link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
+<script src="{{ = URL('static','js/vue.min.js') }}"></script>
+
+<script>
+    let getPartidosURL = "{{ = URL('api', 'get_partidos') }}";
+    let saveResultURL = "{{ = URL('api', 'save_result') }}";
+        // let getParejasUrl = "{{ = URL('api', 'get_parejas') }}";
+        // let pruebasURL = "{{ = URL('api', 'pruebas') }}";
+</script>
+
+
+<div id="app_partidos">
+
+    <!-- <button v-on:click="results" class="btn btn-dark">Results</button> -->
+
+
+    <div class="d-flex justify-content-center">
+
+        <div class="col-md-10">
+            <template v-for='item in grupos'>
+                <div v-if="(item != null)">
+                    <div class="card">
+                        <div>
+                            <h2 class="group_title">Grupo ${item[0].grupo}</h2>
+                        </div>
+                        <div v-for='element in item'>
+                            <div class="d-flex flex-column justify-content-center">
+                                <div class="container_partido">
+                                    <div class="row d-flex justify-content-center">
+                                        <h6>enfrentamiento: ${element.id}</h6>
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-md-5 d-flex justify-content-end">
+
+                                            <h4>${element.nombres_pareja_uno}</h4>
+
+                                            <input class="partidos_input" placeholder="0"
+                                                @input="app.save_changes(element.id, element.resultado_uno, element.resultado_dos)"
+                                                v-model="element.resultado_uno" type="number" name="result_one"
+                                                value=${element.resultado_uno}>
+                                        </div>
+                                        <div class="col-md-2 d-flex justify-content-center">
+
+                                            <h4> VS </h4>
+                                        </div>
+                                        <div class="col-md-5 d-flex justify-content-start">
+
+                                            <input class="partidos_input" placeholder="0"
+                                                @input="app.save_changes(element.id, element.resultado_uno, element.resultado_dos)"
+                                                v-model="element.resultado_dos" type="number" name="result_two"
+                                                value=${element.resultado_dos}>
+                                            <h4>${element.nombres_pareja_dos}</h4>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </template>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="{{ = URL('static/js', 'partidos.js') }}">
+</script>
+
+
+<!-- ${=grid} -->

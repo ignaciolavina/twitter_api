@@ -1,0 +1,79 @@
+{{extend 'layout.html'}}
+
+<link rel="stylesheet" type="text/css" href="{{ = URL('static/css', 'app.css') }}" />
+<link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
+<script src="{{ = URL('static','js/vue.min.js') }}"></script>
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+<script>
+    let getParejasURL = "{{ = URL('api', 'get_parejas') }}";
+    let loggedUserURL = "{{ = URL('api', 'get_logged_in_user') }}";
+    let updateParejaURL = "{{ = URL('api', 'update_pareja') }}";
+    let deleteParejaURL = "{{ = URL('api', 'delete_pareja') }}";
+
+
+</script>
+
+<div id="app_parejas" class="container">
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">id pareja</th>
+                <th scope="col">Jugador 1</th>
+                <th scope="col">Jugador 2</th>
+                <th scope="col">Grupo</th>
+                <th scope="col">Restricciones J1</th>
+                <th scope="col">Restricciones J2</th>
+                <th v-if="logged">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <template v-for='pareja in parejas'>
+                <tr v-if="pareja.on_edit">
+                    <th scope="row">${pareja.id}</th>
+                    <td>
+                        <input class="group_input" type="text" v-model="pareja.nombre_jugador_uno">
+                    </td>
+                    <td>
+                        <input class="group_input" type="text" v-model="pareja.nombre_jugador_dos">
+                    </td>
+                    <td>
+                        <input class="group_number_input" type="number" v-model="pareja.grupo">
+                    </td>
+                    <td>
+                        <input class="group_input" type="text" v-model="pareja.restriccion_jugador_uno">
+                    </td>
+                    <td>
+                        <input class="group_input" type="text" v-model="pareja.restriccion_jugador_dos">
+                    </td>
+                    <td>
+                        <button v-on:click="update_pareja(pareja)" class="btn btn-primary">Save</button>
+                    </td>
+                </tr>
+                <tr v-else>
+                    <th scope="row">${pareja.id}</th>
+                    <td>${pareja.nombre_jugador_uno}</td>
+                    <td>${pareja.nombre_jugador_dos}</td>
+                    <td>${pareja.grupo}</td>
+                    <td>${pareja.restricciones_jugador_uno}</td>
+                    <td>${pareja.restricciones_jugador_dos}</td>
+                    <td v-if="logged">
+                        <div class="row d-flex justify-content-start">
+                            <button v-on:click="delete_pareja(pareja)" class="btn btn-dark delete-btn">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                            <button v-on:click="edit_pareja(pareja)" class="btn btn-dark">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </template>
+        </tbody>
+
+        <caption>Lista de parejas apuntadas</caption>
+    </table>
+</div>
+
+
+<script src="{{=URL('static', 'js/parejas.js')}}"></script>

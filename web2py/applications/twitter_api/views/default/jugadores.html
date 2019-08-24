@@ -1,0 +1,59 @@
+{{extend 'layout.html'}}
+
+<link rel="stylesheet" type="text/css" href="{{ = URL('static/css', 'app.css') }}" />
+<link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
+<script src="{{ = URL('static','js/vue.min.js') }}"></script>
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+<script>
+    let getJugadoresURL = "{{ = URL('api', 'get_jugadores') }}";
+    let changePagadoURL = "{{ = URL('api', 'change_pagado') }}";
+    let changeRegaloURL = "{{ = URL('api', 'change_regalo') }}";
+
+
+</script>
+
+<div id="jugadores" class="container">
+    <h3>Search:
+        <input class="search-bar" type="text" v-model="search_string" v-on:input="do_search" />
+    </h3>
+
+    <table class="table table-hover">
+        <thead class="thead-dark ">
+            <tr>
+                <th scope="col">id jugador</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Pagado 2</th>
+                <th scope="col">Regalo</th>
+                <th scope="col">Restricciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <template v-for='jugador in jugadores'>
+                <tr v-if='jugador.show == true'>
+                    <th> ${jugador.id}</th>
+                    <td>${jugador.nombre}</td>
+
+                    <td v-if="jugador.pagado">
+                        <input type="checkbox" name="pagado" v-on:change="change_pagado(jugador)" checked>
+                    </td>
+                    <td v-else>
+                        <input type="checkbox" name="pagado" v-on:change="change_pagado(jugador)">
+                    </td>
+                    <td v-if="jugador.regalo">
+                        <input type="checkbox" name="regalo" v-on:change="change_regalo(jugador)" checked>
+                    </td>
+                    <td v-else>
+                        <input type="checkbox" name="regalo" v-on:change="change_regalo(jugador)">
+                    </td>
+                    <td>${jugador.restricciones}</td>
+                </tr>
+            </template>
+        </tbody>
+
+        <caption>Lista de jugadores apuntados</caption>
+    </table>
+</div>
+
+
+<script src="{{=URL('static', 'js/jugadores.js')}}"></script>
