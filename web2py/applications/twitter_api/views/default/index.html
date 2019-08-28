@@ -5,13 +5,12 @@
 <script src="{{ = URL('static','js/vue.min.js') }}"></script>
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 
-
-<div class="row d-flex justify-content-center">
-    <h1>Torneo Dani</h1>
-
+<div id="index">
+    <h1>Welcome</h1>
+    <button v-on:click="action" type="button" class="btn btn-primary"> Action
+    </button>
 </div>
-<div>
-    <div class="d-flex justify-content-center">
-        <img src="../static/images/torneo_dani.png" alt="padel_player" style="margin-right: 10px">
-    </div>
-</div>
+
+
+<script src=" {{ = URL('static/js', 'index.js') }}">
+</script>
