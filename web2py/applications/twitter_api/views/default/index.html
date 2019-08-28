@@ -5,10 +5,24 @@
 <script src="{{ = URL('static','js/vue.min.js') }}"></script>
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 
+<script>
+    let postTweetURL = "{{ = URL('api', 'post_tweet') }}";
+    let logginTwitterURL = "{{ = URL('api', 'log_on_twitter') }}";
+    let getTweetURL = "{{ = URL('api', 'get_tweet') }}";
+</script>
+
+
 <div id="index">
     <h1>Welcome</h1>
-    <button v-on:click="action" type="button" class="btn btn-primary"> Action
+    <div>
+        <button v-on:click="action" type="button" class="btn btn-primary"> Post
+    </div>
     </button>
+    <div>
+        <button v-on:click="get_tweet" type="button" class="btn btn-primary"> Get tweet
+        </button>
+        <label>${label}</label>
+    </div>
 </div>
 
 

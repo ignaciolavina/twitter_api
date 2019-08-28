@@ -1,8 +1,32 @@
 let on_page_load = function () {
+    console.log('action');
+
+    $.post(logginTwitterURL, {
+        word: 'tweet'
+    }, function (response) {
+
+    });
 };
 
 let action = function () {
-    console.log('action');
+    console.log('post tweet function');
+
+    $.post(postTweetURL, {
+        string: 'third tweet'
+    }, function (response) {
+
+    });
+}
+
+let get_tweet = function () {
+    console.log('get tweet function');
+    $.post(getTweetURL, {
+        word: 'casa'
+    }, function (response) {
+        label = response.tweet;
+
+    });
+
 }
 
 let app = new Vue({
@@ -10,10 +34,11 @@ let app = new Vue({
     delimiters: ['${', '}'],
     unsafeDelimiters: ['!{', '}'],
     data: {
-
+        label: 'none'
     },
     methods: {
-        action: action
+        action: action,
+        get_tweet: get_tweet
     }
 });
 
