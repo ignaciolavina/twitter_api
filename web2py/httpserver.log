@@ -8646,3 +8646,5 @@ c-bootstrap.css, HTTP/1.1, 200, 0.006000
 127.0.0.1, 2019-08-20 20:05:51, GET, /tournaments/en/static/js/bootstrap.bundle.min.js.map, HTTP/1.1, 200, 0.022000
 127.0.0.1, 2019-08-20 20:07:06, GET, /jugadores, HTTP/1.1, 200, 0.023000
 127.0.0.1, 2019-08-20 20:07:07, GET, /api/get_jugadores, HTTP/1.1, 200, 0.040000
+127.0.0.1, 2019-08-28 20:16:47, GET, /, HTTP/1.1, 400, 0.000000
+127.0.0.1, 2019-08-28 20:16:47, GET, /favicon.ico, HTTP/1.1, 400, 0.000000

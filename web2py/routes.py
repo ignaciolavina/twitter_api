@@ -1,5 +1,5 @@
 routers = dict(
     BASE = dict(
-        default_application = 'tournaments',
+        default_application = 'twitter_api',
     )
 )
