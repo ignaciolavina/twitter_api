@@ -18,13 +18,16 @@ def log_on_twitter():
 
     print(api.VerifyCredentials())
 
+    # string = 'new post'
+    # status = api.PostUpdate(string)
+
 def post_tweet():
     print('post tweet api method')
     string =request.vars.string
 
     api = twitter.Api(consumer_key = consumer_key,consumer_secret = consumer_secret
     , access_token_key = access_token, access_token_secret = access_secret)
-    
+
     status = api.PostUpdate(string)
 
     print('end method')
