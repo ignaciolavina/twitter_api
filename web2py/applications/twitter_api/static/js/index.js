@@ -23,9 +23,12 @@ let get_tweet = function () {
     $.post(getTweetURL, {
         word: 'casa'
     }, function (response) {
-        label = response.tweet;
 
     });
+    console.log(response);
+    label = response.tweet;
+    console.log('respuesta:');
+    console.log(response.tweet);
 
 }
 

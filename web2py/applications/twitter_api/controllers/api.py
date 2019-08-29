@@ -4,6 +4,13 @@ def get_logged_in_user():
     user = None if auth.user is None else auth.user
     return response.json(dict(user=user))
 
+    # GET RETWEETS 
+    # https://api.twitter.com/1.1/statuses/home_timeline.json
+    # getRetweet
+
+    # Usar un embellecedor
+    # @requires_twitter_logged
+
 def log_on_twitter():
     print('\nloggin on twitter')
     import twitter
@@ -33,11 +40,29 @@ def post_tweet():
     print('end method')
 
 def get_tweet():
-    print('get tweet method')    
+    print('get tweet method\n\n')    
     word = request.vars.word
-    tweet = api.GetSearch(term=word, count=1)
+    print(word)
 
-    return response.json(dict(tweet=tweet))
+    # Credentials loggin
+    import twitter
+    consumer_key = 'dXj0dViDbK6VobzAD5P97iCrO'
+    consumer_secret = 'DwRbuw8rRgMBh6Gg9qORDXpDJ4RLp0wGq4RWj5SVw4KJT6nDZq'
+    access_token = '1164482563198636033-PMEvNG9Pz1aGL3SLKw1QX9TwjStdD5'
+    access_secret = '1sYd9Mp8IS6TTXaD0nzgtXguFiABf4eSjvXVPf8va05uG'
+    api = twitter.Api(consumer_key = consumer_key,consumer_secret = consumer_secret
+    , access_token_key = access_token, access_token_secret = access_secret)
+
+    word='sanchez'
+
+    results = api.GetSearch(term=word, count=1)
+    # print(tweet)
+    # print('\n')
+    # print(tweet[0])
+    json_results = [result.AsDict() for result in results]
+    # print(json_results)
+
+    return response.json(dict(tweet=json_results))
 
 
 # ____________________________________________________________________________________
