@@ -23,13 +23,12 @@ let get_tweet = function () {
     $.post(getTweetURL, {
         word: 'casa'
     }, function (response) {
-
+        console.log(response);
+        // app.label = response.tweet;
+        // app.label = JSON.stringify(response.tweet, null, "\t");
+        // console.log(response.tweet);
+        document.body.appendChild(document.createTextNode(JSON.stringify(response.tweet, null, 4)));
     });
-    console.log(response);
-    label = response.tweet;
-    console.log('respuesta:');
-    console.log(response.tweet);
-
 }
 
 let app = new Vue({
