@@ -1,4 +1,30 @@
 
+#index
+
+    .own-card {
+        box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
+        margin-bottom: 20px;
+    }
+
+    .card-image{
+        padding: 1rem;
+    }
+    
+    .own-card-img{
+        border-radius: 999px;
+        /* margin-top: 10px; */
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 /* Jugadores.html */
 #jugadores
