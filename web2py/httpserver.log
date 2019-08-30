@@ -9483,3 +9483,7 @@ c-bootstrap.css, HTTP/1.1, 200, 0.006000
 127.0.0.1, 2019-08-30 11:25:04, GET, /twitter_api/en/static/js/index.js, HTTP/1.1, 304, 0.002000
 127.0.0.1, 2019-08-30 11:25:05, GET, /twitter_api/en/static/images/favicon.ico, HTTP/1.1, 200, 0.001000
 127.0.0.1, 2019-08-30 11:25:05, POST, /api/test_index_function, HTTP/1.1, 200, 0.042000
+127.0.0.1, 2019-08-30 11:30:52, GET, /, HTTP/1.1, 200, 0.022000
+127.0.0.1, 2019-08-30 11:30:52, GET, /twitter_api/en/static/js/index.js, HTTP/1.1, 304, 0.001000
+127.0.0.1, 2019-08-30 11:30:52, GET, /twitter_api/en/static/images/favicon.ico, HTTP/1.1, 200, 0.000000
+127.0.0.1, 2019-08-30 11:30:53, POST, /api/get_tweet, HTTP/1.1, 200, 0.027000
