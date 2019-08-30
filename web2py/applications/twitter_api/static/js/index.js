@@ -1,4 +1,5 @@
 let on_page_load = function () {
+    get_tweet();
     // console.log('action');
 
     // $.post(logginTwitterURL, {
@@ -36,9 +37,10 @@ let get_tweet = function () {
         // app.label = response.tweet;
         // app.label = JSON.stringify(response.tweet, null, "\t");
         // console.log(response.tweet);
-        // document.body.appendChild(document.createTextNode(JSON.stringify(response.tweet, null, 4)));
+        document.body.appendChild(document.createTextNode(JSON.stringify(response.tweet, null, 4)));
 
-        document.body.appendChild(document.createTextNode(JSON.stringify(response.retweets, null, 4)));
+        // document.body.appendChild(document.createTextNode(JSON.stringify(response.retweets, null, 4)));
+        app.tweets = response.tweets;
         app.retweets = response.retweets;
     });
 }
@@ -50,6 +52,7 @@ let app = new Vue({
     data: {
         label: 'none',
         word_search: 'coche',
+        tweets: '',
         retweets: []
     },
     methods: {

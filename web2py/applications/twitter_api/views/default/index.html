@@ -28,7 +28,7 @@
     <div class="container">
         <div class="form-group">
             <div>
-                <h4>Word for search</h4>
+                <h4>GET TWEET method</h4>
             </div>
             <div>
                 <input v-model="word_search" name="search" type="text" class="form-control" id="word_search"
@@ -38,6 +38,33 @@
         <button v-on:click="get_tweet" type="button" class="btn btn-primary"> Get tweet
         </button>
         <label>${label}</label>
+    </div>
+
+    <div class="container">
+        <h2> Tweets source</h2>
+        <div v-for="tweet in tweets">
+            <div v-if=tweet class="card">
+                <div class="d-flex flex-row ">
+                    <img v-bind:src="tweet.user.profile_image_url">
+                    <h3>${tweet.user.name}</h3>
+                    <h4>by @${tweet.user.screen_name}</h4>
+                    <p>${tweet.user.created_at}</p>
+                </div>
+                <div>
+                    <p>${tweet.text}</p>
+                    <p>${tweet.url}</p>
+                </div>
+                <div class="d-flex flex-row">
+                    <p>Retweets: ${tweet.retweet_count}</p>
+                    <p>Favs: ${tweet.favorite_count}</p>
+                </div>
+
+                <div class="d-flex flex-row">
+                    <h5>Retrieved at:</h5>
+                    <a v-bind:href="tweet.urls[0].expanded_url">link text</a>
+                </div>
+            </div>
+        </div>
     </div>
     <div>
         <h2>Retweets table</h2>

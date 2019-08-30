@@ -55,6 +55,8 @@ def post_tweet():
     print('end method')
 
 
+
+# Warning los retweets estan con trim_user=True, testear otras opciones
 def get_tweet():
     print('get tweet method\n\n')    
     # get the query for search on twitter
@@ -80,7 +82,7 @@ def get_tweet():
         retweets =  [retweet.AsDict() for retweet in retweets]
 
     # return results as JSON
-    return response.json(dict(tweet=tweets, retweets=retweets))
+    return response.json(dict(tweets=tweets, retweets=retweets))
 
 
 
