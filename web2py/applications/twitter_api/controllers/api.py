@@ -1,4 +1,5 @@
 import os, json
+import twitter
 
 def get_logged_in_user():
     user = None if auth.user is None else auth.user
@@ -11,10 +12,22 @@ def get_logged_in_user():
     # Usar un embellecedor
     # @requires_twitter_logged
 
-def log_on_twitter():
-    print('\nloggin on twitter')
-    import twitter
+# OWN DECORATOR
 
+
+# TO-DO
+# En el metodo una vex esta loggeado en twitter con las credentials, hacer un get request normal
+# como en la pagina del drive (problemas & soluciones), del tio que hace
+# @GET(url, q=word?&count=ffff) y ver el resultado
+# (bypass teweetpy api)
+
+
+
+def requires_twitter_auth():
+    print('decorator activated')
+
+
+    
     consumer_key = 'dXj0dViDbK6VobzAD5P97iCrO'
     consumer_secret = 'DwRbuw8rRgMBh6Gg9qORDXpDJ4RLp0wGq4RWj5SVw4KJT6nDZq'
     access_token = '1164482563198636033-PMEvNG9Pz1aGL3SLKw1QX9TwjStdD5'
@@ -23,46 +36,60 @@ def log_on_twitter():
     api = twitter.Api(consumer_key = consumer_key,consumer_secret = consumer_secret
     , access_token_key = access_token, access_token_secret = access_secret)
 
+    return api
+
+
+
+def log_on_twitter():
+    print('\nloggin on twitter')
+    api = requires_twitter_auth()
     print(api.VerifyCredentials())
 
-    # string = 'new post'
-    # status = api.PostUpdate(string)
 
 def post_tweet():
     print('post tweet api method')
+
+    requires_twitter_auth()
     string =request.vars.string
 
     api = twitter.Api(consumer_key = consumer_key,consumer_secret = consumer_secret
     , access_token_key = access_token, access_token_secret = access_secret)
 
     status = api.PostUpdate(string)
-
     print('end method')
+
 
 def get_tweet():
     print('get tweet method\n\n')    
     word = request.vars.word
     print(word)
 
-    # Credentials loggin
-    import twitter
-    consumer_key = 'dXj0dViDbK6VobzAD5P97iCrO'
-    consumer_secret = 'DwRbuw8rRgMBh6Gg9qORDXpDJ4RLp0wGq4RWj5SVw4KJT6nDZq'
-    access_token = '1164482563198636033-PMEvNG9Pz1aGL3SLKw1QX9TwjStdD5'
-    access_secret = '1sYd9Mp8IS6TTXaD0nzgtXguFiABf4eSjvXVPf8va05uG'
-    api = twitter.Api(consumer_key = consumer_key,consumer_secret = consumer_secret
-    , access_token_key = access_token, access_token_secret = access_secret)
-
-    word='sanchez'
+    api = requires_twitter_auth()
 
     results = api.GetSearch(term=word, count=1)
-    # print(tweet)
-    # print('\n')
-    # print(tweet[0])
+
+    # Get retweets
+    number_of_rt = 10
+    retweets = api.GetRetweets('1166878379695431681', count=number_of_rt, trim_user=True)
+    # print('\n\nRetweets:\n')
+    # for t in retweets:
+    #     print('\n', t)
+    # print(retweets)
+
+    print('/n/nAAA')
+    print(results)
+    print('/n/nBBB')
+    print(retweets)
+
+    retweets =  [retweet.AsDict() for retweet in retweets]
     json_results = [result.AsDict() for result in results]
     # print(json_results)
 
-    return response.json(dict(tweet=json_results))
+    return response.json(dict(tweet=json_results, retweets=retweets))
+
+
+def test_index_function():
+    print('test function')
 
 
 # ____________________________________________________________________________________
