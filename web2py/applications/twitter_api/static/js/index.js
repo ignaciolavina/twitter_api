@@ -1,12 +1,20 @@
 let on_page_load = function () {
-    console.log('action');
+    // console.log('action');
 
-    $.post(logginTwitterURL, {
-        word: 'tweet'
+    // $.post(logginTwitterURL, {
+    //     word: 'tweet'
+    // }, function (response) {
+
+    // });
+};
+
+let test_btn = function () {
+    console.log("test btn pressed");
+    $.post(testBtnURL, {
     }, function (response) {
 
     });
-};
+}
 
 let action = function () {
     console.log('post tweet function');
@@ -20,14 +28,16 @@ let action = function () {
 
 let get_tweet = function () {
     console.log('get tweet function');
+    // app.label = app.word_search;
     $.post(getTweetURL, {
-        word: 'casa'
+        word: app.word_search
     }, function (response) {
         console.log(response);
         // app.label = response.tweet;
         // app.label = JSON.stringify(response.tweet, null, "\t");
         // console.log(response.tweet);
         document.body.appendChild(document.createTextNode(JSON.stringify(response.tweet, null, 4)));
+        app.retweets = response.retweets;
     });
 }
 
@@ -36,11 +46,14 @@ let app = new Vue({
     delimiters: ['${', '}'],
     unsafeDelimiters: ['!{', '}'],
     data: {
-        label: 'none'
+        label: 'none',
+        word_search: 'coche',
+        retweets: []
     },
     methods: {
         action: action,
-        get_tweet: get_tweet
+        get_tweet: get_tweet,
+        test_btn: test_btn
     }
 });
 
