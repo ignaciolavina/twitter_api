@@ -36,7 +36,9 @@ let get_tweet = function () {
         // app.label = response.tweet;
         // app.label = JSON.stringify(response.tweet, null, "\t");
         // console.log(response.tweet);
-        document.body.appendChild(document.createTextNode(JSON.stringify(response.tweet, null, 4)));
+        // document.body.appendChild(document.createTextNode(JSON.stringify(response.tweet, null, 4)));
+
+        document.body.appendChild(document.createTextNode(JSON.stringify(response.retweets, null, 4)));
         app.retweets = response.retweets;
     });
 }

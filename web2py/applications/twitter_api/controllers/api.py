@@ -25,8 +25,6 @@ def get_logged_in_user():
 
 def requires_twitter_auth():
     print('decorator activated')
-
-
     
     consumer_key = 'dXj0dViDbK6VobzAD5P97iCrO'
     consumer_secret = 'DwRbuw8rRgMBh6Gg9qORDXpDJ4RLp0wGq4RWj5SVw4KJT6nDZq'
@@ -37,8 +35,6 @@ def requires_twitter_auth():
     , access_token_key = access_token, access_token_secret = access_secret)
 
     return api
-
-
 
 def log_on_twitter():
     print('\nloggin on twitter')
@@ -61,35 +57,78 @@ def post_tweet():
 
 def get_tweet():
     print('get tweet method\n\n')    
+    # get the query for search on twitter
     word = request.vars.word
-    print(word)
 
-    api = requires_twitter_auth()
+    testing = True
+    if testing:
+        print ('\nTesting\n')
+        # Get tweets
+        tweets = get_tweet_json()  
+        # Get retweets
+        number_of_rt = 10
+        retweets = get_retweets_json()   
 
-    results = api.GetSearch(term=word, count=1)
+    else:
+        api = requires_twitter_auth()            
+        # Get tweets
+        tweets = api.GetSearch(term=word, count=1)    
+        tweets = [tweet.AsDict() for tweet in tweets]
+        # Get retweets
+        number_of_rt = 10
+        retweets = api.GetRetweets('1166878379695431681', count=number_of_rt, trim_user=True)
+        retweets =  [retweet.AsDict() for retweet in retweets]
 
-    # Get retweets
-    number_of_rt = 10
-    retweets = api.GetRetweets('1166878379695431681', count=number_of_rt, trim_user=True)
-    # print('\n\nRetweets:\n')
-    # for t in retweets:
-    #     print('\n', t)
-    # print(retweets)
+    # return results as JSON
+    return response.json(dict(tweet=tweets, retweets=retweets))
 
-    print('/n/nAAA')
-    print(results)
-    print('/n/nBBB')
-    print(retweets)
 
-    retweets =  [retweet.AsDict() for retweet in retweets]
-    json_results = [result.AsDict() for result in results]
-    # print(json_results)
 
-    return response.json(dict(tweet=json_results, retweets=retweets))
 
+#           TESTING PURPOSES
+# ____________________________________________________________________________________
+# The next methods have been created only for testing purposes
 
 def test_index_function():
     print('test function')
+
+
+# To avoid doing all the tima calls to api
+def get_retweets_json():
+    path=os.path.join(request.folder,'private','retweets.txt')
+    with open(path) as json_file:
+        retweets = json.load(json_file)
+    return retweets
+
+def get_tweet_json():
+    path=os.path.join(request.folder,'private','tweet.txt')
+    with open(path) as json_file:
+        tweet = json.load(json_file)
+    return tweet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # ____________________________________________________________________________________
