@@ -52,7 +52,7 @@ let app = new Vue({
     data: {
         label: 'none',
         word_search: 'coche',
-        tweets: '',
+        tweets: [],
         retweets: []
     },
     methods: {

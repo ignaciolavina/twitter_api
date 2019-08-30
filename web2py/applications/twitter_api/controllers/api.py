@@ -74,7 +74,7 @@ def get_tweet():
     else:
         api = requires_twitter_auth()            
         # Get tweets
-        tweets = api.GetSearch(term=word, count=1)    
+        tweets = api.GetSearch(term=word, count=5)    
         tweets = [tweet.AsDict() for tweet in tweets]
         # Get retweets
         number_of_rt = 10
