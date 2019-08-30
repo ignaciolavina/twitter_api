@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 response.menu = [
-    (T('Home'), False, URL('default', 'index'), [])
+    (T('Dahboard'), False, URL('default', 'index'), [])
 ]
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -16,11 +16,11 @@ response.menu = [
 if not configuration.get('app.production'):
     _app = request.application
     response.menu += [        
-        (T('Jugadores'), False, URL('default', 'jugadores')),
-        (T('Parejas'), False, URL('default', 'parejas')),
-        (T('Nueva Pareja'), False, URL('default', 'nueva_pareja')),        
-        (T('Grupos'), False, URL('default', 'grupos')),   
-        (T('Partidos'), False, URL('default', 'partidos')),
-        (T('Resultados'), False, URL('default', 'resultados'))
+        # (T('Dashboard'), False, URL('default', 'index')),
+        # (T('Parejas'), False, URL('default', 'parejas')),
+        # (T('Nueva Pareja'), False, URL('default', 'nueva_pareja')),        
+        # (T('Grupos'), False, URL('default', 'grupos')),   
+        # (T('Partidos'), False, URL('default', 'partidos')),
+        # (T('Resultados'), False, URL('default', 'resultados'))
     ]
 

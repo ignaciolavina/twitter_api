@@ -137,6 +137,8 @@
 'Current session': 'Sesión en curso',
 'currently saved or': 'actualmente guardado o',
 'customize me!': '¡Personalizame!',
+'Dahboard': 'Dahboard',
+'Dashboard': 'Dashboard',
 'data uploaded': 'datos subidos',
 'Database': 'Base de datos',
 'Database %s select': 'selección en base de datos %s',
