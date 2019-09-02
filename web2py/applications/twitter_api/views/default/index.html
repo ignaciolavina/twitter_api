@@ -5,12 +5,58 @@
 <script src="{{ = URL('static','js/vue.min.js') }}"></script>
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 
+<script src='//unpkg.com/vue-chartjs@2.6.0/dist/vue-chartjs.full.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js'></script>
+    <script src='//unpkg.com/hchs-vue-charts@1.2.8'></script>
+
+
 <script>
     let postTweetURL = "{{ = URL('api', 'post_tweet') }}";
     let logginTwitterURL = "{{ = URL('api', 'log_on_twitter') }}";
     let getTweetURL = "{{ = URL('api', 'get_tweet') }}";
     let testBtnURL = "{{ = URL('api', 'test_index_function') }}";
 </script>
+
+
+
+    <div id="app">
+      <section class="container">	
+	  <div class="columns">
+	    <div class="column">
+	      <chartjs-line :labels="labels" :data="dataset" :bind="true"></chartjs-line>
+	    </div>	    
+	  </div>    
+      </section>
+      </div>
+
+    <script src='//cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js'></script>
+    <script src='//unpkg.com/vue-chartjs@2.6.0/dist/vue-chartjs.full.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js'></script>
+    <script src='//unpkg.com/hchs-vue-charts@1.2.8'></script>
+    <script >'use strict';
+
+      Vue.use(VueCharts);
+      var app = new Vue({
+        el: '#app',
+        data: function data() {
+          return {
+            dataentry: null,
+            datalabel: null,
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September'            , 'October', 'November', 'December'],
+            dataset: [5, 10, 15, 25, 45, 70, 115, 185, 70, 75, 70, 60]
+          };
+        },
+
+        methods: {
+          addData: function addData() {
+            this.dataset.push(this.dataentry);
+            this.labels.push(this.datalabel);
+            this.datalabel = '';
+            this.dataentry = '';
+          }
+        }
+      });
+    </script>
 
 
 <div id="index">
