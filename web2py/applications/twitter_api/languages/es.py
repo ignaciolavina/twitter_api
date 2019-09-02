@@ -221,6 +221,7 @@
 'Free Applications': 'Aplicaciones Libres',
 'Functions with no doctests will result in [passed] tests.': 'Funciones sin doctests equivalen a pruebas [aceptadas].',
 'Graph Model': 'Modelo en Grafo',
+'graphs': 'graphs',
 'Group %(group_id)s created': 'Grupo %(group_id)s creado',
 'Group ID': 'ID de Grupo',
 'Group uniquely assigned to user %(id)s': 'Grupo asignado únicamente al usuario %(id)s',

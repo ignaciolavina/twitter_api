@@ -1,0 +1,415 @@
+{{extend 'layout.html'}}
+
+<link rel="stylesheet" type="text/css" href="{{ = URL('static/css', 'app.css') }}" />
+<link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
+<script src="{{ = URL('static','js/vue.min.js') }}"></script>
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <style>
+      body {
+          line-height: 1.75;
+      }
+
+      header {
+          margin-bottom: 1.5rem;
+      }
+
+      h1 {
+          margin-bottom: .5rem;
+          text-align: center;
+      }
+
+      h1 + span.byline {
+          display: block;
+          text-align: center;
+      }
+
+      section {
+          margin-bottom: 1.5rem;
+      }
+
+      section.content {
+          padding: 0 1.5rem;
+      }
+
+      svg {
+          background-color: #fff;
+          width: 100%;
+      }
+
+      .box {
+          border: 1px solid gray;
+          width: 1000px;
+          margin: auto;
+      }
+    </style>
+  <script>
+  window.console = window.console || function(t) {};
+ </script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script> 
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+ </script>
+
+<body translate="no" >
+  <header>
+  </header>
+
+<!-- # Vue.js + D3.js Line Chart -->
+
+  <div class="box">
+
+<section id="chart">
+  <d3__chart
+             :layout="layout"
+             :chart-data="chartData"
+             :axes="axes"></d3__chart>
+</section>
+
+<template id="d3__chart">
+  <svg :view-box.camel="viewBox" preserveAspectRatio="xMidYMid meet">
+    <g class="d3__stage" :style="stageStyle">
+      <d3__axis
+                v-for="(axis, index) in _.uniq(axes)"
+                :key="index"
+                :axis="axis"
+                :layout="layout"
+                :scale="scale"
+                >
+                </d3__axis>
+      <g ref="d3__stage"></g>
+    </g>
+  </svg>
+</template>
+
+<template id="d3__axis">
+  <g :class="[classList]" ref="axis" :style="style"></g>
+</template>
+</div>
+
+  <script src='//cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script>
+
+    <script>
+    var response = {
+  "data": {
+    "flipbooks": {
+      "rawData": [
+        ["2017-07-01T01:00:00", 1,7, 10],
+        ["2017-07-02T01:00:00", 2,9, 20],
+        ["2017-07-03T01:00:00", 3,5, 40],
+        ["2017-07-04T01:00:00", 5,4, 20],
+      ]
+    }
+  }
+};
+var chartData = response.data.flipbooks.rawData;
+
+// Parse the data and split it into series
+var columns = ['Timestamp', 'Previous', 'Current'],
+  offset = 1;
+var c = columns.slice(offset).map(function(id, index) {
+  return {
+    id: id,
+    values: chartData.map(function(d) {
+      return {
+        timestamp: d3.utcParse("%Y-%m-%dT%H:%M:%S")(d[0]).setHours(0, 0, 0, 0),
+        value: d[index + offset]
+      }
+    })
+  }
+});
+
+// Component: SVG parent and stage
+Vue.component('d3__chart', {
+  template: '#d3__chart',
+  props: {
+    axes: {
+      type: Array,
+      default: function() {
+        return ['left', 'bottom'];
+      },
+      validator: function(v) {
+        return !_.difference(v, ['left', 'right', 'top', 'bottom']).length
+      }
+    },
+    layout: Object,
+    chartData: Array
+  },
+  computed: {
+
+    // SVG viewbox
+    viewBox: function() {
+      var outerWidth = this.layout.width + this.layout.marginLeft + this.layout.marginRight,
+        outerHeight = this.layout.height + this.layout.marginTop + this.layout.marginBottom;
+      return '0 0 ' + outerWidth + ' ' + outerHeight;
+    },
+
+    // Stage
+    stageStyle: function() {
+      return {
+        'transform': 'translate(' + this.layout.marginLeft + 'px,' + this.layout.marginTop + 'px)'
+      }
+    }
+  },
+  mounted: function() {
+    this.draw();
+  },
+  data: function() {
+    return {
+      scale: {
+        x: this.getScaleX(),
+        y: this.getScaleY(),
+        color: d3.scaleOrdinal()
+          .range(['steelblue','black'])
+          .domain(['Current', 'Previous','Ohters'])
+      },
+    }
+  },
+  methods: {
+
+    // Get x-axis scale
+    getScaleX: function() {
+      return d3.scaleTime()
+        .range([0, this.layout.width])
+        .domain(d3.extent(chartData, function(d) {
+          return d3.utcParse("%Y-%m-%dT%H:%M:%S")(d[0]).setHours(0, 0, 0, 0)
+        }));
+    },
+
+    // Get y-axis scale
+    getScaleY: function() {
+      return d3.scaleLinear()
+        .range([this.layout.height, 0])
+        .domain([
+          0,
+           d3.max(this.chartData, function(d) {
+            return 100;
+          })
+        ]);
+    },
+
+    // Draw chart
+    draw: function() {
+
+      // Define transition
+      var t = d3.transition().duration(500);
+
+      // Define scale
+      var scale = this.scale;
+
+      // Define stage
+      var $stage = d3.select(this.$refs.d3__stage);
+
+      // Draw lines
+      // Plotter
+      var line = d3.line().x(function(d) {
+          return scale.x(d.timestamp);
+        })
+        .y(function(d) {
+          return scale.y(d.value);
+        });
+
+      // Update
+      var $line = $stage
+        .selectAll('.line')
+        .data(this.chartData);
+
+      // Exit
+      $line.exit().remove();
+
+      // Enter
+      var $line = $line.enter()
+        .append('path')
+        .attr('d', function(d) {
+          return line(d.values.filter(function(e) {
+            return typeof e.value !== typeof null;
+          }));
+        })
+        .merge($line)
+        .attr('class', 'line')
+        .transition(t)
+        .attr('d', function(d) {
+          return line(d.values.filter(function(e) {
+            return typeof e.value !== typeof null;
+          }));
+        })
+        .style('fill', 'none')
+        .style('stroke', function(d) {
+          return scale.color(d.id);
+        })
+        .style('stroke-width', 1);
+
+      // Draw point series
+      // Update
+      var $points = $stage
+        .selectAll('.series')
+        .data(this.chartData);
+
+      // Exit
+      $points.exit().remove();
+
+      // Enter
+      var $points = $points.enter()
+        .append('g')
+        .attr('class', 'series')
+        .merge($points)
+        .style('stroke', function(d) {
+          return scale.color(d.id);
+        });
+
+      // Draw points
+      // Update
+      var $point = $points
+        .selectAll('.point')
+        .data(function(d) {
+          return d.values.filter(function(e) {
+            return typeof e.value !== typeof null;
+          })
+        });
+
+      // Exit
+      $point.exit().remove();
+    }
+  },
+  watch: {
+    // Watch for layout changes
+    layout: {
+      deep: true,
+      handler: function(val, oldVal) {
+        this.scale.x = this.getScaleX();
+        this.scale.y = this.getScaleY();
+        this.draw();
+      }
+    },
+    chartData: {
+      deep: true,
+      handler: function(val, oldVal) {
+        this.scale.x = this.getScaleX();
+        this.scale.y = this.getScaleY();
+        this.draw();
+      }
+    }
+  }
+});
+
+// Component: Chart axes
+Vue.component('d3__axis', {
+  template: '#d3__axis',
+  props: {
+    axis: {
+      type: String,
+      validator: function(v) {
+        return ['left', 'right', 'top', 'bottom'].indexOf(v) > -1
+      }
+    },
+    layout: Object,
+    scale: Object
+  },
+  //props: ['axis', 'layout', 'scale'],
+  data: function() {
+    return {
+      // Return class list
+      classList: ['axis'].concat(this.getAxisClasses())
+    }
+  },
+  mounted: function() {
+    this.drawAxis();
+  },
+  computed: {
+    style: function() {
+      return {
+        transform: this.getAxisTransform()
+      }
+    }
+  },
+  methods: {
+
+    // Return a class list containg the appropriate labels for axes
+    getAxisClasses: function() {
+      var axis = {
+        top: 'x',
+        bottom: 'x',
+        left: 'y',
+        right: 'y'
+      };
+      return [this.axis, axis[this.axis]];
+    },
+
+    // Draw axis
+    drawAxis: function() {
+
+      var t = d3.transition(500);
+      var $axis = d3.select(this.$refs.axis);
+      var scale = this.scale;
+      var axisGenerator = {
+        top: d3.axisTop(scale.x).tickFormat(d3.timeFormat("%b %d")),
+        right: d3.axisRight(scale.y),
+        bottom: d3.axisBottom(scale.x).tickFormat(d3.timeFormat("%b %d")),
+        left: d3.axisLeft(scale.y)
+    }
+
+      // Transition the axis, and then call/construct it
+      $axis.transition(t).call(axisGenerator[this.axis]);
+    },
+
+    // Return necessary axis transformation for proper positioning
+    getAxisTransform: function() {
+
+      var axisOffset = {
+        top: {
+          x: 0,
+          y: 0
+        },
+        right: {
+          x: this.layout.width,
+          y: 0
+        },
+        bottom: {
+          x: 0,
+          y: this.layout.height
+        },
+        left: {
+          x: 0,
+          y: 0
+        }
+      };
+
+      return 'translate(' + axisOffset[this.axis].x + 'px, ' + axisOffset[this.axis].y + 'px)';
+    }
+  },
+  watch: {
+    // Changes to scale means we have to redraw the line!
+    scale: {
+      deep: true,
+      handler: function(val, oldVal) {
+        this.drawAxis();
+      }
+    }
+  }
+});
+
+// Initialize chart
+var d3Vis = new Vue({
+  el: '#chart',
+  data: {
+    layout: {
+      width: 800,
+      height: 250,
+      marginTop: 45,
+      marginRight: 35,
+      marginBottom: 50,
+      marginLeft: 50,
+    },
+    chartData: c,
+    axes: ['left', 'bottom']
+  }
+});
+
+ </script>
+</body>

@@ -1,3 +1,7 @@
+      
+      
+      let d = new Date();
+      
       Vue.use(VueCharts);
       var app_graphs = new Vue({
         el: '#graphs',
@@ -5,8 +9,8 @@
           return {
             dataentry: null,
             datalabel: null,
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            dataset: [5, 10, 15, 25, 45, 70, 115, 185, 70, 75, 70, 60]
+            labels: [d.valueOf(), 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            dataset: [5, +1, 150, 25, 45, 70, 115, 185, 70, 75, 70, 60]
           };
         },
 

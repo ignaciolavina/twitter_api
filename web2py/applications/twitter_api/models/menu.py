@@ -16,8 +16,8 @@ response.menu = [
 if not configuration.get('app.production'):
     _app = request.application
     response.menu += [        
-        # (T('Dashboard'), False, URL('default', 'index')),
-        # (T('Parejas'), False, URL('default', 'parejas')),
+        (T('graphs'), False, URL('default', 'graphic_test')),
+        (T('Parejas'), False, URL('default', 'test')),
         # (T('Nueva Pareja'), False, URL('default', 'nueva_pareja')),        
         # (T('Grupos'), False, URL('default', 'grupos')),   
         # (T('Partidos'), False, URL('default', 'partidos')),

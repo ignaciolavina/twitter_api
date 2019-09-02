@@ -1,6 +1,14 @@
 def index():
     return dict()
 
+
+def graphic_test():
+    return dict()
+
+
+# __________________________________________________
+
+
 def jugadores():
     return dict()   
 
