@@ -1,0 +1,29 @@
+{{extend 'layout.html'}}
+
+<link rel="stylesheet" type="text/css" href="{{ = URL('static/css', 'app.css') }}" />
+<link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
+<script src="{{ = URL('static','js/vue.min.js') }}"></script>
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+
+<!-- For the graphs -->
+<script src='//unpkg.com/vue-chartjs@2.6.0/dist/vue-chartjs.full.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js'></script>
+<script src='//unpkg.com/hchs-vue-charts@1.2.8'></script>
+
+<line-chart :chartdata="chartData" :options="chartOptions" />
+
+<div id="graphs">
+    <section class="container">
+        <div class="card own-card">
+            <div class="column">
+                <chartjs-line :labels="labels" :data="dataset" :options="chartOptions" :bind="true"></chartjs-line>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<!-- Own vue.js files -->
+<script src=" {{ = URL('static/js', 'graphic_test_two.js') }}"></script>

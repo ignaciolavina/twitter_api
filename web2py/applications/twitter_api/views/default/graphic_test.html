@@ -6,6 +6,8 @@
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 
 
+
+
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <style>
       body {
@@ -100,10 +102,16 @@
   "data": {
     "flipbooks": {
       "rawData": [
-        ["2017-07-01T01:00:00", 1,7, 10],
-        ["2017-07-02T01:00:00", 2,9, 20],
-        ["2017-07-03T01:00:00", 3,5, 40],
-        ["2017-07-04T01:00:00", 5,4, 20],
+        ["2017-07-01T01:00:00", 1],
+        ["2017-07-02T01:00:00", 2],
+        ["2017-07-03T01:00:00", 3],
+        ["2017-07-04T01:00:00", 5],
+        ["2017-07-05T01:00:00", 8],
+        ["2017-07-06T01:00:00", 13],
+        ["2017-07-07T01:00:00", 21],
+        ["2017-07-08T01:00:00", 34],
+        ["2017-07-09T01:00:00", 55],
+        ["2017-07-10T01:00:00", 89],
       ]
     }
   }
@@ -166,8 +174,8 @@ Vue.component('d3__chart', {
         x: this.getScaleX(),
         y: this.getScaleY(),
         color: d3.scaleOrdinal()
-          .range(['steelblue','black'])
-          .domain(['Current', 'Previous','Ohters'])
+          .range(['steelblue'])
+          .domain(['Current', 'Previous'])
       },
     }
   },

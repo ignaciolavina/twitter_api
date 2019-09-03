@@ -58,13 +58,13 @@ def post_tweet():
 
 # Warning los retweets estan con trim_user=True, testear otras opciones
 def get_tweet():
-    print('get tweet method\n\n')    
+    print('\n\nget tweet method')    
     # get the query for search on twitter
     word = request.vars.word
 
     testing = True
     if testing:
-        print ('\nTesting\n')
+        print ('Testing')
         # Get tweets
         tweets = get_tweet_json()  
         # Get retweets
@@ -76,12 +76,16 @@ def get_tweet():
         # Get tweets
         tweets = api.GetSearch(term=word, count=5)    
         tweets = [tweet.AsDict() for tweet in tweets]
+
+# Warning, now the id is hardcoded, retrieve from each tweet          
         # Get retweets
-        number_of_rt = 10
+        number_of_rt = 100
         retweets = api.GetRetweets('1166878379695431681', count=number_of_rt, trim_user=True)
         retweets =  [retweet.AsDict() for retweet in retweets]
-
+        
     # return results as JSON
+    # Order list by ascendent date
+    # retweets = retweets[::-1]
     return response.json(dict(tweets=tweets, retweets=retweets))
 
 
@@ -97,7 +101,7 @@ def test_index_function():
 
 # To avoid doing all the tima calls to api
 def get_retweets_json():
-    path=os.path.join(request.folder,'private','retweets.txt')
+    path=os.path.join(request.folder,'private','retweets_long.txt')
     with open(path) as json_file:
         retweets = json.load(json_file)
     return retweets

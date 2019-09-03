@@ -6,6 +6,13 @@ def graphic_test():
     return dict()
 
 
+
+def graphic_test_two():
+    return dict()
+
+def index_cuatro():
+    return dict()
+
 # __________________________________________________
 
 

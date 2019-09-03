@@ -17,8 +17,8 @@ if not configuration.get('app.production'):
     _app = request.application
     response.menu += [        
         (T('graphs'), False, URL('default', 'graphic_test')),
-        (T('Parejas'), False, URL('default', 'test')),
-        # (T('Nueva Pareja'), False, URL('default', 'nueva_pareja')),        
+        (T('vue graph 2'), False, URL('default', 'graphic_test_two')),
+        (T('Index Cuatro'), False, URL('default', 'index_cuatro')),        
         # (T('Grupos'), False, URL('default', 'grupos')),   
         # (T('Partidos'), False, URL('default', 'partidos')),
         # (T('Resultados'), False, URL('default', 'resultados'))

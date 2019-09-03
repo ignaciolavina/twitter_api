@@ -5,62 +5,45 @@
 <script src="{{ = URL('static','js/vue.min.js') }}"></script>
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 
+
+
+<!-- <title>Line Chart</title> -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
+
 <!-- Api calls -->
 <script>
-    let postTweetURL = "{{ = URL('api', 'post_tweet') }}";
-    let logginTwitterURL = "{{ = URL('api', 'log_on_twitter') }}";
     let getTweetURL = "{{ = URL('api', 'get_tweet') }}";
     let testBtnURL = "{{ = URL('api', 'test_index_function') }}";
 </script>
 
 
 
-<!-- For the graphs -->
-<script src='//unpkg.com/vue-chartjs@2.6.0/dist/vue-chartjs.full.min.js'></script>
-<script src='//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js'></script>
-<script src='//unpkg.com/hchs-vue-charts@1.2.8'></script>
+<!-- Remove this style from here -->
+<style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
 
 
-
-<div id="graphs">
-    <section class="container">
-        <div class="card own-card">
-            <div class="column">
-                <chartjs-line :labels="labels" :data="dataset" :bind="true"></chartjs-line>
+<div class="container">
+    <div class="own-card">
+        <div class="card">
+            <div>
+                <canvas id="canvas"></canvas>
             </div>
         </div>
-    </section>
+    </div>
+
 </div>
 
 
 
 <div id="index">
-    <div>
-        <h1>TEST BUTTON</h1>
-        <div>
-            <button v-on:click="test_btn" type="button" class="btn btn-primary"> Test
-        </div>
-    </div>
-    <h1>Welcome</h1>
-    <div>
-        <button v-on:click="action" type="button" class="btn btn-primary"> Post
-        </button>
-    </div>
-    <div class="container">
-        <div class="form-group">
-            <div>
-                <h4>GET TWEET method</h4>
-            </div>
-            <div>
-                <input v-model="word_search" name="search" type="text" class="form-control" id="word_search"
-                    placeholder="search">
-            </div>
-        </div>
-        <button v-on:click="get_tweet" type="button" class="btn btn-primary"> Get tweet
-        </button>
-        <label>${label}</label>
-    </div>
-
 
 
     <div class="container">
@@ -132,6 +115,6 @@
 </div>
 
 
+
 <!-- Own vue.js files -->
-<script src=" {{ = URL('static/js', 'index_graph.js') }}"></script>
-<script src=" {{ = URL('static/js', 'index.js') }}"></script>
+<script src=" {{ = URL('static/js', 'index_cuatro.js') }}"></script>
