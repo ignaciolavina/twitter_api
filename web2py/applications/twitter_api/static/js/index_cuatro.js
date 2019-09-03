@@ -110,15 +110,15 @@ var config = {
                 type: "time",
                 time: {
                     displayFormats: {
-                        'millisecond': timeFormat,
-                        'second': timeFormat,
-                        'minute': 'MMM DD HH',
-                        'hour': 'MMM DD HH',
-                        'day': 'MMM DD HH',
-                        'week': 'MMM DD',
-                        'month': 'MMM DD',
-                        'quarter': 'MMM DD',
-                        'year': 'MMM DD',
+                        'millisecond': 'h:mm:ss',
+                        'second': 'HH:mm:ss',
+                        'minute': 'HH:mm',
+                        'hour': ' D MMM - HH:mm',
+                        'day': 'D MMM',
+                        'week': 'D MMM',
+                        'month': 'D MMM',
+                        'quarter': 'D MMM',
+                        'year': 'DD MMM YYYY',
                     },
                     // format: timeFormat,
                     tooltipFormat: 'll'
@@ -126,6 +126,10 @@ var config = {
                 scaleLabel: {
                     display: true,
                     labelString: 'Date'
+                },
+                ticks: {
+                    // beginAtZero: true
+                    minRotation: 30
                 }
             }],
             yAxes: [{
