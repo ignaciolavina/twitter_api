@@ -51,7 +51,7 @@ let app = new Vue({
     unsafeDelimiters: ['!{', '}'],
     data: {
         label: 'none',
-        word_search: 'coche',
+        word_search: '',
         tweets: [],
         retweets: []
     },

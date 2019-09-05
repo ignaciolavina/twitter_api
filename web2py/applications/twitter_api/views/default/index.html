@@ -24,9 +24,11 @@
 
 <div id="graphs">
     <section class="container">
-        <div class="card own-card">
-            <div class="column">
-                <chartjs-line :labels="labels" :data="dataset" :bind="true"></chartjs-line>
+        <div class="agregated-chart">
+            <div class="card own-card">
+                <div class="column">
+                    <chartjs-line :labels="labels" :data="dataset" :bind="true"></chartjs-line>
+                </div>
             </div>
         </div>
     </section>
@@ -35,30 +37,28 @@
 
 
 <div id="index">
-    <div>
-        <h1>TEST BUTTON</h1>
-        <div>
-            <button v-on:click="test_btn" type="button" class="btn btn-primary"> Test
-        </div>
-    </div>
-    <h1>Welcome</h1>
-    <div>
-        <button v-on:click="action" type="button" class="btn btn-primary"> Post
-        </button>
-    </div>
+
     <div class="container">
-        <div class="form-group">
-            <div>
-                <h4>GET TWEET method</h4>
-            </div>
-            <div>
-                <input v-model="word_search" name="search" type="text" class="form-control" id="word_search"
-                    placeholder="search">
+        <div class="own-card">
+            <div class="card">
+
+                <div class="card-body">
+                    <div class="card-title">
+                        <h4>Search panel</h4>
+                    </div>
+
+                    <div class="form-group">
+                        <div>
+                            <input v-model="word_search" name="search" type="text" class="form-control" id="word_search"
+                                placeholder="Insert link to analyze">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button v-on:click="get_tweet" type="button" class="btn btn-primary">Analyze</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <button v-on:click="get_tweet" type="button" class="btn btn-primary"> Get tweet
-        </button>
-        <label>${label}</label>
     </div>
 
 
@@ -129,6 +129,32 @@
 
 
     </div>
+
+
+
+    <div class="container">
+        <div class="own-card">
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <h2>TEST PANEL</h2>
+                        <div>
+                            <button v-on:click="test_btn" type="button" class="btn btn-primary"> Test
+                        </div>
+                    </div>
+                    <h1>Welcome</h1>
+                    <div>
+                        <button v-on:click="action" type="button" class="btn btn-primary"> Post
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 </div>
 
 

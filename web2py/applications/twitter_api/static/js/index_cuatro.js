@@ -105,6 +105,17 @@ var config = {
             display: true,
             text: "Chart.js Time Scale"
         },
+
+        layout: {
+            padding: {
+                left: 10,
+                right: 10,
+                bottom: 30
+            },
+            // margin: {
+            //     bottom: 60
+            // },
+        },
         scales: {
             xAxes: [{
                 type: "time",
