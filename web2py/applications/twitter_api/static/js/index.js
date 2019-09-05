@@ -40,10 +40,19 @@ let get_tweet = function () {
         app.tweets = response.tweets;
         app.retweets = response.retweets;
 
+
+        get_top_users();
         // document.body.appendChild(document.createTextNode(JSON.stringify(response.tweet, null, 4)));
         document.body.appendChild(document.createTextNode(JSON.stringify(app.retweets, null, 4)));
     });
 }
+
+
+let get_top_users = function () {
+    for (let i = 0; i < 10; i++) {
+        app.top_users.push(app.tweets[0].user);
+    }
+};
 
 let app = new Vue({
     el: "#index",
@@ -53,7 +62,8 @@ let app = new Vue({
         label: 'none',
         word_search: '',
         tweets: [],
-        retweets: []
+        retweets: [],
+        top_users: []
     },
     methods: {
         action: action,
