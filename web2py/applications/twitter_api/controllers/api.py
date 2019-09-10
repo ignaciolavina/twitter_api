@@ -86,24 +86,17 @@ def get_tweet():
         # print(tweets)
         # r es el objeto en json para python (readable en json-beautify)
         array_tweets = json.dumps(tweets)
-        print (array_tweets)
-        # array_tweets = json.dumps(tweets)
+        # print (array_tweets)
+        
 
-        # jdata = json.loads(array_tweets)
-        # print(jdata)
-        # for d in jdata:
-        #     for key, value in d.iteritems():
-        #         print key, value
+        # Esto deberia funcionar pero da problemas
+        # for d in array_tweets:
+        #     tweety = json.dumps(d, indent=4, sort_keys=True)
+        #     # print(tweet)
+        #     test1 = Objeto_JSON(tweety)
+        #     print(test1)
+        #     # print(d)
 
-
-        # for d in array_json:
-        # # print (d)
-        # # print (d.Owner)
-        # # parsed_json = (json.loads(d))
-        # tweet = json.dumps(d, indent=4, sort_keys=True)
-        # # print(tweet)
-        # test1 = Objeto_JSON(tweet)
-        # print(test1.Name)
 
         # Esto NO FUnciona!
         # print(r[0])
