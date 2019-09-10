@@ -45,8 +45,9 @@ let get_tweet = function () {
         get_data_for_graphs();
 
         get_top_users();
-        // document.body.appendChild(document.createTextNode(JSON.stringify(response.tweet, null, 4)));
-        document.body.appendChild(document.createTextNode(JSON.stringify(app.retweets, null, 4)));
+        document.body.appendChild(document.createTextNode(JSON.stringify(response.tweets, null, 4)));
+        // document.body.appendChild(document.createTextNode(JSON.stringify(app.retweets, null, 4)));
+
     });
 }
 
@@ -63,7 +64,7 @@ let app = new Vue({
     unsafeDelimiters: ['!{', '}'],
     data: {
         label: 'none',
-        data_loaded: false,
+        data_loaded: true,
         word_search: '',
         tweets: [],
         retweets: [],
