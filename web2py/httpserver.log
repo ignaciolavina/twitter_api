@@ -12363,3 +12363,7 @@ ootstrap.css, HTTP/1.1, 200, 0.002000
 127.0.0.1, 2019-09-10 11:39:36, GET, /twitter_api/en/static/js/jquery.js, HTTP/1.1, 200, 0.084000
 127.0.0.1, 2019-09-10 11:39:36, GET, /twitter_api/en/static/js/vue.js, HTTP/1.1, 200, 0.079000
 127.0.0.1, 2019-09-10 11:39:36, GET, /twitter_api/en/static/js/bootstrap.bundle.min.js, HTTP/1.1, 200, 0.055000
+127.0.0.1, 2019-09-10 11:41:54, GET, /, HTTP/1.1, 200, 0.029000
+127.0.0.1, 2019-09-10 11:41:57, POST, /api/get_tweet, HTTP/1.1, 200, 0.060000
+127.0.0.1, 2019-09-10 11:42:02, POST, /api/get_tweet, HTTP/1.1, 200, 0.022000
+127.0.0.1, 2019-09-10 11:42:56, GET, /, HTTP/1.1, 200, 0.077000
