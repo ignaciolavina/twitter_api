@@ -12,6 +12,7 @@
 /web2py/applications/*/uploads/*
 /web2py/applications/*/.hg/
 !/web2py/applications/
+/web2py/httpserver.log
  
 ### To include only specific apps, uncomment:
 #/applications/*
