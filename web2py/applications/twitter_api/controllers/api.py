@@ -92,6 +92,9 @@ def get_tweet():
 
         for g in tweets:
             print('hola')
+            tweet_json = json.dumps(g)
+            tweet_objeto = Objeto_JSON(tweet_json)
+            print tweet_objeto.id
         
 
         # tweets_array = ast.literal_eval(tweets)
