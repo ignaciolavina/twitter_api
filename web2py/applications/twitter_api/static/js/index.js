@@ -7,6 +7,7 @@ let on_page_load = function () {
     // }, function (response) {
 
     // });
+    get_tweet();
 };
 
 let test_btn = function () {
@@ -65,7 +66,7 @@ let app = new Vue({
     data: {
         label: 'none',
         data_loaded: true,
-        word_search: '',
+        word_search: 'casa',
         tweets: [],
         retweets: [],
         top_users: []
