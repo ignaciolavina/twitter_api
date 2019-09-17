@@ -28,10 +28,12 @@ def get_logged_in_user():
 # @GET(url, q=word?&count=ffff) y ver el resultado
 # (bypass teweetpy api)
 
+# CONTROL de RATES
+
 
 
 def requires_twitter_auth():
-    print('decorator activated')
+    print('decorator activated [Auth]')
     
     consumer_key = 'dXj0dViDbK6VobzAD5P97iCrO'
     consumer_secret = 'DwRbuw8rRgMBh6Gg9qORDXpDJ4RLp0wGq4RWj5SVw4KJT6nDZq'
@@ -64,6 +66,9 @@ def post_tweet():
 
 
 # Warning los retweets estan con trim_user=True, testear otras opciones
+# -TODO
+    # - get the number of tweets from client
+    # - try catchs
 def get_tweet():
     print('\n\nget tweet method')    
     # get the query for search on twitter
@@ -84,51 +89,16 @@ def get_tweet():
 
         # Get tweets
         tweets = api.GetSearch(term=word, count=2)    
-        # tweets_array = ast.literal_eval(tweets)
         tweets = [tweet.AsDict() for tweet in tweets]
-        # print (tweets)
-        # tweets_array = json.dumps(tweets)
-        # print (tweets_array)
 
-        for g in tweets:
-            print('hola')
-            tweet_json = json.dumps(g)
+        
+
+        for tweet in tweets:
+            tweet_json = json.dumps(tweet)
             tweet_objeto = Objeto_JSON(tweet_json)
             print tweet_objeto.id
+            #get retweet
         
-
-        # tweets_array = ast.literal_eval(tweets)
-
-        
-        # Ahora tengo [sss] (NOT STRING!)
-
-        # for g in tweets_array:
-        # #     # print(g + '\n')
-        #     print ('hola')
-        # print(super_array) = 
-
-        
-
-        # for tweet in tweets_array:
-        #     # print d
-            
-        #     #Estas dos transforman string a JSON, (una te lo hace bonito)
-        #     # val = json.dumps(d, sort_keys=True, indent=4, separators=(',', ': '))
-        #     tweet_json = json.dumps(tweet)
-        #     tweet_objeto = Objeto_JSON(tweet_json)
-        #     print tweet_objeto.id
-
-
-        # for t in tweets:
-        #     t = json.dumps(t)
-        #     print (t)
-
-        # # print(tweets)
-
-        # tweets_array = ast.literal_eval(tweets_json)
-
-        # array_tweets = json.dumps(tweets)
-        # print (array_tweets)
 
         # # Test
         retweets = get_retweets_json()   
