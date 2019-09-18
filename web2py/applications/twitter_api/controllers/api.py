@@ -96,7 +96,7 @@ def get_tweet():
         for tweet in tweets:
             tweet_json = json.dumps(tweet)
             tweet_objeto = Objeto_JSON(tweet_json)
-            print tweet_objeto.id
+            print (tweet_objeto.id)
             #get retweet
         
 
