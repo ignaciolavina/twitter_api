@@ -11,9 +11,6 @@ db.define_table('tabla_tweets_retweets',
     Field('stored_data', 'text')
 )
 
-db.define_table('list_tweets_retweets',
-    Field('lista', 'string')
-)
 
 db.define_table('jugador',
     Field('nombre', requires=IS_NOT_EMPTY()),

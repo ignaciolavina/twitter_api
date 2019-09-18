@@ -13,6 +13,13 @@ def graphic_test_two():
 def index_cuatro():
     return dict()
 
+def data_stored():
+    # form = SQLFORM(db.tabla_tweets_retweets)
+    grid = SQLFORM.grid(db.tabla_tweets_retweets, deletable=True)
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
 # __________________________________________________
 
 
