@@ -25,15 +25,21 @@ let get_tweet = function () {
     $.post(getTweetURL, {
         word: app.word_search
     }, function (response) {
+        console.log('server response')
         console.log(response);
-        // app.label = response.tweet;
-        // app.label = JSON.stringify(response.tweet, null, "\t");
-        // console.log(response.tweet);
-        app.tweets = response.tweets;
-        app.retweets = response.retweets;
+
+        // Empty the varlue in case of refresh or new data comming
+        app.tweets = [];
+        app.retweets = [];
+        // Retrieveing the data from request vars
+        app.list_tweets_and_retweets = response.list_tweets_and_retweets;
+        for (let i = 0; i < app.list_tweets_and_retweets.length; i++) {
+            app.tweets.push(app.list_tweets_and_retweets[i][0]);
+            app.retweets.push(app.list_tweets_and_retweets[i][1]);
+        }
 
         app.data_loaded = true;
-        // THis function is in index_agregated_graph.js file
+        // This function is in index_agregated_graph.js file
         get_data_for_graphs();
 
         get_top_users();
@@ -60,7 +66,8 @@ let app = new Vue({
         word_search: 'casa',
         tweets: [],
         retweets: [],
-        top_users: []
+        top_users: [],
+        list_tweets_and_retweets: []
     },
     methods: {
         action: action,
@@ -70,19 +77,26 @@ let app = new Vue({
 });
 
 
-<<<<<<< HEAD
 // ________________________________________________________________
 // For agreggated graphic
 
 var data = [];
-=======
 
->>>>>>> early_feedback_one
 
+// Now the retweets of different tweets are agregated in a single Array,
+// try to join in a more visual and effective way
+// Creating the data for the aggregated graph
 let get_data_for_graphs = function () {
-    console.log('creating data');
+    console.log('creating data for agregated graph');
     let counter = 1;
-    app.retweets.forEach(function (retweet) {
+
+    // Creation of a list that will agregate all the agregated retweets
+    let agregate_rt = [];
+    for (let i = 0; i < app.retweets.length; i++) {
+        agregate_rt = agregate_rt.concat(app.retweets[i]);
+    }
+
+    agregate_rt.forEach(function (retweet) {
         console.log(retweet.created_at);
         data.push(
 
@@ -92,7 +106,6 @@ let get_data_for_graphs = function () {
         );
         counter++;
     });
-    console.log(app.retweets);
 
     var ctx = document.getElementById("canvas").getContext("2d");
     window.myLine = new Chart(ctx, config);
@@ -100,11 +113,6 @@ let get_data_for_graphs = function () {
 
 
 
-<<<<<<< HEAD
-=======
-var data = [];
-
->>>>>>> early_feedback_one
 // var timeFormat = 'YYYY-MM-DDTHH:mm:ss.sssZ';
 var timeFormat = "ddd MMM dd HH:mm:ss Z yyyy"
 
@@ -174,13 +182,6 @@ var config = {
     }
 };
 
-<<<<<<< HEAD
-=======
-// window.onload = function () {
-
-// };
-
->>>>>>> early_feedback_one
 
 
 on_page_load();
