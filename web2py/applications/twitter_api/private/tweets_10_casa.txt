@@ -1,0 +1,249 @@
+[
+  {
+    "lang": "pt",
+    "truncated": true,
+    "text": "Uma criança de 5 anos, com paralisia cerebral, morreu após ser vítima de um estupro dentro de casa.\n\nQuase toda not… https://t.co/919RgUURaE",
+    "created_at": "Mon Sep 09 00:49:47 +0000 2019",
+    "hashtags": [],
+    "user_mentions": [],
+    "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+    "user": {
+      "profile_use_background_image": true,
+      "id": 283230411,
+      "verified": true,
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/965288877270470662/o6R48tXm_normal.jpg",
+      "profile_sidebar_fill_color": "47413D",
+      "profile_text_color": "CC2316",
+      "followers_count": 910477,
+      "id_str": "283230411",
+      "profile_background_color": "030303",
+      "listed_count": 762,
+      "statuses_count": 8295,
+      "description": "Por um mundo mais bem informado e menos careta.",
+      "friends_count": 255,
+      "profile_link_color": "FAB81E",
+      "profile_image_url": "http://pbs.twimg.com/profile_images/965288877270470662/o6R48tXm_normal.jpg",
+      "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_banner_url": "https://pbs.twimg.com/profile_banners/283230411/1520991528",
+      "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+      "name": "Quebrando o Tabu",
+      "favourites_count": 2844,
+      "screen_name": "QuebrandoOTabu",
+      "url": "https://t.co/3eHEO0OE49",
+      "created_at": "Sat Apr 16 21:30:27 +0000 2011",
+      "profile_sidebar_border_color": "EBEBEB"
+    },
+    "urls": [
+      {
+        "url": "https://t.co/919RgUURaE",
+        "expanded_url": "https://twitter.com/i/web/status/1170861824071413760"
+      }
+    ],
+    "retweet_count": 10382,
+    "id": 1170861824071413800,
+    "favorite_count": 35968,
+    "id_str": "1170861824071413760"
+  },
+  {
+    "lang": "pt",
+    "text": "em casa:\n\nnão aguento mais ficar em casa\n\nqnd saí: \n\nquero ir pra casa",
+    "created_at": "Mon Sep 09 17:47:58 +0000 2019",
+    "hashtags": [],
+    "user_mentions": [],
+    "source": "<a href=\"https://about.twitter.com/products/tweetdeck\" rel=\"nofollow\">TweetDeck</a>",
+    "user": {
+      "profile_use_background_image": true,
+      "id": 1245645524,
+      "verified": true,
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1069282147968651264/tBpBbYh3_normal.jpg",
+      "profile_sidebar_fill_color": "E5507E",
+      "geo_enabled": true,
+      "profile_text_color": "362720",
+      "followers_count": 695957,
+      "location": "São Paulo, Brasil",
+      "profile_background_color": "89C9FA",
+      "id_str": "1245645524",
+      "statuses_count": 30727,
+      "description": "Hello People... 8 Milhões de inscritos!",
+      "friends_count": 303,
+      "profile_link_color": "89C9FA",
+      "profile_image_url": "http://pbs.twimg.com/profile_images/1069282147968651264/tBpBbYh3_normal.jpg",
+      "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme11/bg.gif",
+      "profile_banner_url": "https://pbs.twimg.com/profile_banners/1245645524/1483897254",
+      "profile_background_image_url": "http://abs.twimg.com/images/themes/theme11/bg.gif",
+      "name": "afreim",
+      "profile_background_tile": true,
+      "favourites_count": 1668,
+      "screen_name": "_Afreim",
+      "url": "https://t.co/I0sHXDKGig",
+      "created_at": "Wed Mar 06 09:04:39 +0000 2013",
+      "profile_sidebar_border_color": "FFFFFF",
+      "listed_count": 196
+    },
+    "urls": [],
+    "retweet_count": 3454,
+    "id": 1171118058016051200,
+    "favorite_count": 7061,
+    "id_str": "1171118058016051206"
+  },
+  {
+    "lang": "pt",
+    "truncated": true,
+    "text": "Esse YouTuber está proibido de entrar na minha casa faz tempo! Ele é seu irmão Lucas Neto! Mas, fica o alerta aos p… https://t.co/omO16RmZIN",
+    "created_at": "Mon Sep 09 04:26:10 +0000 2019",
+    "hashtags": [],
+    "user_mentions": [],
+    "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+    "place": {
+      "country_code": "BR",
+      "url": "https://api.twitter.com/1.1/geo/id/68e019afec7d0ba5.json",
+      "country": "Brazil",
+      "place_type": "city",
+      "bounding_box": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -46.826039,
+              -24.008814
+            ],
+            [
+              -46.365052,
+              -24.008814
+            ],
+            [
+              -46.365052,
+              -23.356792
+            ],
+            [
+              -46.826039,
+              -23.356792
+            ]
+          ]
+        ]
+      },
+      "contained_within": [],
+      "full_name": "Sao Paulo, Brazil",
+      "attributes": {},
+      "id": "68e019afec7d0ba5",
+      "name": "Sao Paulo"
+    },
+    "user": {
+      "profile_use_background_image": true,
+      "id": 2797010717,
+      "verified": true,
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1156288943371030530/eEYQHF0X_normal.jpg",
+      "profile_sidebar_fill_color": "DDEEF6",
+      "geo_enabled": true,
+      "profile_text_color": "333333",
+      "followers_count": 68594,
+      "id_str": "2797010717",
+      "profile_background_color": "C0DEED",
+      "listed_count": 111,
+      "statuses_count": 4705,
+      "description": "- Pernambucano de nascimento, Paulista de coração. - Deputado Estadual eleito pelo PSL/SP com 214.037 votos.",
+      "friends_count": 244,
+      "profile_link_color": "1DA1F2",
+      "profile_image_url": "http://pbs.twimg.com/profile_images/1156288943371030530/eEYQHF0X_normal.jpg",
+      "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_banner_url": "https://pbs.twimg.com/profile_banners/2797010717/1562867450",
+      "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+      "name": "Gil Diniz",
+      "favourites_count": 3389,
+      "screen_name": "carteiroreaca",
+      "url": "https://t.co/UlFJn3N1rL",
+      "created_at": "Wed Oct 01 03:35:45 +0000 2014",
+      "profile_sidebar_border_color": "C0DEED",
+      "default_profile": true
+    },
+    "urls": [
+      {
+        "url": "https://t.co/omO16RmZIN",
+        "expanded_url": "https://twitter.com/i/web/status/1170916281220050944"
+      }
+    ],
+    "retweet_count": 2151,
+    "id": 1170916281220051000,
+    "favorite_count": 9710,
+    "id_str": "1170916281220050944"
+  },
+  {
+    "lang": "es",
+    "in_reply_to_user_id": 548735114,
+    "text": "@elclick2click Olvidé mi instrumento de trabajo en casa 😫😫😫",
+    "created_at": "Tue Sep 10 09:57:45 +0000 2019",
+    "hashtags": [],
+    "user_mentions": [
+      {
+        "id_str": "548735114",
+        "screen_name": "elclick2click",
+        "name": "El click",
+        "id": 548735114
+      }
+    ],
+    "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+    "in_reply_to_status_id": 1171338208304668700,
+    "in_reply_to_screen_name": "elclick2click",
+    "user": {
+      "profile_use_background_image": true,
+      "id": 888086397097320400,
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1167135279376949248/aptgmM4Y_normal.jpg",
+      "profile_sidebar_fill_color": "DDEEF6",
+      "profile_text_color": "333333",
+      "followers_count": 1687,
+      "id_str": "888086397097320453",
+      "profile_background_color": "F5F8FA",
+      "location": "En el baño del trabajo 🤭",
+      "statuses_count": 11520,
+      "description": "Programas TV Series Cine ...¿en serio? no no, mejor sólo sexo y del bueno 😉\naaahh por cierto! soy YO en todas las fotos de mi perfil 😊😊😊",
+      "friends_count": 104,
+      "profile_link_color": "1DA1F2",
+      "profile_image_url": "http://pbs.twimg.com/profile_images/1167135279376949248/aptgmM4Y_normal.jpg",
+      "profile_banner_url": "https://pbs.twimg.com/profile_banners/888086397097320453/1563380588",
+      "name": "Susan",
+      "favourites_count": 17033,
+      "screen_name": "Susan31388126",
+      "created_at": "Thu Jul 20 17:21:11 +0000 2017",
+      "profile_sidebar_border_color": "C0DEED",
+      "default_profile": true,
+      "listed_count": 7
+    },
+    "urls": [],
+    "id": 1171362116135207000,
+    "id_str": "1171362116135206913"
+  },
+  {
+    "lang": "pt",
+    "text": "Mal ganhei o fone e já me roubaram dentro de casa",
+    "created_at": "Tue Sep 10 09:57:45 +0000 2019",
+    "hashtags": [],
+    "user_mentions": [],
+    "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+    "user": {
+      "default_profile": true,
+      "id_str": "944425299151937537",
+      "statuses_count": 268,
+      "screen_name": "Lucas12669580",
+      "friends_count": 234,
+      "profile_text_color": "333333",
+      "profile_use_background_image": true,
+      "profile_link_color": "1DA1F2",
+      "created_at": "Sat Dec 23 04:31:52 +0000 2017",
+      "profile_sidebar_fill_color": "DDEEF6",
+      "profile_image_url": "http://pbs.twimg.com/profile_images/1169066427984334849/n3Z1sOuu_normal.jpg",
+      "name": "Vieira",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1169066427984334849/n3Z1sOuu_normal.jpg",
+      "followers_count": 166,
+      "profile_sidebar_border_color": "C0DEED",
+      "location": "Magé, Brasil",
+      "profile_background_color": "F5F8FA",
+      "favourites_count": 460,
+      "profile_banner_url": "https://pbs.twimg.com/profile_banners/944425299151937537/1565386538",
+      "id": 944425299151937500,
+      "description": "@flamengo . 17."
+    },
+    "urls": [],
+    "id": 1171362113719361500,
+    "id_str": "1171362113719361536"
+  }
+]

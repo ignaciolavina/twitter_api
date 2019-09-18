@@ -1,5 +1,12 @@
 import os, json
 import twitter
+import ast
+
+# definimos una clase, que convierte JSON en objeto
+class Objeto_JSON(object):
+    def __init__(self, data):
+	    self.__dict__ = json.loads(data)
+
 
 def get_logged_in_user():
     user = None if auth.user is None else auth.user
@@ -21,10 +28,12 @@ def get_logged_in_user():
 # @GET(url, q=word?&count=ffff) y ver el resultado
 # (bypass teweetpy api)
 
+# CONTROL de RATES
+
 
 
 def requires_twitter_auth():
-    print('decorator activated')
+    print('decorator activated [Auth]')
     
     consumer_key = 'dXj0dViDbK6VobzAD5P97iCrO'
     consumer_secret = 'DwRbuw8rRgMBh6Gg9qORDXpDJ4RLp0wGq4RWj5SVw4KJT6nDZq'
@@ -57,12 +66,15 @@ def post_tweet():
 
 
 # Warning los retweets estan con trim_user=True, testear otras opciones
+# -TODO
+    # - get the number of tweets from client
+    # - try catchs
 def get_tweet():
     print('\n\nget tweet method')    
     # get the query for search on twitter
     word = request.vars.word
 
-    testing = True
+    testing = False
     if testing:
         print ('Testing')
         # Get tweets
@@ -73,15 +85,28 @@ def get_tweet():
 
     else:
         api = requires_twitter_auth()            
+        print ('\n\nQQQ\n')
+
         # Get tweets
-        tweets = api.GetSearch(term=word, count=5)    
+        tweets = api.GetSearch(term=word, count=2)    
         tweets = [tweet.AsDict() for tweet in tweets]
 
-# Warning, now the id is hardcoded, retrieve from each tweet          
+        
+
+        for tweet in tweets:
+            tweet_json = json.dumps(tweet)
+            tweet_objeto = Objeto_JSON(tweet_json)
+            print (tweet_objeto.id)
+            #get retweet
+        
+
+        # # Test
+        retweets = get_retweets_json()   
+
         # Get retweets
-        number_of_rt = 100
-        retweets = api.GetRetweets('1166878379695431681', count=number_of_rt, trim_user=True)
-        retweets =  [retweet.AsDict() for retweet in retweets]
+        # number_of_rt = 100
+        # retweets = api.GetRetweets('1166878379695431681', count=number_of_rt, trim_user=True)
+        # retweets =  [retweet.AsDict() for retweet in retweets]
         
     # return results as JSON
     # Order list by ascendent date
