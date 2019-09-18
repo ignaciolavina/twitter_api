@@ -67,7 +67,8 @@ let app = new Vue({
         tweets: [],
         retweets: [],
         top_users: [],
-        list_tweets_and_retweets: []
+        list_tweets_and_retweets: [],
+        agregated_retweets: []
     },
     methods: {
         action: action,
@@ -93,11 +94,15 @@ let get_data_for_graphs = function () {
     // Creation of a list that will agregate all the agregated retweets
     let agregate_rt = [];
     for (let i = 0; i < app.retweets.length; i++) {
-        agregate_rt = agregate_rt.concat(app.retweets[i]);
+        app.agregated_retweets = agregate_rt.concat(app.retweets[i]);
     }
 
-    agregate_rt.forEach(function (retweet) {
-        console.log(retweet.created_at);
+    // Date sorting to display the agregated graph
+    app.agregated_retweets.sort(function (a, b) { return (new Date(a.created_at) - new Date(b.created_at)).toString() });
+
+    // app.agregated_retweets.sort(function (a, b) => new Date(a.created_at) - new Date(b.created_at));
+    app.agregated_retweets.forEach(function (retweet) {
+        console.log(retweet.created_at + ", cnt:" + counter);
         data.push(
 
             {
@@ -153,7 +158,7 @@ var config = {
                         'millisecond': 'h:mm:ss',
                         'second': 'HH:mm:ss',
                         'minute': 'HH:mm',
-                        'hour': ' D MMM - HH:mm',
+                        'hour': 'D MMM - HH:mm',
                         'day': 'D MMM',
                         'week': 'D MMM',
                         'month': 'D MMM',
