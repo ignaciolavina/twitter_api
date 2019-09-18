@@ -74,14 +74,19 @@ def get_tweet():
     # get the query for search on twitter
     word = request.vars.word
 
-    testing = False
+    testing = True
     if testing:
         print ('Testing')
-        # Get tweets
-        tweets = get_tweet_json()  
-        # Get retweets
-        number_of_rt = 10
-        retweets = get_retweets_json()   
+        # tweets = get_tweet_json()  
+        # retweets = get_retweets_json()
+        list_tweets_and_retweets = get_list_tweets_and_retweets_json()
+        # To avoid erros, intialize the lsits to return as request.vars
+        tweets = []
+        retweets = []
+        retweets_two = []
+        # list_tweets_and_retweets = db(db.list_tweets_retweets.id == 0).select().first()
+        # list_tweets_and_retweets = json.dumps(list_tweets_and_retweets)
+        # p.nombre_jugador_uno = db(db.jugador.id == p.jugador_uno).select().first().nombre  
 
 
     else:
@@ -105,16 +110,28 @@ def get_tweet():
             retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=True)
             retweets =  [retweet.AsDict() for retweet in retweets]
             
+            # Adding everything in a big list to return as request vars
             list_tweets_and_retweets.append([tweet, retweets])
-            # print ('tweets:\n')
-            # print (tweet)
-            # print('retweets\n')
-            # print (retweets)
         
 
         # # Test
-        retweets_two = get_retweets_json()  
+        retweets_two = get_retweets_json()
+
+        db.list_tweets_retweets.update_or_insert(
+            lista = json.dumps(list_tweets_and_retweets)
+            # lista = list_tweets_and_retweets
+        )
+        # pareja = db.pareja.update_or_insert(db.pareja.id == request.vars.id,
+        # grupo = request.vars.grupo
+        # )
         
+        # Saved in saved.txt
+        # path=os.path.join(request.folder,'private','saved.txt')
+        # # fullStr = ' '.join(list_tweets_and_retweets)
+        # fullStr = json.dumps(list_tweets_and_retweets)
+        # f = open(path, "a")
+        # f.write(fullStr)
+        # f.close()
         
     # return results as JSON
     # Order list by ascendent date
@@ -145,6 +162,11 @@ def get_tweet_json():
         tweet = json.load(json_file)
     return tweet
 
+def get_list_tweets_and_retweets_json():
+    path=os.path.join(request.folder,'private','saved.txt')
+    with open(path) as json_file:
+        list_tweets_and_retweets = json.load(json_file)
+    return list_tweets_and_retweets
 
 
 

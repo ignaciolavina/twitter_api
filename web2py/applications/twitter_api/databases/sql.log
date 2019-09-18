@@ -108,3 +108,9 @@ CREATE TABLE "movie_review"(
     "number_rating" INTEGER
 );
 success!
+timestamp: 2019-09-18T13:57:38.641798
+CREATE TABLE "list_tweets_retweets"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "lista" CHAR(512)
+);
+success!

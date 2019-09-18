@@ -43,8 +43,8 @@ let get_tweet = function () {
         get_data_for_graphs();
 
         get_top_users();
-        document.body.appendChild(document.createTextNode(JSON.stringify(response.tweets, null, 4)));
-        // document.body.appendChild(document.createTextNode(JSON.stringify(app.retweets, null, 4)));
+        // document.body.appendChild(document.createTextNode(JSON.stringify(response.tweets, null, 4)));
+        document.body.appendChild(document.createTextNode(JSON.stringify(app.list_tweets_and_retweets, null, 4)));
 
     });
 }
@@ -84,10 +84,16 @@ let app = new Vue({
 var data = [];
 
 
-// Now the retweets of different tweets are agregated in a single Array,
-// try to join in a more visual and effective way
-// Creating the data for the aggregated graph
 let get_data_for_graphs = function () {
+
+    //Creation of the agregated graph
+    create_agregated_graph();
+    create_multiple_graph();
+}
+
+
+let create_agregated_graph = function () {
+
     console.log('creating data for agregated graph');
     let counter = 1;
 
@@ -114,9 +120,16 @@ let get_data_for_graphs = function () {
 
     var ctx = document.getElementById("canvas").getContext("2d");
     window.myLine = new Chart(ctx, config);
+
 }
+var data_two = [];
+
+let create_multiple_graph = function () {
 
 
+    var graph_two = document.getElementById("canvas_two").getContext("2d");
+    window.myLine = new Chart(graph_two, config_multiple_graph);
+};
 
 // var timeFormat = 'YYYY-MM-DDTHH:mm:ss.sssZ';
 var timeFormat = "ddd MMM dd HH:mm:ss Z yyyy"
@@ -126,8 +139,75 @@ var config = {
     data: {
         datasets: [
             {
-                label: "US Dates",
+                label: 'Date',
                 data: data,
+                fill: true,
+                borderColor: '#212529'
+            },
+        ]
+    },
+    options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: "Chart.js Time Scale"
+        },
+
+        layout: {
+            padding: {
+                left: 10,
+                right: 10,
+                bottom: 30
+            },
+            // margin: {
+            //     bottom: 60
+            // },
+        },
+        scales: {
+            xAxes: [{
+                type: "time",
+                time: {
+                    displayFormats: {
+                        'millisecond': 'h:mm:ss',
+                        'second': 'HH:mm:ss',
+                        'minute': 'HH:mm',
+                        'hour': 'D MMM - HH:mm',
+                        'day': 'D MMM',
+                        'week': 'D MMM',
+                        'month': 'D MMM',
+                        'quarter': 'D MMM',
+                        'year': 'DD MMM YYYY',
+                    },
+                    // format: timeFormat,
+                    tooltipFormat: 'll'
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                },
+                ticks: {
+                    // beginAtZero: true
+                    minRotation: 30
+                }
+            }],
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'value'
+                }
+            }]
+        }
+    }
+};
+
+
+var config_multiple_graph = {
+    type: 'line',
+    data: {
+        datasets: [
+            {
+                label: "US Dates",
+                data: data_two,
                 fill: false,
                 borderColor: '#212529'
             },
