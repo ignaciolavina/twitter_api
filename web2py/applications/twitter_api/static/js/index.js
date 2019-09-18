@@ -38,15 +38,22 @@ let get_tweet = function () {
         // app.label = response.tweet;
         // app.label = JSON.stringify(response.tweet, null, "\t");
         // console.log(response.tweet);
+
+        // Before change the data model
         app.tweets = response.tweets;
         app.retweets = response.retweets;
 
+        app.list_tweets_and_retweets = response.list_tweets_and_retweets;
+        // app.tweets = response.list_tweets_and_retweets[0][0];
+        // app.retweets = app.list_tweets_and_retweets[0][1];
         app.data_loaded = true;
-        // THis function is in index_agregated_graph.js file
-        get_data_for_graphs();
 
+        // This function is in index_agregated_graph.js file
+        get_data_for_graphs();
         get_top_users();
-        document.body.appendChild(document.createTextNode(JSON.stringify(response.tweets, null, 4)));
+
+        document.body.appendChild(document.createTextNode(JSON.stringify(response.list_tweets_and_retweets, null, 4)));
+        // document.body.appendChild(document.createTextNode(JSON.stringify(response.tweets, null, 4)));
         // document.body.appendChild(document.createTextNode(JSON.stringify(app.retweets, null, 4)));
 
     });
@@ -69,7 +76,8 @@ let app = new Vue({
         word_search: 'casa',
         tweets: [],
         retweets: [],
-        top_users: []
+        top_users: [],
+        list_tweets_and_retweets: []
     },
     methods: {
         action: action,

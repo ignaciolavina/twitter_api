@@ -68,7 +68,9 @@ def post_tweet():
 # Warning los retweets estan con trim_user=True, testear otras opciones
 # -TODO
     # - get the number of tweets from client
+    # - get the number of retweets
     # - try catchs
+    # - controle rates
 def get_tweet():
     print('\n\nget tweet method')    
     # get the query for search on twitter
@@ -85,33 +87,40 @@ def get_tweet():
 
     else:
         api = requires_twitter_auth()            
-        print ('\n\nQQQ\n')
+        print ('\n\nUUU\n')
 
         # Get tweets
         tweets = api.GetSearch(term=word, count=2)    
         tweets = [tweet.AsDict() for tweet in tweets]
 
-        
+        # list of couples [(tweet1, retweeets1), (tweet2, retweeets2), (...)]
+        list_tweets_and_retweets = []
 
         for tweet in tweets:
             tweet_json = json.dumps(tweet)
             tweet_objeto = Objeto_JSON(tweet_json)
-            print tweet_objeto.id
-            #get retweet
+            print (tweet_objeto.id)
+            
+            # Get retweets
+            number_of_rt = 100
+            retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=True)
+            retweets =  [retweet.AsDict() for retweet in retweets]
+            
+            list_tweets_and_retweets.append([tweet, retweets])
+            # print ('tweets:\n')
+            # print (tweet)
+            # print('retweets\n')
+            # print (retweets)
         
 
         # # Test
-        retweets = get_retweets_json()   
+        retweets_two = get_retweets_json()   
 
-        # Get retweets
-        # number_of_rt = 100
-        # retweets = api.GetRetweets('1166878379695431681', count=number_of_rt, trim_user=True)
-        # retweets =  [retweet.AsDict() for retweet in retweets]
         
     # return results as JSON
     # Order list by ascendent date
     # retweets = retweets[::-1]
-    return response.json(dict(tweets=tweets, retweets=retweets))
+    return response.json(dict(tweets=tweets, retweets=retweets_two, list_tweets_and_retweets = list_tweets_and_retweets))
 
 
 
