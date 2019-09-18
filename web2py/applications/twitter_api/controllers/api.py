@@ -74,7 +74,7 @@ def get_tweet():
     # get the query for search on twitter
     word = request.vars.word
 
-    testing = True
+    testing = False
     if testing:
         print ('Testing')
         # tweets = get_tweet_json()  
@@ -116,11 +116,14 @@ def get_tweet():
 
         # # Test
         retweets_two = get_retweets_json()
+        datos = json.dumps(list_tweets_and_retweets)
 
-        db.list_tweets_retweets.update_or_insert(
-            lista = json.dumps(list_tweets_and_retweets)
-            # lista = list_tweets_and_retweets
+        # Store data on the database
+        variable = db.tabla_tweets_retweets.update_or_insert(
+            stored_data = json.dumps(list_tweets_and_retweets)
         )
+
+        # print (variable)
         # pareja = db.pareja.update_or_insert(db.pareja.id == request.vars.id,
         # grupo = request.vars.grupo
         # )

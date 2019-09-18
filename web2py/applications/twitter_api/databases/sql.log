@@ -114,3 +114,44 @@ CREATE TABLE "list_tweets_retweets"(
     "lista" CHAR(512)
 );
 success!
+timestamp: 2019-09-18T23:32:21.076801
+CREATE TABLE "tabla_tweets_retweets"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "data_stored" CHAR(512)
+);
+success!
+timestamp: 2019-09-19T00:08:59.982240
+ALTER TABLE "tabla_tweets_retweets" ADD "stored_data" TEXT;
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
