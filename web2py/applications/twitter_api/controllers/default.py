@@ -19,6 +19,12 @@ def data_stored():
     # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
     return dict(grid = grid)
 
+def fake_news():
+    # form = SQLFORM(db.tabla_tweets_retweets)
+    grid = SQLFORM.grid(db.fake_news_table, deletable=True)
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
 
 # __________________________________________________
 

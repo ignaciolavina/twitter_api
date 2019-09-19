@@ -66,6 +66,28 @@ let get_tweet = function () {
 }
 
 
+let mark_as_fake = function () {
+    console.log('mark as fake new');
+    stored_data = app.list_tweets_and_retweets.join();
+    $.post(markFakeURL, {
+        search_line: app.word_search,
+        topic: '',
+        stored_data: stored_data
+
+        // word: app.word_search
+
+    }, function (response) {
+        console.log('server response')
+        if (response.result == true) {
+            console.log('data saved');
+            // window.alert('data saved');
+        } else {
+            window.alert(response.error);
+        }
+    });
+}
+
+
 let get_top_users = function () {
     for (let i = 0; i < 10; i++) {
         app.top_users.push(app.tweets[0].user);
@@ -84,7 +106,8 @@ let app = new Vue({
         retweets: [],
         top_users: [],
         list_tweets_and_retweets: [],
-        agregated_retweets: []
+        agregated_retweets: [],
+        mark_as_fake: mark_as_fake
     },
     methods: {
         action: action,
@@ -142,7 +165,6 @@ let create_agregated_graph = function () {
 var data_two = [];
 
 let create_multiple_graph = function () {
-
 
     var graph_two = document.getElementById("canvas_two").getContext("2d");
     window.myLine = new Chart(graph_two, config_multiple_graph);

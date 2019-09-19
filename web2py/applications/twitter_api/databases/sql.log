@@ -245,3 +245,81 @@ success!
 success!
 success!
 success!
+success!
+timestamp: 2019-09-19T10:23:57.737358
+ALTER TABLE "tabla_tweets_retweets" ADD "search_word" TEXT;
+success!
+success!
+timestamp: 2019-09-19T10:25:26.678879
+ALTER TABLE "tabla_tweets_retweets" ADD "search_line" TEXT;
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2019-09-19T11:36:26.900665
+CREATE TABLE "fake_news_table"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "search_line" CHAR(512),
+    "topic" CHAR(512)
+);
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2019-09-19T11:44:08.370839
+ALTER TABLE "fake_news_table" ADD "stored_data" TEXT;
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!

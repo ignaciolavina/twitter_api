@@ -8,9 +8,15 @@ def get_user_full_name():
 
 
 db.define_table('tabla_tweets_retweets',
+    Field('search_line', 'text'),
     Field('stored_data', 'text')
 )
 
+db.define_table('fake_news_table',
+    Field('search_line', 'text'),
+    Field('topic', 'string'),    
+    Field('stored_data', 'text')
+)
 
 db.define_table('jugador',
     Field('nombre', requires=IS_NOT_EMPTY()),

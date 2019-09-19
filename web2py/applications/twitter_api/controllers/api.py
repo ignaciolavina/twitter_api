@@ -145,11 +145,11 @@ def get_tweet():
 # Store data on the database
 def save_data():
     # Retrieve the data and prepare the variables
-    stored_data = 'request.vars.stored_data'
+    stored_data = request.vars.stored_data
     error = None
 
     if ((stored_data is None) or (stored_data == '')):
-        error = 'Data to store was empty'
+        error = 'Data to store was empty, nothing stored'
         return response.json(dict(result = False, error = error))
 
     # Storing data
@@ -165,6 +165,28 @@ def save_data():
     return response.json(dict(result = True, error = error))
 
 
+def mark_as_fake():
+    print('marked as fake')    
+    stored_data = request.vars.stored_data
+    topic = request.vars.topic
+    search_line = request.vars.search_line
+
+    if ((stored_data is None) or (stored_data == '')):
+        error = 'Data to store was empty, nothing stored'
+        return response.json(dict(result = False, error = error))
+
+    # Storing data
+    variable = db.fake_news_table.insert(
+        stored_data = stored_data,
+        search_line = search_line
+    )
+
+    # Return True if data is stored correctly
+    if (variable is None):
+        error = 'Error when storing data'
+        return response.json(dict(result = False, error = error))
+
+    return response.json(dict(result = True, error = None))
 
 #           TESTING PURPOSES
 # ____________________________________________________________________________________

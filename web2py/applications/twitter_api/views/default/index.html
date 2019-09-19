@@ -12,6 +12,7 @@
     let getTweetURL = "{{ = URL('api', 'get_tweet') }}";
     let testBtnURL = "{{ = URL('api', 'test_index_function') }}";
     let saveDataURL = "{{ = URL('api', 'save_data') }}";
+    let markFakeURL = "{{ = URL('api', 'mark_as_fake') }}";
 </script>
 
 
@@ -47,6 +48,9 @@
     <div class="container">
         <div class="d-flex justify-content-center">
             <button v-on:click="save_data" type="button" class="btn btn-primary">Save</button>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button v-on:click="mark_as_fake" type="button" class="btn btn-primary">Mark as Fake</button>
         </div>
     </div>
 
