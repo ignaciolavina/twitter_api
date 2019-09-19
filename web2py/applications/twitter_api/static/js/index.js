@@ -1,5 +1,11 @@
 let on_page_load = function () {
-    get_tweet();
+    // console.log(response);
+    // console.log(request.args(0));
+    console.log('************url******');
+    console.log(window.location.href);
+    console.log('************End******');
+    // console.log('route', this.$router.params);
+    // get_tweet();
 };
 
 let test_btn = function () {

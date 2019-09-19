@@ -1,5 +1,11 @@
 def index():
-    return dict()
+    print('index')
+    word = 'melon'
+    if (request.args):
+        print(request.args[0])
+        word = 'caballo'
+    
+    return dict(word = word)
 
 
 def graphic_test():
@@ -20,9 +26,37 @@ def data_stored():
     return dict(grid = grid)
 
 def fake_news():
+    links = []
+    links.append(
+        dict(
+            header='',
+            body= lambda row : 
+                A('', _href=URL('default', 'index', args=[row.id]), _class='fa fa-pencil-square')
+                
+                # A('', _href=URL('default', 'index', args='camino'), _class='fa fa-pencil-square')
+                #     if row.user_id == auth.user.id else
+                # A('', _class='hidden')
+        )
+    )
     # form = SQLFORM(db.tabla_tweets_retweets)
-    grid = SQLFORM.grid(db.fake_news_table, deletable=True)
-    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    # grid = SQLFORM.grid(db.fake_news_table, deletable=True)
+    query = db.fake_news_table
+    # fields=[db.Products.id, db.Products.product_name,
+    # db.Products.product_stock,
+    # db.Products.product_sold, db.Products.product_sales_price,
+    # db.Products.product_cost],      
+    grid = SQLFORM.grid(
+        query,
+        # fields = fields,
+        links=links,
+        searchable=True, 
+        details=False, 
+        create=False, 
+        deletable=True, 
+        editable=False,
+        csv=False,
+        user_signature=True,
+    )
     return dict(grid = grid)
 
 
