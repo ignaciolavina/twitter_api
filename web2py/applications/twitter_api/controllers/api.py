@@ -74,7 +74,7 @@ def get_tweet():
     # get the query for search on twitter
     word = request.vars.word
 
-    testing = False
+    testing = True
     if testing:
         print ('Testing')
         # tweets = get_tweet_json()  
@@ -141,6 +141,28 @@ def get_tweet():
     # retweets = retweets[::-1]
     return response.json(dict(tweets=tweets, retweets=retweets_two, list_tweets_and_retweets = list_tweets_and_retweets))
 
+
+# Store data on the database
+def save_data():
+    # Retrieve the data and prepare the variables
+    stored_data = 'request.vars.stored_data'
+    error = None
+
+    if ((stored_data is None) or (stored_data == '')):
+        error = 'Data to store was empty'
+        return response.json(dict(result = False, error = error))
+
+    # Storing data
+    variable = db.tabla_tweets_retweets.insert(
+        stored_data = stored_data
+    )
+
+    # Return True if data is stored correctly
+    if (variable is None):
+        error = 'Error when storing data'
+        return response.json(dict(result = False, error = error))
+
+    return response.json(dict(result = True, error = error))
 
 
 

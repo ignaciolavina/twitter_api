@@ -11,6 +11,7 @@
     let logginTwitterURL = "{{ = URL('api', 'log_on_twitter') }}";
     let getTweetURL = "{{ = URL('api', 'get_tweet') }}";
     let testBtnURL = "{{ = URL('api', 'test_index_function') }}";
+    let saveDataURL = "{{ = URL('api', 'save_data') }}";
 </script>
 
 
@@ -39,8 +40,15 @@
 
 
 
-<div id="index">
 
+
+<div id="index">
+    <!-- Save data button  -->
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <button v-on:click="save_data" type="button" class="btn btn-primary">Save</button>
+        </div>
+    </div>
 
 
     <div class="container">

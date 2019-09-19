@@ -19,6 +19,22 @@ let action = function () {
     });
 }
 
+let save_data = function () {
+    console.log('save data');
+    console.log(app.list_tweets_and_retweets);
+    variable = app.list_tweets_and_retweets.join();
+    $.post(saveDataURL, {
+        stored_data: variable
+    }, function (response) {
+        console.log('server response')
+        if (response.result == true) {
+            console.log('data saved');
+        } else {
+            window.alert(response.error);
+        }
+    });
+}
+
 let get_tweet = function () {
     console.log('get tweet function');
     // app.label = app.word_search;
@@ -73,7 +89,8 @@ let app = new Vue({
     methods: {
         action: action,
         get_tweet: get_tweet,
-        test_btn: test_btn
+        test_btn: test_btn,
+        save_data: save_data
     }
 });
 
