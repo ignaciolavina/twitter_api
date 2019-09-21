@@ -157,7 +157,7 @@
         <section id="top-users" class="tables">
             <div class="container">
                 <div class="d-flex flex-row no-gutters">
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <section class="">
                             <div class="">
                                 <div class="card">
@@ -200,7 +200,7 @@
                         </section>
                     </div>
 
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <section id="top-users">
                             <div class="">
                                 <div class="card">
@@ -221,14 +221,14 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <template v-for='top_user in top_users'>
+                                                    <template v-for='item in top_first_users'>
                                                         <tr>
                                                             <th scope="row">
                                                                 <img class="own-card-img"
-                                                                    v-bind:src="top_user.profile_image_url">
+                                                                    v-bind:src="item.user.profile_image_url">
                                                             </th>
-                                                            <td>${top_user.name}</td>
-                                                            <td>${top_user.followers_count}</td>
+                                                            <td>${item.user.name}</td>
+                                                            <td>${item.user.favourites_count}</td>
                                                             <td>...</td>
                                                         </tr>
                                                     </template>

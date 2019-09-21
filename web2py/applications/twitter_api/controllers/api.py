@@ -74,7 +74,7 @@ def get_tweet():
     # get the query for search on twitter
     word = request.vars.word
 
-    testing = True
+    testing = False
     if testing:
         print ('Testing')
         # tweets = get_tweet_json()  
@@ -94,7 +94,7 @@ def get_tweet():
         print ('\n\nUUU\n')
 
         # Get tweets
-        tweets = api.GetSearch(term=word, count=2)    
+        tweets = api.GetSearch(term=word, count=10)    
         tweets = [tweet.AsDict() for tweet in tweets]
 
         # list of couples [(tweet1, retweeets1), (tweet2, retweeets2), (...)]
@@ -107,7 +107,7 @@ def get_tweet():
             
             # Get retweets
             number_of_rt = 100
-            retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=True)
+            retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
             retweets =  [retweet.AsDict() for retweet in retweets]
             
             # Adding everything in a big list to return as request vars
