@@ -11,6 +11,8 @@
 // - Agregate names to the containers
 // - Check if app.list_tweets_and_retweets.length or app.list_tweets_and_retweets[0].length {I think its okay}
 // - Estoy haciendo sort en 3 sitios diferentes, mejor hacer sort en el server o en Cliente al principio
+// - Check in multiline_graph if retweets.length < 1 Then not add to dataset
+//      - Add a warning UI display warning why not all of them are showed
 
 // 21-sept-sabado -> 3 hours/ 2 effective hours
 
@@ -133,9 +135,9 @@ let get_first_users = function () {
 
     // Sort the list and slice it in the first "top_to_display" users    
     provisional_list.sort(function (a, b) { return (new Date(a.created_at) - new Date(b.created_at)).toString() });
-    // console.log(provisional_list);
+
+    // Slice the list for not display all the retweeters
     app.top_first_users = provisional_list.slice(0, top_to_display);
-    console.log(app.top_first_users);
 };
 
 let create_graphs = function () {
@@ -257,25 +259,29 @@ let prepare_multiline_graph = function () {
         let counter = 0;
         let multiline_data = []
         let retweets = app.list_tweets_and_retweets[i][1];
-        retweets = retweets.sort(function (a, b) { return (new Date(a.created_at) - new Date(b.created_at)).toString() });
-        retweets.forEach(function (retweet) {
-            // console.log(retweet.created_at + ", cnt:" + counter);
-            multiline_data.push(
+        if (retweets.length < 1) {
+            continue;
+        } else {
+            retweets = retweets.sort(function (a, b) { return (new Date(a.created_at) - new Date(b.created_at)).toString() });
+            retweets.forEach(function (retweet) {
+                // console.log(retweet.created_at + ", cnt:" + counter);
+                multiline_data.push(
 
-                {
-                    x: retweet.created_at, y: counter
-                }
-            );
-            counter++;
-        });
+                    {
+                        x: retweet.created_at, y: counter
+                    }
+                );
+                counter++;
+            });
 
-        // data = app.list_tweets_and_retweets[i][1];
-        dataset_multiline.push({
-            label: 'Retweets ' + i,
-            data: multiline_data,
-            fill: true,
-            borderColor: '#212529'
-        });
+            // data = app.list_tweets_and_retweets[i][1];
+            dataset_multiline.push({
+                label: 'Retweets ' + i,
+                data: multiline_data,
+                fill: true,
+                borderColor: '#212529'
+            });
+        }
     }
 }
 

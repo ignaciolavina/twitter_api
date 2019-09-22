@@ -74,7 +74,7 @@ def get_tweet():
     # get the query for search on twitter
     word = request.vars.word
 
-    testing = False
+    testing = True
     if testing:
         print ('Testing')
         # tweets = get_tweet_json()  
