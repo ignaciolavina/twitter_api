@@ -29,7 +29,7 @@
 <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
 
-{{=request.args}}
+
 <!-- {{=request.vars}}
 {{=request}} -->
 
@@ -43,19 +43,36 @@
 </style>
 
 
-
+<!-- Display request args -->
+<!-- <div class="row">
+    <h4>Request args</h4>
+    {{=request.args}}
+</div> -->
 
 
 <div id="index">
-    <!-- Save data button  -->
+
+    <!-- Action panel -->
+    <!-- Save button & mark as fake button -->
     <div class="container">
-        <div class="d-flex justify-content-center">
-            <button v-on:click="save_data" type="button" class="btn btn-primary">Save</button>
-        </div>
-        <div class="d-flex justify-content-center">
-            <button v-on:click="mark_as_fake" type="button" class="btn btn-primary">Mark as Fake</button>
+        <div class="own-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h4>Action panel</h4>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex flex-row d-flex justify-content-around">
+                            <button v-on:click="save_data" type="button" class="btn btn-dark">Save</button>
+                            <button v-on:click="mark_as_fake" type="button" class="btn btn-dark">Mark as
+                                Fake</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
 
 
     <div class="container">
