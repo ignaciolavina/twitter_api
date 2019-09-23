@@ -13,6 +13,7 @@
 // - Estoy haciendo sort en 3 sitios diferentes, mejor hacer sort en el server o en Cliente al principio
 // - Check in multiline_graph if retweets.length < 1 Then not add to dataset
 //      - Add a warning UI display warning why not all of them are showed
+// - En la leyenda del gráfico, en date poner la fecha de creación del primer tweet (Mes/año)?
 
 // 21-sept-sabado -> 3 hours/ 2 effective hours
 
@@ -70,7 +71,7 @@ let get_tweet = function () {
             app.tweets.push(app.list_tweets_and_retweets[i][0]);
             app.retweets.push(app.list_tweets_and_retweets[i][1]);
         }
-
+        app.twitter_api = twitter_api;
         app.data_loaded = true;
         // This function is in index_agregated_graph.js file
         create_tables();
@@ -354,6 +355,10 @@ var config_multiple_graph = {
 
 // ______________________ VUE COMPONENT ______________________
 
+let show_advanced_search = function () {
+    app.advanced_search = !app.advanced_search;
+}
+
 let app = new Vue({
     el: "#index",
     delimiters: ['${', '}'],
@@ -367,12 +372,15 @@ let app = new Vue({
         top_users: [],
         top_first_users: [],
         list_tweets_and_retweets: [],
-        agregated_retweets: []
+        agregated_retweets: [],
+        twitter_api: [],
+        advanced_search: true
     },
     methods: {
         get_tweet: get_tweet,
         save_data: save_data,
-        mark_as_fake: mark_as_fake
+        mark_as_fake: mark_as_fake,
+        show_advanced_search: show_advanced_search
     }
 });
 

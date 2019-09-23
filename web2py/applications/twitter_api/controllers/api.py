@@ -41,7 +41,18 @@ def requires_twitter_auth():
     access_secret = '1sYd9Mp8IS6TTXaD0nzgtXguFiABf4eSjvXVPf8va05uG'
 
     api = twitter.Api(consumer_key = consumer_key,consumer_secret = consumer_secret
-    , access_token_key = access_token, access_token_secret = access_secret)
+    , access_token_key = access_token, access_token_secret = access_secret, sleep_on_rate_limit=True)
+
+    from pprint import pprint
+    pprint(vars(api))
+
+    print ('\n\nPrinting rate limits objetc inside api')
+    rate_limit = api.rate_limit    
+    pprint(vars(rate_limit))
+
+    
+    print ('\n\nPrinting rate limits per se')
+    pprint(vars(twitter.ratelimit.RateLimit()))
 
     return api
 
@@ -76,6 +87,7 @@ def get_tweet():
 
     testing = True
     if testing:
+        # api = requires_twitter_auth()  
         print ('Testing')
         # tweets = get_tweet_json()  
         # retweets = get_retweets_json()
@@ -94,7 +106,7 @@ def get_tweet():
         print ('\n\nUUU\n')
 
         # Get tweets
-        tweets = api.GetSearch(term=word, count=10)    
+        tweets = api.GetSearch(term=word, count=5)    
         tweets = [tweet.AsDict() for tweet in tweets]
 
         # list of couples [(tweet1, retweeets1), (tweet2, retweeets2), (...)]
@@ -106,7 +118,7 @@ def get_tweet():
             print (tweet_objeto.id)
             
             # Get retweets
-            number_of_rt = 100
+            number_of_rt = 50
             retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
             retweets =  [retweet.AsDict() for retweet in retweets]
             
@@ -122,6 +134,8 @@ def get_tweet():
         variable = db.tabla_tweets_retweets.update_or_insert(
             stored_data = json.dumps(list_tweets_and_retweets)
         )
+
+        twitter_api = ''
 
         # print (variable)
         # pareja = db.pareja.update_or_insert(db.pareja.id == request.vars.id,
