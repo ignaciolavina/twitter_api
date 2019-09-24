@@ -30,6 +30,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
 
 
+<!-- Fix style on html! -->
+<!-- Search for all the style ctrl+f; and move them to css  -->
+
 <!-- {{=request.vars}}
 {{=request}} -->
 
@@ -83,19 +86,30 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <div class="d-flex justify-content-center">
                                 <button v-on:click="pressed_analyze_btn" type="button"
                                     class="btn btn-primary">Analyze</button>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="d-flex justify-content-center">
-                                <span>
-                                    Advanced Search
-                                    <a href="#" v-on:click="show_advanced_search">click</a>
-                                </span>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="d-flex justify-content-center" style="margin-right: 10px">
+                                    <span>
+                                        <a href="#" v-on:click="show_advanced_search">
+                                            Advanced Search</a>
+                                    </span>
+                                </div>
+                                <a href="#" v-if="test_mode" v-on:click="change_test_mode">
+                                    Desactivate Test mode
+                                </a>
+                                <a href="#" v-else="" v-on:click="change_test_mode">
+                                    Activate Test mode
+                                </a>
+
+
                             </div>
+
                         </div>
                     </div>
 
@@ -106,32 +120,39 @@
 
     <!-- Action panel -->
     <!-- Save button & mark as fake button -->
-    <div class="container">
-        <div class="own-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h4>Action panel</h4>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="d-flex flex-row d-flex justify-content-around">
-                            <button v-on:click="save_data" type="button" class="btn btn-dark">Save</button>
-                            <button v-on:click="mark_as_fake" type="button" class="btn btn-dark">Mark as
-                                Fake</button>
+    <section id="action_panel">
+        <div class="container">
+            <div class="own-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h4>Action panel</h4>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="d-flex flex-row d-flex justify-content-around">
+                                <button v-on:click="save_data" type="button" class="btn btn-dark">Save</button>
+                                <button v-on:click="mark_as_fake" type="button" class="btn btn-dark">Mark as
+                                    Fake</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
 
     <!-- Data Section  -->
-    <section class="data" v-if="data_loaded==true">
+    <section id="data_panel" class="data" v-if="data_loaded==true">
 
         <div class="container">
             <div class="own-card">
                 <div class="card">
+                    <div class="card-title">
+                        <h4 style="margin: 20px">
+                            Agregated graph
+                        </h4>
+                    </div>
                     <div class="agregated-chart">
                         <div class="chart-container">
                             <canvas id="canvas"></canvas>
@@ -142,9 +163,15 @@
 
         </div>
 
+
         <div class="container">
             <div class="own-card">
                 <div class="card">
+                    <div class="card-title">
+                        <h4 style="margin: 20px">
+                            Agregated graph
+                        </h4>
+                    </div>
                     <div class="agregated-chart">
                         <div class="chart-container">
                             <canvas id="canvas_two"></canvas>
@@ -165,9 +192,9 @@
                                 <div class="card">
                                     <div class="card-top-fake-users">
                                         <div class="card-title">
-                                            <h5>
+                                            <h4 style="margin: 20px">
                                                 Top fake spreaders
-                                            </h5>
+                                            </h4>
                                         </div>
                                         <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                             <table class="table table-hover">
@@ -208,9 +235,9 @@
                                 <div class="card">
                                     <div class="card-top-fake-users">
                                         <div class="card-title">
-                                            <h5>
+                                            <h4 style="margin: 20px">
                                                 Top first users
-                                            </h5>
+                                            </h4>
                                         </div>
                                         <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                             <table class="table table-hover">
@@ -250,7 +277,9 @@
         </section>
 
         <div class="container">
-            <h2> Tweets source</h2>
+            <h2 style="margin: 20px">
+                Tweets Source
+            </h2>
             <div v-for="tweet in tweets">
                 <div v-if=tweet>
                     <div class="own-card">

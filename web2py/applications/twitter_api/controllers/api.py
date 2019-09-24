@@ -84,8 +84,15 @@ def get_tweet():
     print('\n\nget tweet method')    
     # get the query for search on twitter
     word = request.vars.word
+    test_mode = request.vars.test_mode
 
+    # Since False != false (JS VS Python)
     testing = True
+    if test_mode == 'false':
+        testing = False
+        
+    print(testing)
+
     if testing:
         # api = requires_twitter_auth()  
         print ('Testing')

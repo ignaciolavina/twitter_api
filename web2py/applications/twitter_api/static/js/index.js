@@ -33,6 +33,10 @@ let on_page_load = function () {
     console.log(window.location.href);
     console.log('************End******');
 
+    // Hidding unnecesary elements
+    document.getElementById("data_panel").hidden = true;
+    document.getElementById("action_panel").hidden = true;
+
     // Only for testing purposes
     // get_tweet();
 };
@@ -55,9 +59,14 @@ let save_data = function () {
 
 
 let pressed_analyze_btn = function () {
+    if (app.test_mode && app.word_search == '') {
+        app.word_search = 'casa';
+    }
     if (app.word_search == '') {
         alert('Please, insert something on the search line');
     } else {
+        document.getElementById("action_panel").hidden = false;
+        document.getElementById("data_panel").hidden = false;
         get_tweet();
     }
 }
@@ -66,7 +75,8 @@ let pressed_analyze_btn = function () {
 let get_tweet = function () {
     console.log('get tweet function');
     $.post(getTweetURL, {
-        word: app.word_search
+        word: app.word_search,
+        test_mode: app.test_mode
     }, function (response) {
         console.log('server response')
         // console.log(response);
@@ -369,6 +379,10 @@ let show_advanced_search = function () {
     app.advanced_search = !app.advanced_search;
 }
 
+let change_test_mode = function () {
+    app.test_mode = !app.test_mode;
+}
+
 let app = new Vue({
     el: "#index",
     delimiters: ['${', '}'],
@@ -384,14 +398,16 @@ let app = new Vue({
         list_tweets_and_retweets: [],
         agregated_retweets: [],
         twitter_api: [],
-        advanced_search: false
+        advanced_search: false,
+        test_mode: false
     },
     methods: {
         get_tweet: get_tweet,
         save_data: save_data,
         mark_as_fake: mark_as_fake,
         show_advanced_search: show_advanced_search,
-        pressed_analyze_btn: pressed_analyze_btn
+        pressed_analyze_btn: pressed_analyze_btn,
+        change_test_mode: change_test_mode
     }
 });
 
