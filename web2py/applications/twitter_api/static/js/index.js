@@ -34,7 +34,7 @@ let on_page_load = function () {
     console.log('************End******');
 
     // Only for testing purposes
-    get_tweet();
+    // get_tweet();
 };
 
 
@@ -50,6 +50,16 @@ let save_data = function () {
             window.alert(response.error);
         }
     });
+}
+
+
+
+let pressed_analyze_btn = function () {
+    if (app.word_search == '') {
+        alert('Please, insert something on the search line');
+    } else {
+        get_tweet();
+    }
 }
 
 
@@ -71,7 +81,7 @@ let get_tweet = function () {
             app.tweets.push(app.list_tweets_and_retweets[i][0]);
             app.retweets.push(app.list_tweets_and_retweets[i][1]);
         }
-        app.twitter_api = twitter_api;
+
         app.data_loaded = true;
         // This function is in index_agregated_graph.js file
         create_tables();
@@ -366,7 +376,7 @@ let app = new Vue({
     data: {
         label: 'none',
         data_loaded: true,
-        word_search: 'casa',
+        word_search: '',
         tweets: [],
         retweets: [],
         top_users: [],
@@ -374,13 +384,14 @@ let app = new Vue({
         list_tweets_and_retweets: [],
         agregated_retweets: [],
         twitter_api: [],
-        advanced_search: true
+        advanced_search: false
     },
     methods: {
         get_tweet: get_tweet,
         save_data: save_data,
         mark_as_fake: mark_as_fake,
-        show_advanced_search: show_advanced_search
+        show_advanced_search: show_advanced_search,
+        pressed_analyze_btn: pressed_analyze_btn
     }
 });
 

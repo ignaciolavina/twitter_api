@@ -52,29 +52,7 @@
 
 <div id="index">
 
-    <!-- Action panel -->
-    <!-- Save button & mark as fake button -->
-    <div class="container">
-        <div class="own-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h4>Action panel</h4>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="d-flex flex-row d-flex justify-content-around">
-                            <button v-on:click="save_data" type="button" class="btn btn-dark">Save</button>
-                            <button v-on:click="mark_as_fake" type="button" class="btn btn-dark">Mark as
-                                Fake</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
+    <!-- Search & advanced search panel -->
     <div class="container">
         <div class="own-card">
             <div class="card">
@@ -102,13 +80,13 @@
                                 <option value="20">20</option>
                             </select>
                         </div>
-                        persdwfedaeda
                     </div>
 
                     <div class="row">
                         <div class="col-md-9">
                             <div class="d-flex justify-content-center">
-                                <button v-on:click="get_tweet" type="button" class="btn btn-primary">Analyze</button>
+                                <button v-on:click="pressed_analyze_btn" type="button"
+                                    class="btn btn-primary">Analyze</button>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -117,7 +95,6 @@
                                     Advanced Search
                                     <a href="#" v-on:click="show_advanced_search">click</a>
                                 </span>
-                                <!-- <button v-on:click="get_tweet" type="button" class="btn btn-primary">Analyze</button> -->
                             </div>
                         </div>
                     </div>
@@ -127,6 +104,29 @@
         </div>
     </div>
 
+    <!-- Action panel -->
+    <!-- Save button & mark as fake button -->
+    <div class="container">
+        <div class="own-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h4>Action panel</h4>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex flex-row d-flex justify-content-around">
+                            <button v-on:click="save_data" type="button" class="btn btn-dark">Save</button>
+                            <button v-on:click="mark_as_fake" type="button" class="btn btn-dark">Mark as
+                                Fake</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Data Section  -->
     <section class="data" v-if="data_loaded==true">
 
         <div class="container">
