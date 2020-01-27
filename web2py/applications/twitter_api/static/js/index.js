@@ -399,7 +399,7 @@ let app = new Vue({
         agregated_retweets: [],
         twitter_api: [],
         advanced_search: false,
-        test_mode: false
+        test_mode: true
     },
     methods: {
         get_tweet: get_tweet,

@@ -87,7 +87,7 @@ def get_tweet():
     test_mode = request.vars.test_mode
 
     # Since False != false (JS VS Python)
-    testing = True
+    testing = False
     if test_mode == 'false':
         testing = False
         
@@ -113,7 +113,7 @@ def get_tweet():
         print ('\n\nUUU\n')
 
         # Get tweets
-        tweets = api.GetSearch(term=word, count=5)    
+        tweets = api.GetSearch(term=word, count=1)    
         tweets = [tweet.AsDict() for tweet in tweets]
 
         # list of couples [(tweet1, retweeets1), (tweet2, retweeets2), (...)]
@@ -127,11 +127,21 @@ def get_tweet():
             # Get retweets
             number_of_rt = 50
             retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
+
+            for ret in retweets:
+                print("/nprinting retweets")
+                print(ret.user.id)
+                print(api.CreateFriendship(user_id=ret.user.id, screen_name=None, follow=True, retweets=True))
+
             retweets =  [retweet.AsDict() for retweet in retweets]
             
             # Adding everything in a big list to return as request vars
             list_tweets_and_retweets.append([tweet, retweets])
-        
+
+            # CreateFriendship(self, user_id=None, screen_name=None, follow=True, retweets=True, **kwargs)
+            # print(CreateFriendship(self, user_id=None, screen_name=None, follow=True, retweets=True, **kwargs))
+
+
 
         # # Test
         retweets_two = get_retweets_json()
