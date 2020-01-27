@@ -9,7 +9,8 @@ def get_user_full_name():
 
 
 db.define_table('data_table',
-    Field('stored_data', 'text')
+    Field('stored_data', 'text'),
+    Field('retweets', 'text')
 )
 
 db.define_table('tabla_tweets_retweets',

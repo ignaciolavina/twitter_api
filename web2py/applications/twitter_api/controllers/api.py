@@ -75,11 +75,48 @@ def post_tweet():
     print('end method')
 
 
+
+# tweets = api.GetSearch(term=word, count=1)    
+# tweets = [tweet.AsDict() for tweet in tweets]
+
+# for tweet in tweets:
+#     tweet_json = json.dumps(tweet)
+#     tweet_objeto = Objeto_JSON(tweet_json)
+#     print (tweet_objeto.id)
+
+
+def store_data():
+    api = requires_twitter_auth()            
+    print ('\n\nUUU\n')
+
+    # Get tweets
+    tweets = api.GetSearch(term="taza", count=1)
+    tweets = [tweet.AsDict() for tweet in tweets]
+
+    for tweet in tweets:
+        tweet_json = json.dumps(tweet)
+        tweet_objeto = Objeto_JSON(tweet_json)
+        print (tweet_objeto.id)
+
+        # get retweets
+        number_of_rt = 50
+        retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
+        retweets =  [retweet.AsDict() for retweet in retweets]    
+
+        variable = db.data_table.update_or_insert(
+            stored_data = json.dumps(tweet),
+            retweets = json.dumps(retweets)
+        )
+
+
 def get_data():
+
+    # Test function to store data
+    # store_data()
+    # return
 
     testing = True
     data = []
-
 
     if testing:
         data = db(db.data_table).select().first()
@@ -140,11 +177,6 @@ def get_tweet():
             # Get retweets
             number_of_rt = 50
             retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
-
-            for ret in retweets:
-                print("/nprinting retweets")
-                print(ret.user.id)
-                print(api.CreateFriendship(user_id=ret.user.id, screen_name=None, follow=True, retweets=True))
 
             retweets =  [retweet.AsDict() for retweet in retweets]
             

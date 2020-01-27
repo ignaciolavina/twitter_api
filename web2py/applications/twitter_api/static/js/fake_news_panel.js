@@ -16,6 +16,7 @@ let get_data = function () {
     $.getJSON(getDataFakeNewsPanel, function (response) {
         app.data = response.data;
         app.tweet = JSON.parse(response.data.stored_data);
+        app.retweets = JSON.parse(response.data.retweets);
     });
 }
 
