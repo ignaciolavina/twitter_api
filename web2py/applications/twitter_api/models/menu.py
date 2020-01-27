@@ -20,7 +20,9 @@ if not configuration.get('app.production'):
         (T('vue graph 2'), False, URL('default', 'graphic_test_two')),
         (T('Index Cuatro'), False, URL('default', 'index_cuatro')),        
         (T('data_stored'), False, URL('default', 'data_stored')),          
-        (T('Fake news table'), False, URL('default', 'fake_news')), 
+        (T('Fake news table'), False, URL('default', 'fake_news')),      
+        (T('Data stored'), False, URL('default', 'data_stored2')),       
+        (T('Fake News Panel'), False, URL('default', 'fake_news_panel')), 
         # (T('Partidos'), False, URL('default', 'partidos')),
         # (T('Resultados'), False, URL('default', 'resultados'))
     ]

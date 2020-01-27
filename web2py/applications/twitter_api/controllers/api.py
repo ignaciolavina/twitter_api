@@ -75,6 +75,19 @@ def post_tweet():
     print('end method')
 
 
+def get_data():
+
+    testing = True
+    data = []
+
+
+    if testing:
+        data = db(db.data_table).select().first()
+        # print(db(db.data_table.id == 0).select().first())
+    print("data access2")
+    print(data)
+    return response.json(dict(data = data))
+
 
 # Warning los retweets estan con trim_user=True, testear otras opciones
 # -TODO

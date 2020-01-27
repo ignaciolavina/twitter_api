@@ -7,6 +7,11 @@ def get_user_full_name():
     return None if auth.user is None else auth.user.first_name + ' ' + auth.user.last_name
 
 
+
+db.define_table('data_table',
+    Field('stored_data', 'text')
+)
+
 db.define_table('tabla_tweets_retweets',
     Field('search_line', 'text'),
     Field('stored_data', 'text')

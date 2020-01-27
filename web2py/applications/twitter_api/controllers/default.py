@@ -12,6 +12,17 @@ def graphic_test():
     return dict()
 
 
+def data_stored2():
+    # form = SQLFORM(db.tabla_tweets_retweets)
+    grid = SQLFORM.grid(db.data_table, deletable=True)
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
+def fake_news_panel():
+    return dict()
+
+
 
 def graphic_test_two():
     return dict()
