@@ -11,6 +11,19 @@ def index():
 def graphic_test():
     return dict()
 
+def tweet_users_table():
+    grid = SQLFORM.grid(db.tweet_users_table, deletable=True)
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
+# Creado el 18 de Febrero con la nueva database
+def panel():
+    grid = SQLFORM.grid(db.master_case_table, deletable=True)
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
 
 def data_stored2():
     # form = SQLFORM(db.tabla_tweets_retweets)
@@ -22,6 +35,8 @@ def data_stored2():
 def fake_news_panel():
     return dict()
 
+def buscador_by_user():
+    return dict()
 
 
 def graphic_test_two():

@@ -17,10 +17,28 @@ let get_data = function () {
         app.data = response.data;
         app.tweet = JSON.parse(response.data.stored_data);
         app.retweets = JSON.parse(response.data.retweets);
+        test_function();
     });
 }
 
+let test_function = function () {
+    for (let i = 0; i < 10; i++) {
+        app.top_users.push(app.tweet.user);
+    }
+    app.top_first_users = app.top_users;
 
+    for (let i = 0; i < 5; i++) {
+        app.other_tweets.push(app.tweet);
+    }
+}
+
+let start_tracking = function () {
+    console.log('start tracking');
+}
+
+let delete_tracking = function () {
+    console.log('delete tracking');
+}
 
 
 // ______________________ VUE COMPONENT ______________________
@@ -32,10 +50,17 @@ let app = new Vue({
     unsafeDelimiters: ['!{', '}'],
     data: {
         data_loaded: true,
-        tweet: []
+        tweet: [],
+        switch1: true,
+        switch2: true,
+        top_users: [],
+        top_first_users: [],
+        other_tweets: []
     },
     methods: {
         get_data: get_data,
+        start_tracking: start_tracking,
+        delete_tracking: delete_tracking
     }
 });
 

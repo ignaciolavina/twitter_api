@@ -2,6 +2,108 @@ import os, json
 import twitter
 import ast
 
+
+# Salva a tres gatitos de morir congelados con ayuda de una taza de café - https://t.co/n1Qz4J8g0Z https://t.co/57iA2iVRbR
+# https://es.rt.com/7b5b esta url y esta llevan a la misma pag https://t.co/n1Qz4J8g0Z
+
+# El parlamento europeo obliga a retirar reconocimiento
+
+
+# ____________________________ RETRIEVE DATA TO JSON _________________________________________
+
+# tweets_timeline = api.GetUserTimeline(screen_name =user_to_search)
+# data = [tweet.AsDict() for tweet in tweets_timeline]
+# return response.json(dict(data = data))
+# ____________________________________________________________________________________________
+
+
+
+def test_function_from_index():
+    print ("TESTING FUNCTION FROM INDEX")
+    add_to_database()
+    # url = "salta"
+
+    # api = requires_twitter_auth()     
+    # results = api.GetSearch(url, count = 5)
+    # print(results) 
+    # data = [tweet.AsDict() for tweet in results]
+    # return response.json(dict(data = data))
+
+
+
+
+
+# ____________________________ STORING ON THE DB _______________________________________
+
+# method created 18-Feb-2020
+def add_to_database():
+    api = requires_twitter_auth()     
+    print("add to db method") 
+    
+    #retrieveing the tweet in json string
+    tweet_json = request.vars.tweet
+    # Convert to python object
+    tweet_objeto = Objeto_JSON(tweet_json)
+    tweet = tweet_objeto #to work with
+
+    print (tweet.id)
+
+    title = tweet.full_text
+    urls = tweet.urls
+    
+    number_of_rt = 5
+
+    # Get the user to object to work with 
+    user_string = json.dumps(tweet.user)
+    user_objeto = Objeto_JSON(user_string)
+    user_name = user_objeto.name
+    print (user_name)
+
+    stored_user = db.tweet_users_table.update_or_insert(db.tweet_users_table.name == user_name,
+        name = user_name,
+        user_data = user_string
+    )
+
+    # other_tweets = api.GetSearch()
+    tweet_id = tweet.id
+
+    variable = db.master_case_table.update_or_insert(db.master_case_table.tweet_id == tweet_id,
+        title = tweet.full_text,
+        utls = tweet.urls,
+        tweet_id = tweet.id,
+        tweet_user = stored_user,
+        tweet = tweet_json
+        # retweets = json.dumps(retweets)
+    )
+# ____________________________________________________________________________________
+
+
+def store_data():
+    api = requires_twitter_auth()            
+    print ('\n\nUUU\n')
+
+    # Get tweets
+    tweets = api.GetSearch(term="taza", count=1)
+    tweets = [tweet.AsDict() for tweet in tweets]
+
+    for tweet in tweets:
+        tweet_json = json.dumps(tweet)
+        tweet_objeto = Objeto_JSON(tweet_json)
+        print (tweet_objeto.id)
+
+        # get retweets
+        number_of_rt = 50
+        retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
+        retweets =  [retweet.AsDict() for retweet in retweets]    
+
+        variable = db.data_table.update_or_insert(
+            stored_data = json.dumps(tweet),
+            retweets = json.dumps(retweets)
+        )
+
+
+
+
 # definimos una clase, que convierte JSON en objeto
 class Objeto_JSON(object):
     def __init__(self, data):
@@ -28,6 +130,38 @@ def get_logged_in_user():
 # @GET(url, q=word?&count=ffff) y ver el resultado
 # (bypass teweetpy api)
 
+# ___________________________ SEARCH BY USER ____________________________________
+
+def search_by_user():
+        
+    api = requires_twitter_auth()      
+    user_to_search =  request.vars.user_to_search
+    # user_to_search = ""
+
+    # Number of retweets to retrieve
+    count = 5
+
+    # Api method to search the user. It is valid either by user Id or by @Twitter_shortname
+    tweets_timeline = api.GetUserTimeline(screen_name = user_to_search)
+    data = [tweet.AsDict() for tweet in tweets_timeline]
+    
+
+    return response.json(dict(data = data))
+
+
+# def get_similar_tweets():
+#     url = "salva"
+
+#     api = requires_twitter_auth()     
+#     results = api.GetSearch(url, count = 5)
+#     print("UKI")
+#     print(results) 
+
+
+# _______________________________________________________________________________
+
+
+
 # CONTROL de RATES
 
 
@@ -41,18 +175,19 @@ def requires_twitter_auth():
     access_secret = '1sYd9Mp8IS6TTXaD0nzgtXguFiABf4eSjvXVPf8va05uG'
 
     api = twitter.Api(consumer_key = consumer_key,consumer_secret = consumer_secret
-    , access_token_key = access_token, access_token_secret = access_secret, sleep_on_rate_limit=True)
+    , access_token_key = access_token, access_token_secret = access_secret, sleep_on_rate_limit=True, tweet_mode ="extended")
 
-    from pprint import pprint
-    pprint(vars(api))
+    # from pprint import pprint
+    # pprint(vars(api))
 
-    print ('\n\nPrinting rate limits objetc inside api')
-    rate_limit = api.rate_limit    
-    pprint(vars(rate_limit))
+    # print ('\n\nPrinting rate limits objetc inside api')
+    # rate_limit = api.rate_limit    
+    # pprint(vars(rate_limit))
 
     
-    print ('\n\nPrinting rate limits per se')
-    pprint(vars(twitter.ratelimit.RateLimit()))
+    # print ('\n\nPrinting rate limits per se')
+    # pprint(vars(twitter.ratelimit.RateLimit()))
+    print("AUTH PROCESS ACTIVATED")
 
     return api
 
@@ -84,29 +219,6 @@ def post_tweet():
 #     tweet_objeto = Objeto_JSON(tweet_json)
 #     print (tweet_objeto.id)
 
-
-def store_data():
-    api = requires_twitter_auth()            
-    print ('\n\nUUU\n')
-
-    # Get tweets
-    tweets = api.GetSearch(term="taza", count=1)
-    tweets = [tweet.AsDict() for tweet in tweets]
-
-    for tweet in tweets:
-        tweet_json = json.dumps(tweet)
-        tweet_objeto = Objeto_JSON(tweet_json)
-        print (tweet_objeto.id)
-
-        # get retweets
-        number_of_rt = 50
-        retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
-        retweets =  [retweet.AsDict() for retweet in retweets]    
-
-        variable = db.data_table.update_or_insert(
-            stored_data = json.dumps(tweet),
-            retweets = json.dumps(retweets)
-        )
 
 
 def get_data():
@@ -163,7 +275,7 @@ def get_tweet():
         print ('\n\nUUU\n')
 
         # Get tweets
-        tweets = api.GetSearch(term=word, count=1)    
+        tweets = api.GetSearch(term=word, count=5)    
         tweets = [tweet.AsDict() for tweet in tweets]
 
         # list of couples [(tweet1, retweeets1), (tweet2, retweeets2), (...)]

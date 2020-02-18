@@ -79,10 +79,292 @@
             </div>
         </div>
     </section>
+
+
+    <section id="settings_panel" class="data" v-if="data_loaded==true">
+
+
+        <div class="container">
+            <h2 style="margin: 20px">
+            </h2>
+            <div class="own-card">
+                <div class="card">
+
+                    <div class="d-flex flex-row no-gutters">
+
+
+                        <!-- <div class="col-md-11"> -->
+                        <div class="card-body">
+                            <div class="card-title">
+                                <div class="d-flex flex-row">
+                                    <h2>
+                                        Settings Pannel
+                                    </h2>
+                                </div>
+                                <div class="d-flex flex-row" style="margin-top: 20px;">
+                                    <div class="col-md-8">
+                                        <h5>
+                                            Message text
+                                        </h5>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5">
+                                            Insert message here
+                                        </textarea>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5>
+                                            Options
+                                        </h5>
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <p>Alert Source</p>
+                                            <p>Yes</p>
+                                            <label class="switch">
+                                                <input type="checkbox" v-model="switch1">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <p>NO</p>
+                                        </div>
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <p>Alert Past users</p>
+                                            <p>Yes</p>
+                                            <label class="switch">
+                                                <input type="checkbox" v-model="switch2">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            <p>NO</p>
+                                        </div>
+                                        <div class="d-flex flex-row justify-content-around" style="margin-top: 20px;">
+                                            <div>
+                                                <button v-on:click="start_tracking" type="button"
+                                                    class="btn btn-primary">
+                                                    Track
+                                            </div>
+                                            <div>
+                                                <button v-on:click="delete_tracking" type="button"
+                                                    class="btn btn-primary">Delete
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="top-users" class="tables">
+        <div class="container">
+            <div class="d-flex flex-row no-gutters">
+                <div class="col-md-6">
+                    <section class="">
+                        <div class="">
+                            <div class="card">
+                                <div class="card-top-fake-users">
+                                    <div class="card-title">
+                                        <h4 style="margin: 20px">
+                                            Top fake spreaders
+                                        </h4>
+                                    </div>
+                                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                        <table class="table table-hover">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th scope="col">pic</th>
+                                                    <th scope="col">user name</th>
+                                                    <th scope="col">followers</th>
+                                                    <th scope="col">scope</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template v-for='top_user in top_users'>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <!-- <img v-if="item.user.profile_image_url" class="own-card-img"
+                                                                v-bind:src="top_user.profile_image_url"> -->
+                                                        </th>
+                                                        <td>${top_user.name}</td>
+                                                        <td>${top_user.followers_count}</td>
+                                                        <td>...</td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                </div>
+
+                <div class="col-md-6">
+                    <section id="top-users">
+                        <div class="">
+                            <div class="card">
+                                <div class="card-top-fake-users">
+                                    <div class="card-title">
+                                        <h4 style="margin: 20px">
+                                            Top first users
+                                        </h4>
+                                    </div>
+                                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                        <table class="table table-hover">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th scope="col">pic</th>
+                                                    <th scope="col">user name</th>
+                                                    <th scope="col">followers</th>
+                                                    <th scope="col">scope</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template v-for='item in top_first_users'>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <!-- <img v-if="item.user.profile_image_url" class="own-card-img"
+                                                                v-bind:src="item.profile_image_url"> -->
+                                                        </th>
+                                                        <td>${item.name}</td>
+                                                        <td>${item.favourites_count}</td>
+                                                        <td>...</td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- "OTHER TWEETS FOUNDED SEDCTION" -->
+
+    <section id="other_tweets" class="data" v-if="data_loaded==true">
+
+
+        <div class="container">
+            <h2 style="margin: 20px">
+                Other Tweet Sources
+            </h2>
+            <p>This section displays similar tweets founded (other initial sources of the same fake new)</p>
+            <div v-for="tweet in other_tweets">
+                <div v-if=tweet>
+                    <div class="own-card">
+                        <div class="card">
+
+                            <div class="d-flex flex-row no-gutters">
+                                <div class="d-flex justify-content-center align-items-start card-image">
+                                    <img class="own-card-img" v-bind:src="tweet.user.profile_image_url">
+                                </div>
+
+                                <div class="col-md-11">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <div class="d-flex flex-row">
+
+                                                <h5>
+                                                    ${tweet.user.name}
+                                                </h5>
+                                            </div>
+                                        </div>
+                                        <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
+                                        <p class="card-text">${tweet.text}</p>
+                                        <a v-if="tweet.urls.length>0" class="card-link"
+                                            v-bind:href="tweet.urls[0].expanded_url">link
+                                            to Tweet</a>
+                                        <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
+                                        <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
+                                        <p class="card-text"><small class="text-muted">Date:
+                                                ${tweet.user.created_at}</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
 </div>
+
 
 
 <!-- Own vue.js files -->
 <!-- <script src=" {{ = URL('static/js', 'index_graph.js') }}"></script> -->
 <script src=" {{ = URL('static/js', 'fake_news_panel.js') }}"></script>
 <!-- <script src=" {{ = URL('static/js', 'index_agregated_graph.js') }}"></script> -->
+
+
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 24px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked+.slider {
+        background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.slider:before {
+        -webkit-transform: translateX(36px);
+        -ms-transform: translateX(36px);
+        transform: translateX(36px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>

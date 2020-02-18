@@ -13,6 +13,7 @@
     let testBtnURL = "{{ = URL('api', 'test_index_function') }}";
     let saveDataURL = "{{ = URL('api', 'save_data') }}";
     let markFakeURL = "{{ = URL('api', 'mark_as_fake') }}";
+    let testFunctionURL = "{{ = URL('api', 'test_function_from_index') }}";
 </script>
 
 
@@ -47,13 +48,15 @@
 
 
 <!-- Display request args -->
-<!-- <div class="row">
+<div class="row">
     <h4>Request args</h4>
     {{=request.args}}
-</div> -->
+</div>
 
 
 <div id="index">
+
+    <button v-on:click="test_function" type="button" class="btn btn-primary">TEST BUTTON</button>
 
     <!-- Search & advanced search panel -->
     <div class="container">
@@ -171,7 +174,7 @@
                                             </div>
                                         </div>
                                         <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
-                                        <p class="card-text">${tweet.text}</p>
+                                        <p class="card-text">${tweet.full_text}</p>
                                         <a v-if="tweet.urls.length>0" class="card-link"
                                             v-bind:href="tweet.urls[0].expanded_url">link
                                             to Tweet</a>

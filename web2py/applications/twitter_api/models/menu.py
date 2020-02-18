@@ -16,9 +16,9 @@ response.menu = [
 if not configuration.get('app.production'):
     _app = request.application
     response.menu += [        
-        (T('graphs'), False, URL('default', 'graphic_test')),
-        (T('vue graph 2'), False, URL('default', 'graphic_test_two')),
-        (T('Index Cuatro'), False, URL('default', 'index_cuatro')),        
+        (T('buscador'), False, URL('default', 'buscador_by_user')),    
+        (T('panel'), False, URL('default', 'panel')),
+        (T('Users_table'), False, URL('default', 'tweet_users_table')),        
         (T('data_stored'), False, URL('default', 'data_stored')),          
         (T('Fake news table'), False, URL('default', 'fake_news')),      
         (T('Data stored'), False, URL('default', 'data_stored2')),       

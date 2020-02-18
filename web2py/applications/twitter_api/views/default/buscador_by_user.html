@@ -1,0 +1,137 @@
+{{extend 'layout.html'}}
+
+
+<link rel="stylesheet" type="text/css" href="{{ = URL('static/css', 'app.css') }}" />
+<link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
+<script src="{{ = URL('static','js/vue.min.js') }}"></script>
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+
+<!-- For the graphs -->
+<script src='//unpkg.com/vue-chartjs@2.6.0/dist/vue-chartjs.full.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js'></script>
+<script src='//unpkg.com/hchs-vue-charts@1.2.8'></script>
+
+<style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
+
+
+<!-- Api calls -->
+<script>
+    let searchFunctionURL = "{{ = URL('api', 'search_by_user') }}";
+    let trackTweetURL = "{{ = URL('api', 'add_to_database') }}";    
+</script>
+
+
+
+
+<div id="buscador">
+    <!-- <button v-on:click="test_function" type="button" class="btn btn-primary">TEST BUTTON</button> -->
+    <!-- Search & advanced search panel -->
+    <div class="container">
+        <div class="own-card">
+            <div class="card">
+
+                <div class="card-body">
+                    <div class="card-title">
+                        <h4>Search panel</h4>
+                    </div>
+
+                    <div class="form-group">
+                        <div>
+                            <input v-model="user_to_search" name="search" type="text" class="form-control"
+                                id="word_search" placeholder="user name">
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="d-flex justify-content-center">
+                                <button v-on:click="search_btn" type="button" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Data Section -->
+    <section id="data_panel" class="data" v-if="data_loaded==true">
+
+
+        <div class="container">
+            <h2 style="margin: 20px">
+                User timeline
+            </h2>
+            <div v-for="tweet in tweets">
+                <div v-if=tweet>
+                    <div class="own-card">
+                        <div class="card">
+
+                            <div class="d-flex flex-row no-gutters">
+                                <div class="d-flex justify-content-center align-items-start card-image">
+                                    <img class="own-card-img" v-bind:src="tweet.user.profile_image_url">
+                                </div>
+
+                                <div class="col-md-11">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <div class="d-flex flex-row">
+
+                                                <h5>
+                                                    ${tweet.user.name}
+                                                </h5>
+                                            </div>
+                                        </div>
+                                        <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
+                                        <p class="card-text">${tweet.full_text}</p>
+                                        <!-- meter un if else para que muestre text or extended? -->
+                                        <a v-if="tweet.urls.length>0" class="card-link"
+                                            v-bind:href="tweet.urls[0].expanded_url">link
+                                            to Tweet</a>
+                                        <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
+                                        <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
+                                        <p class="card-text"><small class="text-muted">Date:
+                                                ${tweet.created_at}</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="d-flex justify-content-center">
+                                        <button v-on:click="track_btn(tweet)" type="button"
+                                            class="btn btn-primary">Track</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+
+</div>
+
+
+
+<!-- Own vue.js files -->
+<!-- <script src=" {{ = URL('static/js', 'index_graph.js') }}"></script> -->
+<script src=" {{ = URL('static/js', 'buscador_by_user.js') }}"></script>
+<!-- <script src=" {{ = URL('static/js', 'index_agregated_graph.js') }}"></script> -->
