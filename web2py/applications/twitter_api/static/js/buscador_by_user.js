@@ -50,8 +50,10 @@ let search_btn = function () {
 let track_btn = function (tweet) {
     console.log('Track tweet');
     console.log(tweet.full_text);
+    id = tweet.id_str;
+    console.log("id es: " + id);
     $.post(trackTweetURL, {
-        id: tweet.id,
+        id: id,
         text: tweet.full_text,
         tweet: JSON.stringify(tweet)
     }, function (response) {
