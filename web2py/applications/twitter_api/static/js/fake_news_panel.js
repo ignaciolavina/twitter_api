@@ -5,19 +5,26 @@ let on_page_load = function () {
     console.log(window.location.href);
     console.log('************End******');
 
-    // Only for testing purposes
-    // get_tweet();
-    get_data()
+    // Retrieveing the params from the url
+    var url_string = window.location.href
+    var url = new URL(url_string);
+    app.url_id = url.searchParams.get("id");
+
+    // Api method for pull the data
+    get_data(app.url_id);
 };
 
 
-let get_data = function () {
+let get_data = function (id) {
     console.log('get data');
-    $.getJSON(getDataFakeNewsPanel, function (response) {
+    $.getJSON(getDataFakeNewsPanel, {
+        id: id
+    }, function (response) {
         app.data = response.data;
-        app.tweet = JSON.parse(response.data.stored_data);
+        app.tweet = JSON.parse(response.data.tweet);
         app.retweets = JSON.parse(response.data.retweets);
-        test_function();
+        app.data_loaded = true;
+        // test_function();
     });
 }
 
@@ -40,6 +47,10 @@ let delete_tracking = function () {
     console.log('delete tracking');
 }
 
+let check_request = function () {
+    console.log("aaaaa");
+}
+
 
 // ______________________ VUE COMPONENT ______________________
 
@@ -49,18 +60,20 @@ let app = new Vue({
     delimiters: ['${', '}'],
     unsafeDelimiters: ['!{', '}'],
     data: {
-        data_loaded: true,
+        data_loaded: false,
         tweet: [],
         switch1: true,
         switch2: true,
         top_users: [],
         top_first_users: [],
-        other_tweets: []
+        other_tweets: [],
+        url_id: ""
     },
     methods: {
         get_data: get_data,
         start_tracking: start_tracking,
-        delete_tracking: delete_tracking
+        delete_tracking: delete_tracking,
+        check_request: check_request
     }
 });
 

@@ -18,96 +18,11 @@ import ast
 
 
 
-# 1229346187301576705
-# 1229210391961591808
-# 1227621525613957120
-# 1229910684164476928
-# 1229910623561146370
-# 1229910599724748800
-# 1229910450990612483
-# 1229910412000399360
-# 1229910395185442816
-# 1229910355264102403
-# 1229910231989334018
-# 1229910128226267137
-# 1229910016569888770
-# 1229909914258223105
-# 1229909897405509632
-# 1229909869744021504
-# 1229909791688007680
-# 1229909789758705664
-# 1229909705033764864
-# 1229909698947768320
-
-
 def test_function_from_index():
     print ("TESTING FUNCTION FROM INDEX")
 
     api = requires_twitter_auth()   
     print ('\n\nUUU\n')
-
-    count = 20
-
-    # Api method to search the user. It is valid either by user Id or by @Twitter_shortname
-    tweets_timeline = api.GetUserTimeline(screen_name = "malditobulo", count = count)
-    data = [tweet.AsDict() for tweet in tweets_timeline]
-
-
-
-    for tweet in data:
-        tweet_json = json.dumps(tweet)
-        tweet_objeto = Objeto_JSON(tweet_json)
-        print (tweet_objeto.id)
-
-        # get retweets
-        number_of_rt = 5
-        status = api.GetStatus(tweet_objeto.id) 
-        print(status.full_text)
-        # retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
-        # retweets =  [retweet.AsDict() for retweet in retweets]    
-
-    #     # variable = db.data_table.update_or_insert(
-    #     #     stored_data = json.dumps(tweet),
-    #     #     retweets = json.dumps(retweets)
-    #     # )
-
-
-
-
-# DEPRECATED!!!!!
-def add_to_database2():
-    api = requires_twitter_auth()            
-    print ('\n\nUUU\n')
-
-    # Get tweets
-    tweets = api.GetSearch(term="taza", count=1)
-    tweets = [tweet.AsDict() for tweet in tweets]
-
-    for tweet in tweets:
-        tweet_json = json.dumps(tweet)
-        tweet_objeto = Objeto_JSON(tweet_json)
-        id = tweet_objeto.id
-        print (tweet_objeto.id)
-        # print(type(tweet_objeto.id))
-
-        # get retweets
-        number_of_rt = 5
-        x = 1229346187301576705
-        print("x")
-        print(type(x))
-        print(x)
-        print("id")
-        print(type(tweet_objeto.id))
-        print(tweet_objeto.id)
-        print("\n\n")
-        retweets = api.GetRetweets(id, count=number_of_rt, trim_user=False)
-        retweets =  [retweet.AsDict() for retweet in retweets]    
-
-        variable = db.data_table.update_or_insert(
-            stored_data = json.dumps(tweet),
-            retweets = json.dumps(retweets)
-        )
-
 
 
 
@@ -115,119 +30,83 @@ def add_to_database2():
 
 # method created 18-Feb-2020
 def add_to_database():
+    print("\n\nadd to DATABASE method") 
+
     api = requires_twitter_auth()     
-    print("add to db method") 
     
-    #retrieveing the tweet in json string
+    #retrieveing the tweet from the client POST in json string
     tweet_json = request.vars.tweet
     # Convert to python object
-    tweet_objeto = Objeto_JSON(tweet_json)
-    tweet = tweet_objeto #to work with
+    tweet = Objeto_JSON(tweet_json)
 
+    # tweet = tweet_objeto #to work with
+
+    # Get the data from the tweet
     title = tweet.full_text
     urls = tweet.urls
+    # The valid ID is the tweet.id_string in Integer format
+    id = int(tweet.id_str)
+    # status = api.GetStatus(int(tweet.id_str))
     
-    number_of_rt = 5
-    id = int(request.vars.id)
+    # Params for api methods
+    number_of_rt = 30
+
+    # Get all the retweets
+    retweets = api.GetRetweets(id, count=number_of_rt, trim_user=False)
+    retweets =  [retweet.AsDict() for retweet in retweets]  
+
+    print(retweets)
 
 
-    print(id)
-    print(type(id))
-    if (id == 1229855923767775232):
-        print("IGUALES!")
-    status = api.GetStatus(id)
+    # Get the user to object to work with 
+    user_string = json.dumps(tweet.user)
+    user_objeto = Objeto_JSON(user_string)
+    user_name = user_objeto.name
+    print (user_name)
 
-    # tweets = api.GetSearch(term=tweet.full_text, count=1)
-    # results = [tweet.AsDict() for tweet in tweets]
-    # tweet = tweets.get
+    stored_user = db.tweet_users_table.update_or_insert(db.tweet_users_table.name == user_name,
+        name = user_name,
+        user_data = user_string
+    )
 
-    # tweet_json = json.dumps(results)
-    # tweet_objeto = Objeto_JSON(tweet_json)
+    # other_tweets = api.GetSearch()
+    # Remember to use the id (tweet.id_str)
 
-    # print("/nRetrieved tweet/n")
-    # print(tweet_objeto)
-    # for tweet in tweets:
-    #     tweet_json = json.dumps(tweet)
-    #     tweet_objeto = Objeto_JSON(tweet_json)
-    #     id = tweet_objeto.id
-
-
-
-
-    # print (tweet.id)
-    # print(type(tweet.id))
-    # # tweet.id = 1229346187301576705
-    # tweet.id = 1229855923767775200
-
-    # ____ 
-    # x = 1229346187301576705
-    # print("x")
-    # print(type(x))
-    # print(".",x,".")
-    # print("id")
-    # print(type(id))
-    # print(".",id,".")
-    # print("\n\n")
-    # # id = x
-    
-    # api = requires_twitter_auth()
-    # retweets = api.GetRetweets(tweet.id, count=number_of_rt, trim_user=False)
-    # retweets =  [retweet.AsDict() for retweet in retweets]  
-
-
-    # _____
-
-
-
-    # # Get the user to object to work with 
-    # user_string = json.dumps(tweet.user)
-    # user_objeto = Objeto_JSON(user_string)
-    # user_name = user_objeto.name
-    # print (user_name)
-
-    # stored_user = db.tweet_users_table.update_or_insert(db.tweet_users_table.name == user_name,
-    #     name = user_name,
-    #     user_data = user_string
-    # )
-
-    # # other_tweets = api.GetSearch()
-    # tweet_id = tweet.id
-
-    # variable = db.master_case_table.update_or_insert(db.master_case_table.tweet_id == tweet_id,
-    #     title = tweet.full_text,
-    #     utls = tweet.urls,
-    #     tweet_id = tweet.id,
-    #     tweet_user = stored_user,
-    #     tweet = tweet_json
-    #     # retweets = json.dumps(retweets)
-    # )
+    variable = db.master_case_table.update_or_insert(db.master_case_table.tweet_id == id,
+        title = tweet.full_text,
+        utls = tweet.urls,
+        tweet_id = id,
+        tweet_user = stored_user,
+        tweet = tweet_json,
+        retweets = json.dumps(retweets)
+    )
 # ____________________________________________________________________________________
 
 
 
 # DEPRECATED!!!!!
-def store_data():
-    api = requires_twitter_auth()            
-    print ('\n\nUUU\n')
+# def store_data():
+#     api = requires_twitter_auth()            
+#     print ('\n\nUUU\n')
 
-    # Get tweets
-    tweets = api.GetSearch(term="taza", count=1)
-    tweets = [tweet.AsDict() for tweet in tweets]
+#     # Get tweets
+#     tweets = api.GetSearch(term="taza", count=1)
+#     tweets = [tweet.AsDict() for tweet in tweets]
 
-    for tweet in tweets:
-        tweet_json = json.dumps(tweet)
-        tweet_objeto = Objeto_JSON(tweet_json)
-        print (tweet_objeto.id)
+#     for tweet in tweets:
+#         tweet_json = json.dumps(tweet)
+#         tweet_objeto = Objeto_JSON(tweet_json)
+#         print (tweet_objeto.id)
 
-        # get retweets
-        number_of_rt = 50
-        retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
-        retweets =  [retweet.AsDict() for retweet in retweets]    
+#         # get retweets
+#         number_of_rt = 50
+#         retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
+#         retweets =  [retweet.AsDict() for retweet in retweets]    
 
-        variable = db.data_table.update_or_insert(
-            stored_data = json.dumps(tweet),
-            retweets = json.dumps(retweets)
-        )
+#         variable = db.data_table.update_or_insert(
+#             stored_data = json.dumps(tweet),
+#             retweets = json.dumps(retweets)
+#         )
 
 
 
@@ -295,7 +174,8 @@ def search_by_user():
 
 
 def requires_twitter_auth():
-    print('decorator activated [Auth]')
+    # print('decorator activated [Auth]')
+    print("AUTH PROCESS ACTIVATED")
     
     consumer_key = 'dXj0dViDbK6VobzAD5P97iCrO'
     consumer_secret = 'DwRbuw8rRgMBh6Gg9qORDXpDJ4RLp0wGq4RWj5SVw4KJT6nDZq'
@@ -315,7 +195,6 @@ def requires_twitter_auth():
     
     # print ('\n\nPrinting rate limits per se')
     # pprint(vars(twitter.ratelimit.RateLimit()))
-    print("AUTH PROCESS ACTIVATED")
 
     return api
 
@@ -339,31 +218,33 @@ def post_tweet():
 
 
 
-# tweets = api.GetSearch(term=word, count=1)    
-# tweets = [tweet.AsDict() for tweet in tweets]
-
-# for tweet in tweets:
-#     tweet_json = json.dumps(tweet)
-#     tweet_objeto = Objeto_JSON(tweet_json)
-#     print (tweet_objeto.id)
-
-
-
 def get_data():
+    # Get the Params
+    row_number = int(request.vars.id) #(-1) Because rownumber starts on 1 (rownumber = params on default.py)
+    print("row number")
+    print(row_number)
 
-    # Test function to store data
-    # store_data()
-    # return
-
-    testing = True
-    data = []
-
-    if testing:
-        data = db(db.data_table).select().first()
-        # print(db(db.data_table.id == 0).select().first())
-    print("data access2")
+    # Get data from database
+    data = db(db.master_case_table.id == row_number).select().first()
     print(data)
+
     return response.json(dict(data = data))
+
+
+
+# ____________________ TEST NO BORRAR _______________________ 
+# Para usar esta funcion desting, COMENTAR get_data y descomentar esta
+# def get_data():
+#     testing = True
+#     data = []
+
+#     if testing:
+#         data = db(db.data_table).select().first()
+#         # print(db(db.data_table.id == 0).select().first())
+#     print("data access2")
+#     print(data)
+#     return response.json(dict(data = data))
+# __________________________________________________________________
 
 
 # Warning los retweets estan con trim_user=True, testear otras opciones

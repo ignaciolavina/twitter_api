@@ -15,7 +15,7 @@ db.define_table('tweet_users_table',
 # Set defaults!
 
 db.define_table('master_case_table',
-    Field('titulo', 'text'),
+    Field('title', 'text'),
     Field('tweet_id', 'text', requires=IS_NOT_EMPTY()),
     Field('tweet', 'text', requires=IS_NOT_EMPTY()), # JSON Object
     Field('urls', 'text', default = ''), # List!

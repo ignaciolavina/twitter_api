@@ -17,6 +17,8 @@
 </script>
 
 
+
+
 <!-- For the graphs -->
 <script src='//unpkg.com/vue-chartjs@2.6.0/dist/vue-chartjs.full.min.js'></script>
 <script src='//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js'></script>
@@ -31,9 +33,14 @@
 <!-- Fix style on html! -->
 <!-- Search for all the style ctrl+f; and move them to css  -->
 
+<!-- {{=request.args}}
+{{=request.vars}} -->
 
+<!-- <input v-model="num=8" name="search" type="text" class="form-control" id="word_search" placeholder="user name">
+ -->
 
 <div id="index">
+    <div v-on:load="get_data()"></div>
 
     <section id="data_panel" class="data" v-if="data_loaded==true">
 
@@ -62,7 +69,7 @@
                                         </div>
                                     </div>
                                     <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
-                                    <p class="card-text">${tweet.text}</p>
+                                    <p class="card-text">${tweet.full_text}</p>
                                     <a v-if="tweet.urls.length>0" class="card-link"
                                         v-bind:href="tweet.urls[0].expanded_url">link
                                         to Tweet</a>
@@ -307,6 +314,7 @@
 <!-- <script src=" {{ = URL('static/js', 'index_agregated_graph.js') }}"></script> -->
 
 
+
 <style>
     .switch {
         position: relative;
@@ -346,25 +354,25 @@
     }
 
     input:checked+.slider {
-        background-color: #2196F3;
+        background - color: #2196F3;
     }
 
     input:focus+.slider {
-        box-shadow: 0 0 1px #2196F3;
+        box - shadow: 0 0 1px #2196F3;
     }
 
     input:checked+.slider:before {
-        -webkit-transform: translateX(36px);
+        -webkit - transform: translateX(36px);
         -ms-transform: translateX(36px);
         transform: translateX(36px);
     }
 
     /* Rounded sliders */
     .slider.round {
-        border-radius: 34px;
+        border - radius: 34px;
     }
 
     .slider.round:before {
-        border-radius: 50%;
+        border - radius: 50%;
     }
 </style>
