@@ -11,6 +11,63 @@ def index():
 def graphic_test():
     return dict()
 
+def tweet_users_table():
+    grid = SQLFORM.grid(db.tweet_users_table, deletable=True)
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
+# Creado el 18 de Febrero con la nueva database
+def panel():
+    links = []
+    links.append(
+        dict(
+            header='',
+            body= lambda row : 
+                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id])), _class='fa fa-pencil-square')
+                
+                # A('', _href=URL('default', 'index', args='camino'), _class='fa fa-pencil-square')
+                #     if row.user_id == auth.user.id else
+                # A('', _class='hidden')
+        )
+    )
+    # grid = SQLFORM.grid(db.master_case_table, deletable=True)
+    query = db.master_case_table
+
+    fields=[db.master_case_table.id,
+    db.master_case_table.title,
+    db.master_case_table.tweet]     
+
+    grid = SQLFORM.grid(
+    query,
+    fields = fields,
+    links=links,
+    searchable=True, 
+    details=True, 
+    create=False, 
+    deletable=True, 
+    editable=False,
+    csv=False,
+    user_signature=True,
+    )
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
+
+def data_stored2():
+    # form = SQLFORM(db.tabla_tweets_retweets)
+    grid = SQLFORM.grid(db.data_table, deletable=True)
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
+def fake_news_panel():
+    return dict()
+    
+
+def buscador_by_user():
+    return dict()
 
 
 def graphic_test_two():

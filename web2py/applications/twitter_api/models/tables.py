@@ -7,6 +7,41 @@ def get_user_full_name():
     return None if auth.user is None else auth.user.first_name + ' ' + auth.user.last_name
 
 
+db.define_table('tweet_users_table',
+    Field('name', 'text'),
+    Field('user_data', 'text')
+)
+
+# Set defaults!
+
+db.define_table('master_case_table',
+    Field('title', 'text'),
+    Field('tweet_id', 'text', requires=IS_NOT_EMPTY()),
+    Field('tweet', 'text', requires=IS_NOT_EMPTY()), # JSON Object
+    Field('urls', 'text', default = ''), # List!
+    Field('tracking', 'boolean', default=False),
+    Field('last_update', 'date'),
+    Field('tweet_user', 'reference tweet_users_table'), #User is a reserved word
+    Field('retweets', 'text')
+    # Field('other_tweets', 'reference tweets')
+)
+# Respuestas, stats, etc
+
+db.define_table('tweet_table',
+    Field('tweet_id', 'text'),
+    Field('tweet', 'text'),
+    Field('retweets', 'text')
+)
+
+
+
+
+
+db.define_table('data_table',
+    Field('stored_data', 'text'),
+    Field('retweets', 'text')
+)
+
 db.define_table('tabla_tweets_retweets',
     Field('search_line', 'text'),
     Field('stored_data', 'text')

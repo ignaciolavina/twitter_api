@@ -161,6 +161,15 @@ let get_first_users = function () {
     app.top_first_users = provisional_list.slice(0, top_to_display);
 };
 
+
+let test_function = function () {
+    $.getJSON(testFunctionURL, function (response) {
+        console.log("Testing function");
+    });
+};
+
+
+
 let create_graphs = function () {
     create_agregated_graph();
     create_multiple_graph();
@@ -407,7 +416,8 @@ let app = new Vue({
         mark_as_fake: mark_as_fake,
         show_advanced_search: show_advanced_search,
         pressed_analyze_btn: pressed_analyze_btn,
-        change_test_mode: change_test_mode
+        change_test_mode: change_test_mode,
+        test_function: test_function
     }
 });
 
