@@ -11,7 +11,11 @@ let on_page_load = function () {
     app.url_id = url.searchParams.get("id");
 
     // Api method for pull the data
-    get_data(app.url_id);
+    if (app.url_id == null) {
+        alert("redirect");
+    } else {
+        get_data(app.url_id);
+    }
 };
 
 
