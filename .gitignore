@@ -9,11 +9,10 @@
 /web2py/applications/*/databases/*
 /web2py/applications/*/errors/
 /web2py/applications/*/sessions/
+/web2py/applications/*/private/
 /web2py/applications/*/uploads/*
 /web2py/applications/*/.hg/
-/web2py/httpserver.log
 !/web2py/applications/
-/web2py/httpserver.log
  
 ### To include only specific apps, uncomment:
 #/applications/*
