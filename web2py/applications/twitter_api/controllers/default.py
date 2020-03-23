@@ -46,7 +46,7 @@ def panel():
     details=True, 
     create=False, 
     deletable=True, 
-    editable=False,
+    editable=True,
     csv=False,
     user_signature=True,
     )
@@ -115,6 +115,52 @@ def fake_news():
         user_signature=True,
     )
     return dict(grid = grid)
+
+
+
+
+# Creado el 18 de Febrero con la nueva database
+def tracking_table():
+ 
+    query = db.tracking_table
+
+    grid = SQLFORM.grid(
+    query,
+    searchable=True, 
+    details=True, 
+    create=False, 
+    deletable=True, 
+    editable=False,
+    csv=False,
+    user_signature=True,
+    )
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
+
+
+
+# Creado el 18 de Febrero con la nueva database
+def alerted_tweets():
+ 
+    query = db.alerted_tweets
+
+    grid = SQLFORM.grid(
+    query,
+    searchable=True, 
+    details=True, 
+    create=False, 
+    deletable=True, 
+    editable=False,
+    csv=False,
+    user_signature=True,
+    )
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
+
 
 
 # __________________________________________________

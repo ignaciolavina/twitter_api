@@ -57,11 +57,27 @@ let save_data = function () {
 }
 
 
+let track_btn = function (tweet) {
+    console.log('Track tweet');
+    console.log(tweet.full_text);
+    id = tweet.id_str;
+    console.log("id es: " + id);
+    $.post(trackTweetURL, {
+        id: id,
+        text: tweet.full_text,
+        tweet: JSON.stringify(tweet)
+    }, function (response) {
+        // Response
+    });
+}
+
+
+
 
 let pressed_analyze_btn = function () {
-    if (app.test_mode && app.word_search == '') {
-        app.word_search = 'casa';
-    }
+    // if (app.test_mode && app.word_search == '') {
+    //     app.word_search = 'casa';
+    // }
     if (app.word_search == '') {
         alert('Please, insert something on the search line');
     } else {
@@ -131,7 +147,8 @@ let create_tables = function () {
 let top_to_display = 10;
 
 let get_top_users = function () {
-    for (let i = 0; i < 10; i++) {
+    let i = 0;
+    while ((i < 10) && (i > app.tweets.length)) {
         app.top_users.push(app.tweets[0].user);
     }
 };
@@ -417,7 +434,8 @@ let app = new Vue({
         show_advanced_search: show_advanced_search,
         pressed_analyze_btn: pressed_analyze_btn,
         change_test_mode: change_test_mode,
-        test_function: test_function
+        test_function: test_function,
+        track_btn: track_btn
     }
 });
 

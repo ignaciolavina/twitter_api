@@ -7,10 +7,11 @@
 
 <!-- Api calls -->
 <script>
-    let getDataFakeNewsPanel = "{{ = URL('api', 'get_data') }}";
-        // let postTweetURL = "{{ = URL('api', 'post_tweet') }}";
-        // let logginTwitterURL = "{{ = URL('api', 'log_on_twitter') }}";
-        // let getTweetURL = "{{ = URL('api', 'get_tweet') }}";
+    let getDataFakeNewsPanelURL = "{{ = URL('api', 'get_data') }}";
+    let getSimilarTweetsURL = "{{ = URL('api', 'get_similar_tweets') }}";
+    let getRetweetsURL = "{{ = URL('api', 'get_retweets') }}";
+    let startTrackingURL = "{{ = URL('api', 'start_tracking') }}";
+    let updateRetweetsURL = "{{ = URL('api', 'update_retweets') }}";
         // let testBtnURL = "{{ = URL('api', 'test_index_function') }}";
         // let saveDataURL = "{{ = URL('api', 'save_data') }}";
         // let markFakeURL = "{{ = URL('api', 'mark_as_fake') }}";
@@ -113,8 +114,9 @@
                                         <h5>
                                             Message text
                                         </h5>
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5">
-                                            Insert message here
+                                        <textarea v-model="text_response" class="form-control"
+                                            id="exampleFormControlTextarea1" placeholder="Insert message here" rows="5">
+
                                         </textarea>
                                     </div>
                                     <div class="col-md-4">
@@ -160,7 +162,18 @@
         </div>
     </section>
 
-    <section id="top-users" class="tables">
+    <div>
+        <button v-on:click="get_similar_tweets" type="button" class="btn btn-primary">
+            Analyze
+        </button>
+        <button v-on:click="update_retweets" type="button" class="btn btn-primary">
+            Update
+        </button>
+    </div>
+
+
+
+    <section id="top-users" class="tables" v-if="retweets_retrieved==true">
         <div class="container">
             <div class="d-flex flex-row no-gutters">
                 <div class="col-md-6">
@@ -254,17 +267,17 @@
     </section>
 
 
-    <!-- "OTHER TWEETS FOUNDED SEDCTION" -->
+    <!-- "RETWEETS SEDCTION" -->
 
-    <section id="other_tweets" class="data" v-if="data_loaded==true">
+    <section id="retweets" class="data" v-if="retweets_retrieved==true">
 
 
         <div class="container">
             <h2 style="margin: 20px">
-                Other Tweet Sources
+                Retweets
             </h2>
             <p>This section displays similar tweets founded (other initial sources of the same fake new)</p>
-            <div v-for="tweet in other_tweets">
+            <div v-for="tweet in retweets">
                 <div v-if=tweet>
                     <div class="own-card">
                         <div class="card">
@@ -285,7 +298,60 @@
                                             </div>
                                         </div>
                                         <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
-                                        <p class="card-text">${tweet.text}</p>
+                                        <p class="card-text">${tweet.full_text}</p>
+                                        <a v-if="tweet.urls.length>0" class="card-link"
+                                            v-bind:href="tweet.urls[0].expanded_url">link
+                                            to Tweet</a>
+                                        <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
+                                        <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
+                                        <p class="card-text"><small class="text-muted">Date:
+                                                ${tweet.user.created_at}</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- "OTHER TWEETS FOUNDED SEDCTION" -->
+
+    <section id="other_tweets" class="data" v-if="retweets_retrieved==true">
+
+
+        <div class="container">
+            <h2 style="margin: 20px">
+                Other Tweet Sources
+            </h2>
+            <p>This section displays similar tweets founded (other initial sources of the same fake new)</p>
+            <div v-for="tweet in similar_tweets">
+                <div v-if=tweet>
+                    <div class="own-card">
+                        <div class="card">
+
+                            <div class="d-flex flex-row no-gutters">
+                                <div class="d-flex justify-content-center align-items-start card-image">
+                                    <img class="own-card-img" v-bind:src="tweet.user.profile_image_url">
+                                </div>
+
+                                <div class="col-md-11">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <div class="d-flex flex-row">
+
+                                                <h5>
+                                                    ${tweet.user.name}
+                                                </h5>
+                                            </div>
+                                        </div>
+                                        <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
+                                        <p class="card-text">${tweet.full_text}</p>
                                         <a v-if="tweet.urls.length>0" class="card-link"
                                             v-bind:href="tweet.urls[0].expanded_url">link
                                             to Tweet</a>
@@ -354,25 +420,25 @@
     }
 
     input:checked+.slider {
-        background - color: #2196F3;
+        background-color: #2196F3;
     }
 
     input:focus+.slider {
-        box - shadow: 0 0 1px #2196F3;
+        box-shadow: 0 0 1px #2196F3;
     }
 
     input:checked+.slider:before {
-        -webkit - transform: translateX(36px);
+        -webkit-transform: translateX(36px);
         -ms-transform: translateX(36px);
         transform: translateX(36px);
     }
 
     /* Rounded sliders */
     .slider.round {
-        border - radius: 34px;
+        border-radius: 34px;
     }
 
     .slider.round:before {
-        border - radius: 50%;
+        border-radius: 50%;
     }
 </style>

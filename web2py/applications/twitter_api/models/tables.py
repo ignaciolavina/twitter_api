@@ -33,6 +33,18 @@ db.define_table('tweet_table',
     Field('retweets', 'text')
 )
 
+db.define_table('tracking_table',
+    Field('tweet_id', 'text', requires=IS_NOT_EMPTY()),
+    Field('response', 'text'),
+    Field('last_update', 'date'),
+    # Field('alerted_people', 'reference tweet_users_table')
+    # Field('other_tweets', 'reference tweets')
+)
+# Respuestas, stats, etc
+
+db.define_table('alerted_tweets',
+    Field('tweet_id', 'text', requires=IS_NOT_EMPTY())
+)
 
 
 
