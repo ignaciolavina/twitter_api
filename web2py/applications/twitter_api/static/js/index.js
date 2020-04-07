@@ -42,27 +42,27 @@ let on_page_load = function () {
 };
 
 
-let save_data = function () {
-    console.log('save data function');
-    $.post(saveDataURL, {
-        stored_data: app.list_tweets_and_retweets.join()
-    }, function (response) {
-        // console.log('server response');
-        if (response.result == true) {
-            console.log('data saved corretly');
-        } else {
-            window.alert(response.error);
-        }
-    });
-}
+// let save_data = function () {
+//     console.log('save data function');
+//     $.post(saveDataURL, {
+//         stored_data: app.list_tweets_and_retweets.join()
+//     }, function (response) {
+//         // console.log('server response');
+//         if (response.result == true) {
+//             console.log('data saved corretly');
+//         } else {
+//             window.alert(response.error);
+//         }
+//     });
+// }
 
 
-let track_btn = function (tweet) {
-    console.log('Track tweet');
+let guardar_tweet = function (tweet) {
+    console.log('Guardar tweet');
     console.log(tweet.full_text);
     id = tweet.id_str;
     console.log("id es: " + id);
-    $.post(trackTweetURL, {
+    $.post(GuardarTweetURL, {
         id: id,
         text: tweet.full_text,
         tweet: JSON.stringify(tweet)
@@ -429,13 +429,13 @@ let app = new Vue({
     },
     methods: {
         get_tweet: get_tweet,
-        save_data: save_data,
+        // save_data: save_data,
         mark_as_fake: mark_as_fake,
         show_advanced_search: show_advanced_search,
         pressed_analyze_btn: pressed_analyze_btn,
         change_test_mode: change_test_mode,
         test_function: test_function,
-        track_btn: track_btn
+        guardar_tweet: guardar_tweet
     }
 });
 

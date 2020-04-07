@@ -70,6 +70,68 @@ def test_index_function():
 
 
 
+# ____________________________ METODO DE AUTENTICACION _______________________________________
+
+def requires_twitter_auth():
+    # print('decorator activated [Auth]')
+    print("AUTH PROCESS ACTIVATED")
+    
+    consumer_key = 'dXj0dViDbK6VobzAD5P97iCrO'
+    consumer_secret = 'DwRbuw8rRgMBh6Gg9qORDXpDJ4RLp0wGq4RWj5SVw4KJT6nDZq'
+    access_token = '1164482563198636033-PMEvNG9Pz1aGL3SLKw1QX9TwjStdD5'
+    access_secret = '1sYd9Mp8IS6TTXaD0nzgtXguFiABf4eSjvXVPf8va05uG'
+
+    api = twitter.Api(consumer_key = consumer_key,consumer_secret = consumer_secret
+    , access_token_key = access_token, access_token_secret = access_secret, sleep_on_rate_limit=True, tweet_mode ="extended")
+
+    # from pprint import pprint
+    # pprint(vars(api))
+
+    # print ('\n\nPrinting rate limits objetc inside api')
+    # rate_limit = api.rate_limit    
+    # pprint(vars(rate_limit))
+
+    
+    # print ('\n\nPrinting rate limits per se')
+    # pprint(vars(twitter.ratelimit.RateLimit()))
+
+    return api
+
+# definimos una clase, que convierte JSON en objeto
+class Objeto_JSON(object):
+    def __init__(self, data):
+	    self.__dict__ = json.loads(data)
+
+
+# Usar un embellecedor
+# @requires_twitter_logged
+def get_logged_in_user():
+    user = None if auth.user is None else auth.user
+    return response.json(dict(user=user))
+
+
+
+# ___________________________ SEARCH BY USER ____________________________________
+
+def search_by_user():
+        
+    api = requires_twitter_auth()      
+    user_to_search =  request.vars.user_to_search
+    # user_to_search = ""
+
+    # Number of retweets to retrieve
+    count = 10
+
+    # Api method to search the user. It is valid either by user Id or by @Twitter_shortname
+    tweets_timeline = api.GetUserTimeline(screen_name = user_to_search, count = count)
+    data = [tweet.AsDict() for tweet in tweets_timeline]
+    
+
+    return response.json(dict(data = data))
+
+
+
+
 # ____________________________ STORING ON THE DB _______________________________________
 
 # Method created 18-Feb-2020, updated 07-Abr-2020
@@ -196,14 +258,15 @@ def update_retweets(id_tweet):
       
     return list_final_retweets
 
-# ____________________________________________________________________________________
 
 
 
+
+# ____________________________ FAKE NEWS PANEL _______________________________________
 
 def start_tracking():
     print("\n\nSTART TRACKING API")
-    print(request.vars)
+    # print(request.vars)
     tweet_id = request.vars.tweet_id
     text_response =  request.vars.text_response
     username =  request.vars.username
@@ -215,52 +278,34 @@ def start_tracking():
         # date = today()
     )
 
+    # Recuperamos el tweet y los retweets
     tweet = db(db.master_case_table.tweet_id == tweet_id).select().first()
-    print("DABTATAS")
-    # print(tweet)
-
-
     retweets = tweet.retweets
     # try catch
 
 
     # METODO ALERTA SOURCE ___________
     # https://python-twitter.readthedocs.io/en/latest/_modules/twitter/api.html#Api.PostDirectMessage
-    print("\nalerting the Source")
+    print("\nAlerting the Source")
     alert_source(tweet_id, text_response)
     alerted_tweet = db.alerted_tweets.update_or_insert(db.alerted_tweets.tweet_id == tweet_id,
         tweet_id = tweet_id
     )
     
-
-    # # METODO ALERTA RETWEETS________
-    # print("alerting retweets")
-    # print("method that alerts the retweets")
-
-    # # print(type(retweets))
-    # retweets = json.loads(retweets)
-
-    # for ret in retweets:
-    #     id_retweet = ret["id_str"]
-        
-    #     # METODO ALERTA
-
-    #     print("alertando a: " + id_retweet)
-    #     alerted_tweet = db.alerted_tweets.update_or_insert(db.alerted_tweets.tweet_id == id_retweet,
-    #         tweet_id = id_retweet
-    #     )
+    # # METODO ALERTA RETWEETS
+    # **** POR IMPLEMENTAR ***
 
 
-
+# DESACTIVADO TEMPORALMENTE
 def alert_source(tweet_id, text_response):    
+
     print("Alerting source " + tweet_id)
     # Funsiona perfe
 
     tweet_id = str(tweet_id)
     print("responding " + text_response)
     api = requires_twitter_auth()      
-    result = api.PostUpdate(status = text_response, in_reply_to_status_id = tweet_id)
-
+    # result = api.PostUpdate(status = text_response, in_reply_to_status_id = tweet_id)
 
 
 # Actualizado a dia 7-abril
@@ -280,26 +325,26 @@ def refresh_retweets():
     return response.json(dict(retweets_list=list_final_retweets))
 
 
+# Updated 07-Abr-2020, 
+# Working, pero podria mejorarse (ver warning)
+def get_data():
+    """
+        Este metodo (EXTERNAL CLIENTE) llamado desde fake news panel, devuelve toda la data relativa a un id de tabla master 
+        Warning! (No es el id del tweet!)
+    """
+    # Get the Params
+    # Row number coincide siempre con el ID de la tabla master, de la que se quiere recuperar el tweet concreto
+    row_number = int(request.vars.id)
+
+    # Get data from database
+    data = db(db.master_case_table.id == row_number).select().first()
+    # print(data)
+
+    return response.json(dict(data = data))
 
 
-# definimos una clase, que convierte JSON en objeto
-class Objeto_JSON(object):
-    def __init__(self, data):
-	    self.__dict__ = json.loads(data)
 
 
-def get_logged_in_user():
-    user = None if auth.user is None else auth.user
-    return response.json(dict(user=user))
-
-    # GET RETWEETS 
-    # https://api.twitter.com/1.1/statuses/home_timeline.json
-    # getRetweet
-
-    # Usar un embellecedor
-    # @requires_twitter_logged
-
-# OWN DECORATOR
 
 
 # TO-DO
@@ -308,24 +353,9 @@ def get_logged_in_user():
 # @GET(url, q=word?&count=ffff) y ver el resultado
 # (bypass teweetpy api)
 
-# ___________________________ SEARCH BY USER ____________________________________
 
-def search_by_user():
-        
-    api = requires_twitter_auth()      
-    user_to_search =  request.vars.user_to_search
-    # user_to_search = ""
 
-    # Number of retweets to retrieve
-    count = 10
-
-    # Api method to search the user. It is valid either by user Id or by @Twitter_shortname
-    tweets_timeline = api.GetUserTimeline(screen_name = user_to_search, count = count)
-    data = [tweet.AsDict() for tweet in tweets_timeline]
-    
-
-    return response.json(dict(data = data))
-
+# ____________________________ sIMILAR TWEETS _______________________________________
 
 # ____________________________________________________________________________________
 def extract_title(url):
@@ -393,51 +423,11 @@ def get_similar_tweets():
 
     return response.json(dict(similar_tweets = similar_tweets))
 
-# _______________________________________________________________________________
 
 
 
-# CONTROL de RATES
 
 
-
-def requires_twitter_auth():
-    # print('decorator activated [Auth]')
-    print("AUTH PROCESS ACTIVATED")
-    
-    consumer_key = 'dXj0dViDbK6VobzAD5P97iCrO'
-    consumer_secret = 'DwRbuw8rRgMBh6Gg9qORDXpDJ4RLp0wGq4RWj5SVw4KJT6nDZq'
-    access_token = '1164482563198636033-PMEvNG9Pz1aGL3SLKw1QX9TwjStdD5'
-    access_secret = '1sYd9Mp8IS6TTXaD0nzgtXguFiABf4eSjvXVPf8va05uG'
-
-    api = twitter.Api(consumer_key = consumer_key,consumer_secret = consumer_secret
-    , access_token_key = access_token, access_token_secret = access_secret, sleep_on_rate_limit=True, tweet_mode ="extended")
-
-    # from pprint import pprint
-    # pprint(vars(api))
-
-    # print ('\n\nPrinting rate limits objetc inside api')
-    # rate_limit = api.rate_limit    
-    # pprint(vars(rate_limit))
-
-    
-    # print ('\n\nPrinting rate limits per se')
-    # pprint(vars(twitter.ratelimit.RateLimit()))
-
-    return api
-
-
-def get_data():
-    # Get the Params
-    row_number = int(request.vars.id)
-    print("row number")
-    print(row_number)
-
-    # Get data from database
-    data = db(db.master_case_table.id == row_number).select().first()
-    print(data)
-
-    return response.json(dict(data = data))
 
 
 
@@ -465,22 +455,10 @@ def post_tweet():
 
 
 
-
-# ____________________ TEST NO BORRAR _______________________ 
-# Para usar esta funcion desting, COMENTAR get_data y descomentar esta
-# def get_data():
-#     testing = True
-#     data = []
-
-#     if testing:
-#         data = db(db.data_table).select().first()
-#         # print(db(db.data_table.id == 0).select().first())
-#     print("data access2")
-#     print(data)
-#     return response.json(dict(data = data))
-# __________________________________________________________________
+# ____________________________ BUSCADOR INDEX _______________________________________
 
 
+# Metodo de ayuda a clean_word
 def clean_word(word):
     text = word
     text = text.split()
@@ -488,6 +466,7 @@ def clean_word(word):
     for t in text:
         texto_completo = texto_completo + " +" + t
     return texto_completo
+
 
 # Warning los retweets estan con trim_user=True, testear otras opciones
 # -TODO
@@ -559,9 +538,9 @@ def get_tweet():
         datos = json.dumps(list_tweets_and_retweets)
 
         # Store data on the database
-        variable = db.tabla_tweets_retweets.update_or_insert(
-            stored_data = json.dumps(list_tweets_and_retweets)
-        )
+        # variable = db.tabla_tweets_retweets.update_or_insert(
+        #     stored_data = json.dumps(list_tweets_and_retweets)
+        # )
 
         twitter_api = ''
 
@@ -584,51 +563,36 @@ def get_tweet():
     return response.json(dict(tweets=tweets, retweets=retweets_two, list_tweets_and_retweets = list_tweets_and_retweets))
 
 
-# Store data on the database
-def save_data():
-    # Retrieve the data and prepare the variables
-    stored_data = request.vars.stored_data
-    error = None
 
-    if ((stored_data is None) or (stored_data == '')):
-        error = 'Data to store was empty, nothing stored'
-        return response.json(dict(result = False, error = error))
+# DEPRECATED
+# def mark_as_fake():
+#     print('marked as fake')    
+#     stored_data = request.vars.stored_data
+#     topic = request.vars.topic
+#     search_line = request.vars.search_line
 
-    # Storing data
-    variable = db.tabla_tweets_retweets.insert(
-        stored_data = stored_data
-    )
+#     if ((stored_data is None) or (stored_data == '')):
+#         error = 'Data to store was empty, nothing stored'
+#         return response.json(dict(result = False, error = error))
 
-    # Return True if data is stored correctly
-    if (variable is None):
-        error = 'Error when storing data'
-        return response.json(dict(result = False, error = error))
+#     # Storing data
+#     variable = db.fake_news_table.insert(
+#         stored_data = stored_data,
+#         search_line = search_line
+#     )
 
-    return response.json(dict(result = True, error = error))
+#     # Return True if data is stored correctly
+#     if (variable is None):
+#         error = 'Error when storing data'
+#         return response.json(dict(result = False, error = error))
+
+#     return response.json(dict(result = True, error = None))
 
 
-def mark_as_fake():
-    print('marked as fake')    
-    stored_data = request.vars.stored_data
-    topic = request.vars.topic
-    search_line = request.vars.search_line
 
-    if ((stored_data is None) or (stored_data == '')):
-        error = 'Data to store was empty, nothing stored'
-        return response.json(dict(result = False, error = error))
 
-    # Storing data
-    variable = db.fake_news_table.insert(
-        stored_data = stored_data,
-        search_line = search_line
-    )
 
-    # Return True if data is stored correctly
-    if (variable is None):
-        error = 'Error when storing data'
-        return response.json(dict(result = False, error = error))
 
-    return response.json(dict(result = True, error = None))
 
 #           TESTING PURPOSES
 # ____________________________________________________________________________________
@@ -775,6 +739,28 @@ def get_list_tweets_and_retweets_json():
 
 
 
+
+# # Store data on the database
+# def save_data():
+#     # Retrieve the data and prepare the variables
+#     stored_data = request.vars.stored_data
+#     error = None
+
+#     if ((stored_data is None) or (stored_data == '')):
+#         error = 'Data to store was empty, nothing stored'
+#         return response.json(dict(result = False, error = error))
+
+#     # Storing data
+#     variable = db.tabla_tweets_retweets.insert(
+#         stored_data = stored_data
+#     )
+
+#     # Return True if data is stored correctly
+#     if (variable is None):
+#         error = 'Error when storing data'
+#         return response.json(dict(result = False, error = error))
+
+#     return response.json(dict(result = True, error = error))
 
 
 

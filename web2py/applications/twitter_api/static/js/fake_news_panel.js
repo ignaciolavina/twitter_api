@@ -55,6 +55,7 @@ let get_similar_tweets = function () {
 }
 
 let get_retweets = function () {
+    // DEPRECATED??? yA HAY UNO PARA UPDATE RETWEETS, E INICIALMENTE YA NOS TRAEMOS LOS RETWEETS
     // onrejectionhandled, REVISAR XQ EL GETTWEET YA TRAE LOS RETWEEETS!
     console.log("get retweets");
     // $.getJSON(getRetweetsURL, {
@@ -119,6 +120,11 @@ let prepare_message = function () {
     app.text_response = "@" + user + text + " " + fuente_o_link;
 }
 
+let analize_btn = function () {
+    console.log("analize_btn");
+    console.log(app.pressed_analyze);
+    app.pressed_analyze = !app.pressed_analyze;
+}
 
 
 let app = new Vue({
@@ -138,7 +144,8 @@ let app = new Vue({
         retweets: [],
         retweets_retrieved: false,
         fuente_o_link: "",
-        text_response: ""
+        text_response: "",
+        pressed_analyze: false
     },
     methods: {
         get_data: get_data,
@@ -148,7 +155,8 @@ let app = new Vue({
         get_similar_tweets: get_similar_tweets,
         get_retweets: get_retweets,
         update_retweets: update_retweets,
-        prepare_message: prepare_message
+        prepare_message: prepare_message,
+        analize_btn: analize_btn
     }
 });
 

@@ -11,10 +11,10 @@
     let logginTwitterURL = "{{ = URL('api', 'log_on_twitter') }}";
     let getTweetURL = "{{ = URL('api', 'get_tweet') }}";
     let testBtnURL = "{{ = URL('api', 'test_index_function') }}";
-    let saveDataURL = "{{ = URL('api', 'save_data') }}";
+    // let saveDataURL = "{{ = URL('api', 'save_data') }}"; Deprecated
     let markFakeURL = "{{ = URL('api', 'mark_as_fake') }}";
     let testFunctionURL = "{{ = URL('api', 'test_function_from_index') }}";
-    let trackTweetURL = "{{ = URL('api', 'add_to_database') }}";    
+    let GuardarTweetURL = "{{ = URL('api', 'add_to_database') }}";    
 </script>
 
 
@@ -134,7 +134,8 @@
                         </div>
                         <div class="col-md-5">
                             <div class="d-flex flex-row d-flex justify-content-around">
-                                <button v-on:click="save_data" type="button" class="btn btn-dark">Save</button>
+                                <button v-on:click="" type="button" class="btn btn-dark">Save
+                                    [Deprecated]</button>
                                 <button v-on:click="mark_as_fake" type="button" class="btn btn-dark">Mark as
                                     Fake</button>
                             </div>
@@ -189,8 +190,8 @@
                                     <div class="row">
                                         <div class="col-md-8">
                                             <div class="d-flex justify-content-center">
-                                                <button v-on:click="track_btn(tweet)" type="button"
-                                                    class="btn btn-primary">Track</button>
+                                                <button v-on:click="guardar_tweet(tweet)" type="button"
+                                                    class="btn btn-primary">Guardar</button>
                                             </div>
                                         </div>
                                     </div>

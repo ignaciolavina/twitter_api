@@ -11,7 +11,7 @@
     let getSimilarTweetsURL = "{{ = URL('api', 'get_similar_tweets') }}";
     let getRetweetsURL = "{{ = URL('api', 'get_retweets') }}";
     let startTrackingURL = "{{ = URL('api', 'start_tracking') }}";
-    let updateRetweetsURL = "{{ = URL('api', 'update_retweets') }}";
+    let updateRetweetsURL = "{{ = URL('api', 'refresh_retweets') }}";
         // let testBtnURL = "{{ = URL('api', 'test_index_function') }}";
         // let saveDataURL = "{{ = URL('api', 'save_data') }}";
         // let markFakeURL = "{{ = URL('api', 'mark_as_fake') }}";
@@ -147,6 +147,9 @@
                                                     class="btn btn-primary">
                                                     Track
                                             </div>
+                                            <button v-on:click="update_retweets" type="button" class="btn btn-primary">
+                                                Update Retweets
+                                            </button>
                                             <div>
                                                 <button v-on:click="delete_tracking" type="button"
                                                     class="btn btn-primary">Delete
@@ -163,17 +166,15 @@
     </section>
 
     <div>
-        <button v-on:click="get_similar_tweets" type="button" class="btn btn-primary">
+        <button v-on:click="analize_btn" type="button" class="btn btn-primary">
             Analyze
         </button>
-        <button v-on:click="update_retweets" type="button" class="btn btn-primary">
-            Update
-        </button>
+
     </div>
 
 
 
-    <section id="top-users" class="tables" v-if="retweets_retrieved==true">
+    <section id="top-users" class="tables" v-if="pressed_analyze==true">
         <div class="container">
             <div class="d-flex flex-row no-gutters">
                 <div class="col-md-6">
