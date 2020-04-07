@@ -3,6 +3,19 @@ import twitter
 import ast
 
 
+
+# GET limits
+# https://tutorialedge.net/python/creating-twitter-bot-python/
+# def get_limit():
+#     try:
+#         result = t.application.rate_limit_status()
+#         print result
+#     except TwitterHTTPError as e:
+#         print "Error: ", e
+#         return None
+
+
+
 # MANEJO JSON OBJECT DICT LIST 
 # tweet = db(db.master_case_table.tweet_id == tweet_id).select().first()
 # retweets = tweet.retweets
@@ -48,18 +61,152 @@ def test_function_from_index():
     # api = requires_twitter_auth()   
     print ('\n\nUUU\n')
 
-    tweet_id = "1232408046564970496"
-    variable = db.master_case_table(db.master_case_table.tweet_id == tweet_id).select().first()
+    # tweet_id = "1232408046564970496"
+    # variable = db.master_case_table(db.master_case_table.tweet_id == tweet_id).select().first()
     # ret = variable.retweets
 
+def test_index_function():
+    print('test function')
 
 
-# Falta implementar el metodo que avisa, que manda el tweet
+
+# ____________________________ STORING ON THE DB _______________________________________
+
+# Method created 18-Feb-2020, updated 07-Abr-2020
+# Working properly
+def add_to_database():
+    """
+        Metodo (EXTERNO CLIENTE) llamado desde buscador_by_user recibe un tweet y lo almacena la base de datos
+        Input: tweet (a traves del Get Request)
+        Output: -
+    """
+    print("\n\nAPI method - Add to DATABASE") 
+
+    # authentication
+    api = requires_twitter_auth()     
+    
+    #retrieveing the tweet from the client POST in json string
+    tweet_json = request.vars.tweet
+    # Convert to python object
+    tweet = Objeto_JSON(tweet_json)
+
+    # tweet = tweet_objeto #to work with
+
+    # Get the data from the tweet
+    title = tweet.full_text
+    urls = tweet.urls
+    # The valid ID is the tweet.id_string in Integer format
+    # id = int(tweet.id_str)
+    id = tweet.id_str
+
+    # status = api.GetStatus(int(tweet.id_str))
+    
+    # Get all the retweets
+    retweets = update_retweets(id)
+
+    # Get the user to object to work with 
+    user_string = json.dumps(tweet.user)
+    user_objeto = Objeto_JSON(user_string)
+    user_name = user_objeto.screen_name
+    print (user_name)
+
+
+    # Guardamos el usuario en una tabla de usuarios (on tracking)
+    print("PRE")
+    stored_user = db.tweet_users_table.update_or_insert(db.tweet_users_table.name == user_name,
+        name = user_name,
+        user_data = user_string
+    )
+
+    print("stored user")
+    print(stored_user)
+
+    variable = db.master_case_table.update_or_insert(db.master_case_table.tweet_id == id,
+        title = tweet.full_text,
+        user_name = user_name,
+        utls = tweet.urls,
+        tweet_id = id,
+        tweet_user = stored_user,
+        tweet = tweet_json,
+        retweets = json.dumps(retweets)
+    )
+    # Redirect not working
+    # return redirect(URL('default', 'fake_news_panel'))
+
+
+# Actualizado a dia 7-abril
+# Working properly
+def update_retweets(id_tweet):
+    """
+        Este metodo (INTERNO API) recibe un id de un tweet, y realiza:
+            1. Recupera los retweets almacenados relacionados con ese id
+            2. Usa la API de Twitter para traer nuevos retweets
+            3. Actualiza la base de datos con todos los retweets (nuevos y antiguos)
+        Input: Id de un tweet
+        Output: lista con todos los retweets de ese tweet
+    """
+
+    number_of_retweets_to_retrieve = 10
+
+    # Recuperamos los retweets de la base de datos
+    data = db(db.master_case_table.tweet_id == id_tweet).select().first()
+    if (data):
+        retweets = data.retweets # str
+        list_stored_retweets = json.loads(retweets) # list
+        # print(retweets_list[0]['user']['screen_name'])
+    else:
+        # Si no hay data, creamos una lista vacia
+        list_stored_retweets = []
+
+
+    # Recuperamos nuevos retweets
+    try:
+        api = requires_twitter_auth()     
+        retweets_retrieved = api.GetRetweets(id_tweet, count=number_of_retweets_to_retrieve)
+        new_retweets_list =  [retweet.AsDict() for retweet in retweets_retrieved]  
+    except:
+        print("ERROR - API Get Retweets no realizado con exito")
+        return
+    
+    
+    # Comparamos los antiguos y los nuevos, y creamos una lista sin duplicados
+ 
+    # Lista de ids para comparar
+    list_id_stored_retweets = []
+    list_final_retweets = []
+
+    # Guardamos en la lista final todos los que ya existian  
+    for i in list_stored_retweets:
+        list_final_retweets.append(i)
+        list_id_stored_retweets.append(i['id_str'])
+        # print(i['id_str'])
+
+    # De los nuevos retweets, guardamos solo los que no existian
+    for i in new_retweets_list:
+        if (i['id_str'] not in list_id_stored_retweets):
+            list_final_retweets.append(i)
+            # print(i['id_str'])
+        # else:
+        #     print("Repetido: " + i['id_str'])
+
+    # Hacemos UPDATE de la base de datos
+    db.master_case_table.update_or_insert(db.master_case_table.tweet_id == id_tweet,
+        retweets = json.dumps(list_final_retweets)
+    )
+      
+    return list_final_retweets
+
+# ____________________________________________________________________________________
+
+
+
+
 def start_tracking():
     print("\n\nSTART TRACKING API")
     print(request.vars)
     tweet_id = request.vars.tweet_id
     text_response =  request.vars.text_response
+    username =  request.vars.username
 
     # Recuperamos el tweet de la base de datos
     stored_element = db.tracking_table.update_or_insert(db.tracking_table.tweet_id == tweet_id,
@@ -81,214 +228,56 @@ def start_tracking():
     # https://python-twitter.readthedocs.io/en/latest/_modules/twitter/api.html#Api.PostDirectMessage
     print("\nalerting the Source")
     alert_source(tweet_id, text_response)
-    # alertar_source(tweet_id)
     alerted_tweet = db.alerted_tweets.update_or_insert(db.alerted_tweets.tweet_id == tweet_id,
         tweet_id = tweet_id
     )
     
-    # METODO ALERTA RETWEETS________
-    print("alerting retweets")
-    print("method that alerts the retweets")
 
-    # print(type(retweets))
-    retweets = json.loads(retweets)
+    # # METODO ALERTA RETWEETS________
+    # print("alerting retweets")
+    # print("method that alerts the retweets")
 
-    for ret in retweets:
-        id_retweet = ret["id_str"]
+    # # print(type(retweets))
+    # retweets = json.loads(retweets)
+
+    # for ret in retweets:
+    #     id_retweet = ret["id_str"]
         
-        # METODO ALERTA
+    #     # METODO ALERTA
 
-        print("alertando a: " + id_retweet)
-        alerted_tweet = db.alerted_tweets.update_or_insert(db.alerted_tweets.tweet_id == id_retweet,
-            tweet_id = id_retweet
-        )
+    #     print("alertando a: " + id_retweet)
+    #     alerted_tweet = db.alerted_tweets.update_or_insert(db.alerted_tweets.tweet_id == id_retweet,
+    #         tweet_id = id_retweet
+    #     )
+
 
 
 def alert_source(tweet_id, text_response):    
     print("Alerting source " + tweet_id)
     # Funsiona perfe
-    if (text_response == ""):
-        text_response = """
-        Hola! Formo parte de un proyecto que se dedica a desmentir Fake News, y parece que el algoritmo ha detectado tu tweet como falso, 
-        Si estoy equivocado, házmelo saber (Responde con un "NO") y así puedo mejorar, gracias!!
-        """
+
     tweet_id = str(tweet_id)
     print("responding " + text_response)
     api = requires_twitter_auth()      
-    result = api.PostUpdate(status = text_response, in_reply_to_status_id = "1241436712821235712" )
+    result = api.PostUpdate(status = text_response, in_reply_to_status_id = tweet_id)
 
 
 
-def update_retweets():
-    print("\n\nupdate retweets")
+# Actualizado a dia 7-abril
+# try catchs y control de errores
+def refresh_retweets():
+    """
+        Este metodo (EXTERNO CLIENTE) llamado desde el cliente recibe como parametro un id de un tweet y llama al metodo update_retweets para actualizar la lista de retweets del mismo, devolviendo esa lista al cliente
+        Input: Id de un tweet
+        Output: lista con todos los retweets de ese tweet
+    """
+    print("\n\nAPI method - Refresh_retweets")
+
     tweet_id = str(request.vars.id)
+    # Llamada al metodo update_retweets para actualizar los tweets
+    list_final_retweets = update_retweets(tweet_id)
 
-    # Recuperamos los retweets que ya existen 
-    tweet = db(db.master_case_table.tweet_id == tweet_id).select().first()
-    retweets_string = tweet.retweets
-    retweets_list = json.loads(retweets_string)
-    # print(type(retweets_list)) #LIST
-    # past_retweets = [retweet.AsDict() for retweet in retweets_list]  
-
-#     # buscamos los nuevos tweets 
-#     # Get all the retweets anadir la fecha nueva
-    api = requires_twitter_auth()     
-    new_retweets = api.GetRetweets(tweet_id, count=15, trim_user=False)
-    new_retweets_list =  [retweet.AsDict() for retweet in new_retweets]  
-    # print(type(new_retweets)) # lIST
-    # final_list = retweets_list
-    
-    
-    print("len BEFORE" + str(len(new_retweets_list)))
-
-    # Para evitar los repetidos, creamos una lista con los antiguos ids
-    id_list = []
-    for item in retweets_list:
-        item = json.dumps(item)
-        obj = Objeto_JSON(item)
-        id_list.append(obj.id)
-    # Si alguno de los nuevos retweets estaba en la lista, no se incluye
-    print("lista ids")
-    print(id_list)
-    print("len BEFORE" + str(len(new_retweets_list)))
-    for item in new_retweets_list:
-        print("a")
-
-        item_js = json.dumps(item)
-        obj = Objeto_JSON(item_js)
-        # print(type(item))
-
-        if (obj.id in id_list):
-            print("REPETIDO!! " + str(obj.id))
-            new_retweets_list.remove(item)
-        # else:
-        #     print("NO TEPE!! " + str(obj.id))
-        #     new_retweets_list.remove(item)
-
-    print("len AFTER" + str(len(new_retweets_list)))
-    # print()
-
-    f = retweets_list + new_retweets_list
-    # print(f)
-    db.master_case_table.update_or_insert(db.master_case_table.tweet_id == tweet_id,
-        retweets = json.dumps(f)
-    )
-
-    # # UPDATE PROCEDURE (Not working yet)    
-    # lista_final_retweets = retweets_list
-    # lista2 = []
-
-    
-    # print("inicial len")
-    # print(len(lista_final_retweets))
-
-
-    # lista2_final =  [retweet.AsDict() for retweet in lista2] 
-    # lista_final_retweets.append(lista2_final)
-
-    # print("final len")
-    # print(len(lista_final_retweets))
-
-    # a = [retweet.AsDict() for retweet in lista_final_retweets]
-
-    # PROBLEMA, NO SE GUARDA BIEN!!
-    # # # json.dumps(lista_final_retweets) NO parece ser suficiente
-    # variable = db.master_case_table.update_or_insert(db.master_case_table.tweet_id == tweet_id,
-    #     retweets = json.dumps(lista_final_retweets)
-    # )
-
-
-
-# ____________________________ STORING ON THE DB _______________________________________
-
-# method created 18-Feb-2020
-def add_to_database():
-    print("\n\nadd to DATABASE method") 
-
-    api = requires_twitter_auth()     
-    
-    #retrieveing the tweet from the client POST in json string
-    tweet_json = request.vars.tweet
-    # Convert to python object
-    tweet = Objeto_JSON(tweet_json)
-
-    # tweet = tweet_objeto #to work with
-
-    # Get the data from the tweet
-    title = tweet.full_text
-    urls = tweet.urls
-    # The valid ID is the tweet.id_string in Integer format
-    # id = int(tweet.id_str)
-    id = tweet.id_str
-
-    # status = api.GetStatus(int(tweet.id_str))
-    
-    # Params for api methods
-    number_of_rt = 30
-
-    # Get all the retweets
-    retweets = api.GetRetweets(id, count=number_of_rt, trim_user=False)
-    retweets =  [retweet.AsDict() for retweet in retweets]  
-
-    print(retweets)
-
-
-    # Get the user to object to work with 
-    user_string = json.dumps(tweet.user)
-    user_objeto = Objeto_JSON(user_string)
-    user_name = user_objeto.name
-    print (user_name)
-
-
-    print("PRE")
-    stored_user = db.tweet_users_table.update_or_insert(db.tweet_users_table.name == user_name,
-        name = user_name,
-        user_data = user_string
-    )
-
-    print("storede user")
-    print(stored_user)
-
-    # other_tweets = api.GetSearch()
-    # Remember to use the id (tweet.id_str)
-
-    variable = db.master_case_table.update_or_insert(db.master_case_table.tweet_id == id,
-        title = tweet.full_text,
-        utls = tweet.urls,
-        tweet_id = id,
-        tweet_user = stored_user,
-        tweet = tweet_json,
-        retweets = json.dumps(retweets)
-    )
-    # Redirect not working
-    # return redirect(URL('default', 'fake_news_panel'))
-# ____________________________________________________________________________________
-
-
-
-# DEPRECATED!!!!!
-# def store_data():
-#     api = requires_twitter_auth()            
-#     print ('\n\nUUU\n')
-
-#     # Get tweets
-#     tweets = api.GetSearch(term="taza", count=1)
-#     tweets = [tweet.AsDict() for tweet in tweets]
-
-#     for tweet in tweets:
-#         tweet_json = json.dumps(tweet)
-#         tweet_objeto = Objeto_JSON(tweet_json)
-#         print (tweet_objeto.id)
-
-#         # get retweets
-#         number_of_rt = 50
-#         retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
-#         retweets =  [retweet.AsDict() for retweet in retweets]    
-
-#         variable = db.data_table.update_or_insert(
-#             stored_data = json.dumps(tweet),
-#             retweets = json.dumps(retweets)
-#         )
+    return response.json(dict(retweets_list=list_final_retweets))
 
 
 
@@ -437,12 +426,29 @@ def requires_twitter_auth():
 
     return api
 
+
+def get_data():
+    # Get the Params
+    row_number = int(request.vars.id)
+    print("row number")
+    print(row_number)
+
+    # Get data from database
+    data = db(db.master_case_table.id == row_number).select().first()
+    print(data)
+
+    return response.json(dict(data = data))
+
+
+
+# ______________________ TEST METHODS ________________________________ 
+
 def log_on_twitter():
     print('\nloggin on twitter')
     api = requires_twitter_auth()
     print(api.VerifyCredentials())
 
-
+# Metodo de prueba para postear
 def post_tweet():
     print('post tweet api method')
 
@@ -457,17 +463,6 @@ def post_tweet():
 
 
 
-def get_data():
-    # Get the Params
-    row_number = int(request.vars.id)
-    print("row number")
-    print(row_number)
-
-    # Get data from database
-    data = db(db.master_case_table.id == row_number).select().first()
-    print(data)
-
-    return response.json(dict(data = data))
 
 
 
@@ -639,8 +634,6 @@ def mark_as_fake():
 # ____________________________________________________________________________________
 # The next methods have been created only for testing purposes
 
-def test_index_function():
-    print('test function')
 
 
 # To avoid doing all the tima calls to api
@@ -665,6 +658,119 @@ def get_list_tweets_and_retweets_json():
 
 
 
+
+
+# OLD METHODS ____________________________________
+
+
+
+
+
+# DEPRECATED!!!!!
+# def store_data():
+#     api = requires_twitter_auth()            
+#     print ('\n\nUUU\n')
+
+#     # Get tweets
+#     tweets = api.GetSearch(term="taza", count=1)
+#     tweets = [tweet.AsDict() for tweet in tweets]
+
+#     for tweet in tweets:
+#         tweet_json = json.dumps(tweet)
+#         tweet_objeto = Objeto_JSON(tweet_json)
+#         print (tweet_objeto.id)
+
+#         # get retweets
+#         number_of_rt = 50
+#         retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
+#         retweets =  [retweet.AsDict() for retweet in retweets]    
+
+#         variable = db.data_table.update_or_insert(
+#             stored_data = json.dumps(tweet),
+#             retweets = json.dumps(retweets)
+#         )
+
+
+
+
+# """DEPRECATED"""
+# def update_retweets_OLD():
+#     print("\n\nupdate retweets")
+#     tweet_id = str(request.vars.id)
+
+#     # Recuperamos los retweets que ya existen 
+#     tweet = db(db.master_case_table.tweet_id == tweet_id).select().first()
+#     retweets_string = tweet.retweets
+#     retweets_list = json.loads(retweets_string)
+#     # print(type(retweets_list)) #LIST
+#     # past_retweets = [retweet.AsDict() for retweet in retweets_list]  
+
+# #     # buscamos los nuevos tweets 
+# #     # Get all the retweets anadir la fecha nueva
+#     api = requires_twitter_auth()     
+#     new_retweets = api.GetRetweets(tweet_id, count=15, trim_user=False)
+#     new_retweets_list =  [retweet.AsDict() for retweet in new_retweets]  
+#     # print(type(new_retweets)) # lIST
+#     # final_list = retweets_list
+    
+    
+#     print("len BEFORE" + str(len(new_retweets_list)))
+
+#     # Para evitar los repetidos, creamos una lista con los antiguos ids
+#     id_list = []
+#     for item in retweets_list:
+#         item = json.dumps(item)
+#         obj = Objeto_JSON(item)
+#         id_list.append(obj.id)
+#     # Si alguno de los nuevos retweets estaba en la lista, no se incluye
+#     print("lista ids")
+#     print(id_list)
+#     print("len BEFORE" + str(len(new_retweets_list)))
+#     for item in new_retweets_list:
+#         print("a")
+
+#         item_js = json.dumps(item)
+#         obj = Objeto_JSON(item_js)
+#         # print(type(item))
+
+#         if (obj.id in id_list):
+#             print("REPETIDO!! " + str(obj.id))
+#             new_retweets_list.remove(item)
+#         # else:
+#         #     print("NO TEPE!! " + str(obj.id))
+#         #     new_retweets_list.remove(item)
+
+#     print("len AFTER" + str(len(new_retweets_list)))
+#     # print()
+
+#     f = retweets_list + new_retweets_list
+#     # print(f)
+#     db.master_case_table.update_or_insert(db.master_case_table.tweet_id == tweet_id,
+#         retweets = json.dumps(f)
+#     )
+
+#     # # UPDATE PROCEDURE (Not working yet)    
+#     # lista_final_retweets = retweets_list
+#     # lista2 = []
+
+    
+#     # print("inicial len")
+#     # print(len(lista_final_retweets))
+
+
+#     # lista2_final =  [retweet.AsDict() for retweet in lista2] 
+#     # lista_final_retweets.append(lista2_final)
+
+#     # print("final len")
+#     # print(len(lista_final_retweets))
+
+#     # a = [retweet.AsDict() for retweet in lista_final_retweets]
+
+#     # PROBLEMA, NO SE GUARDA BIEN!!
+#     # # # json.dumps(lista_final_retweets) NO parece ser suficiente
+#     # variable = db.master_case_table.update_or_insert(db.master_case_table.tweet_id == tweet_id,
+#     #     retweets = json.dumps(lista_final_retweets)
+#     # )
 
 
 

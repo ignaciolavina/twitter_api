@@ -1,4 +1,6 @@
 
+const TWITTER_CHARACTER_LIMIT = 280;
+
 let on_page_load = function () {
     // To get retrieve data
     console.log('************url******');
@@ -28,6 +30,8 @@ let get_data = function (id) {
         app.tweet = JSON.parse(response.data.tweet);
         app.retweets = JSON.parse(response.data.retweets);
         app.data_loaded = true;
+
+        prepare_message()
         // test_function();
     });
 }
@@ -84,12 +88,17 @@ let test_function = function () {
 
 let start_tracking = function () {
     console.log('start tracking');
-    $.getJSON(startTrackingURL, {
-        tweet_id: app.tweet.id_str,
-        text_response: app.text_response,
-    }, function (response) {
+    if (app.text_response.length > TWITTER_CHARACTER_LIMIT || app.text_response.length == 0) {
+        alert("Cuidado, el mensaje no puede estar vacio ni superar el limite de caracteres de twitter(280), por favor, revisa el mensaje")
+    } else {
+        $.getJSON(startTrackingURL, {
+            tweet_id: app.tweet.id_str,
+            text_response: app.text_response,
+            username: app.tweet.user.name,
+        }, function (response) {
 
-    });
+        });
+    }
 }
 
 let delete_tracking = function () {
@@ -102,6 +111,14 @@ let check_request = function () {
 
 
 // ______________________ VUE COMPONENT ______________________
+
+let prepare_message = function () {
+    let user = app.tweet.user.screen_name;
+    let text = "Hola! Soy parte de un proyecto de investigación sobre Fake News, y el sistema parece detectar que tu tweet como falso, ¿Podrías revisar su veracidad y eliminarlo si es falso?. Si me equivoco, o quires opt-out (Responde <NO>) y así mejoraré. Muchas Gracias!";
+    let fuente_o_link = app.fuente_o_link;
+    app.text_response = "@" + user + text + " " + fuente_o_link;
+}
+
 
 
 let app = new Vue({
@@ -120,6 +137,7 @@ let app = new Vue({
         similar_tweets: [],
         retweets: [],
         retweets_retrieved: false,
+        fuente_o_link: "",
         text_response: ""
     },
     methods: {
@@ -129,7 +147,8 @@ let app = new Vue({
         check_request: check_request,
         get_similar_tweets: get_similar_tweets,
         get_retweets: get_retweets,
-        update_retweets: update_retweets
+        update_retweets: update_retweets,
+        prepare_message: prepare_message
     }
 });
 

@@ -4,3 +4,25 @@
 <link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
 <script src="{{ = URL('static','js/vue.min.js') }}"></script>
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+<script>
+    let testURL = "{{ = URL('api', 'refresh_retweets') }}";
+</script>
+
+<div id="index">
+    <div>
+        <button v-on:click="test_btn" type="button" class="btn btn-primary">
+            Test
+    </div>
+
+
+    <div v-for="t in retweets">
+        ${t.user.name}
+        ${t.id}
+        ${t.id_str}
+    </div>
+</div>
+
+
+
+<script src=" {{ = URL('static/js', 'test.js') }}"></script>

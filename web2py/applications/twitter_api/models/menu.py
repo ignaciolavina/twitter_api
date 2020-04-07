@@ -25,5 +25,7 @@ if not configuration.get('app.production'):
         (T('Fake News Panel'), False, URL('default', 'fake_news_panel')), 
         (T('tracking_table'), False, URL('default', 'tracking_table')),
         (T('alerted_tweets'), False, URL('default', 'alerted_tweets')),
+        (T('Test'), False, URL('default', 'test')),
+        (T('Test_table'), False, URL('default', 'test_table'))
     ]
 

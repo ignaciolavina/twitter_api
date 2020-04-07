@@ -47,12 +47,12 @@ let search_btn = function () {
 //     });
 // }
 
-let track_btn = function (tweet) {
-    console.log('Track tweet');
+let guardar_tweet = function (tweet) {
+    console.log('Guardar tweet');
     console.log(tweet.full_text);
     id = tweet.id_str;
     console.log("id es: " + id);
-    $.post(trackTweetURL, {
+    $.post(guardarTweetURL, {
         id: id,
         text: tweet.full_text,
         tweet: JSON.stringify(tweet)
@@ -73,7 +73,7 @@ let app = new Vue({
     },
     methods: {
         search_btn: search_btn,
-        track_btn: track_btn
+        guardar_tweet: guardar_tweet
     }
 });
 

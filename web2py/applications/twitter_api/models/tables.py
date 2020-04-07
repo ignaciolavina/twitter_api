@@ -7,6 +7,12 @@ def get_user_full_name():
     return None if auth.user is None else auth.user.first_name + ' ' + auth.user.last_name
 
 
+db.define_table('test_table',
+    Field('retweets', 'text'),
+)
+
+
+
 db.define_table('tweet_users_table',
     Field('name', 'text'),
     Field('user_data', 'text')
@@ -16,6 +22,7 @@ db.define_table('tweet_users_table',
 
 db.define_table('master_case_table',
     Field('title', 'text'),
+    Field('user_name', 'text'),
     Field('tweet_id', 'text', requires=IS_NOT_EMPTY()),
     Field('tweet', 'text', requires=IS_NOT_EMPTY()), # JSON Object
     Field('urls', 'text', default = ''), # List!

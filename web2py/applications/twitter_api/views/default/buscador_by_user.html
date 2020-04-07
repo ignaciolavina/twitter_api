@@ -24,7 +24,7 @@
 <!-- Api calls -->
 <script>
     let searchFunctionURL = "{{ = URL('api', 'search_by_user') }}";
-    let trackTweetURL = "{{ = URL('api', 'add_to_database') }}";    
+    let guardarTweetURL = "{{ = URL('api', 'add_to_database') }}";    
 </script>
 
 
@@ -110,8 +110,8 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="d-flex justify-content-center">
-                                        <button v-on:click="track_btn(tweet)" type="button"
-                                            class="btn btn-primary">Track</button>
+                                        <button v-on:click="guardar_tweet(tweet)" type="button"
+                                            class="btn btn-primary">Guardar</button>
                                     </div>
                                 </div>
 

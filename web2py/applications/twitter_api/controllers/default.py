@@ -53,7 +53,18 @@ def panel():
     # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
     return dict(grid = grid)
 
+def test_table():
+    grid = SQLFORM.grid(db.test_table, editable=True, deletable=True)
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
 
+    
+
+
+
+def test():
+    return dict()
+    
 
 def data_stored2():
     # form = SQLFORM(db.tabla_tweets_retweets)
