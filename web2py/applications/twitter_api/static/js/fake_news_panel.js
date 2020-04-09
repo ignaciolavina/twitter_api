@@ -217,15 +217,21 @@ let add_to_list = function (tweet) {
 
 let remove_forever = function (tweet) {
     console.log("added");
-    app.list_agregated_tweets.push(tweet);
+    // app.list_agregated_tweets.push(tweet);
 };
 
 
 let save_as_new = function (tweet) {
     console.log("added");
-    app.list_agregated_tweets.push(tweet);
+    // app.list_agregated_tweets.push(tweet);
 };
 
+let remove_from_list_agregated_tweets = function (index) {
+    console.log("remove_from_list_agregated_tweets");
+    console.log("remove index" + index);
+    app.list_agregated_tweets.splice(index, 1);
+
+}
 
 let app = new Vue({
     el: "#index",
@@ -264,7 +270,8 @@ let app = new Vue({
         get_retweets: get_retweets,
         update_retweets: update_retweets,
         prepare_message: prepare_message,
-        analize_btn: analize_btn
+        analize_btn: analize_btn,
+        remove_from_list_agregated_tweets: remove_from_list_agregated_tweets
     }
 });
 
