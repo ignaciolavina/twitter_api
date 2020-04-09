@@ -36,23 +36,7 @@ let get_data = function (id) {
     });
 }
 
-let get_similar_tweets = function () {
-    console.log('get similar tweets');
-    $.getJSON(getSimilarTweetsURL, {
-        id: app.tweet.id,
-        text: app.tweet.full_text,
-        user: app.tweet.user.screen_name,
-    }, function (response) {
-        app.similar_tweets = response.similar_tweets;
-        app.retweets_retrieved = true;
-        // app.data = response.data;
 
-        // app.tweet = JSON.parse(response.data.tweet);
-        // app.retweets = JSON.parse(response.data.retweets);
-        // app.data_loaded = true;
-        // test_function();
-    });
-}
 
 let get_retweets = function () {
     // DEPRECATED??? yA HAY UNO PARA UPDATE RETWEETS, E INICIALMENTE YA NOS TRAEMOS LOS RETWEETS
@@ -187,6 +171,62 @@ let order_queue = function (cola) {
     return cola;
 }
 
+
+let get_similar_tweets = function () {
+    console.log("get_similar_tweets");
+
+    // Boolean 0 | 1, poner asi porque en Python va con mayuscula
+    let es_noticia = 0;
+    let url_noticia = "";
+    let exclude_retweets = true;
+
+    for (let i = 0; i < 5; i++) {
+        app.similar_tweets.push(app.tweet);
+    }
+    app.similar_tweets_retrieved = true;
+
+    // if (app.tweet.urls.length > 0) {
+    //     if (app.tweet.urls[0].expanded_url) {
+    //         console.log(app.tweet.urls[0].expanded_url);
+    //         es_noticia = 1;
+    //         url_noticia = app.tweet.urls[0].expanded_url;
+    //     }
+    // }
+
+    // $.getJSON(getSimilarTweetsURL, {
+    //     id: app.tweet.id,
+    //     text: app.tweet.full_text,
+    //     user: app.tweet.user.screen_name,
+    //     es_noticia: es_noticia,
+    //     url_noticia: url_noticia,
+    //     exclude_retweets: exclude_retweets
+    // }, function (response) {
+    //     // app.similar_tweets = response.similar_tweets;
+    //     // app.retweets_retrieved = true;
+    //     console.log(response.results_article);
+    //     app.similar_tweets = response.results_article;
+    //     app.similar_tweets_retrieved = true;
+    // });
+};
+
+let add_to_list = function (tweet) {
+    console.log("added");
+    app.list_agregated_tweets.push(tweet);
+};
+
+
+let remove_forever = function (tweet) {
+    console.log("added");
+    app.list_agregated_tweets.push(tweet);
+};
+
+
+let save_as_new = function (tweet) {
+    console.log("added");
+    app.list_agregated_tweets.push(tweet);
+};
+
+
 let app = new Vue({
     el: "#index",
     delimiters: ['${', '}'],
@@ -200,14 +240,20 @@ let app = new Vue({
         top_first_users: [],
         other_tweets: [],
         url_id: "",
+        similar_tweets_retrieved: false,
         similar_tweets: [],
         retweets: [],
         retweets_retrieved: false,
         fuente_o_link: "",
         text_response: "",
-        pressed_analyze: true,
+        pressed_analyze: false,
         top_first_retweets: [],
-        top_fake_retweets: []
+        top_fake_retweets: [],
+        // nuevos
+        list_agregated_tweets: [],
+        add_to_list: add_to_list,
+        remove_forever: remove_forever,
+        save_as_new: save_as_new
     },
     methods: {
         get_data: get_data,

@@ -89,6 +89,35 @@
     </section>
 
 
+    <section id="info_pannel" class="data" v-if="data_loaded==true">
+        <div class="container">
+            <h2 style="margin: 20px">
+            </h2>
+            <div class="own-card">
+                <div class="card">
+                    <div class="d-flex flex-row no-gutters">
+                        <!-- <div class="col-md-11"> -->
+                        <div class="card-body">
+                            <div class="card-title">
+                                <div class="d-flex flex-row">
+                                    <h2>
+                                        Noticias relacionada:
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row" style="margin-top: 20px;">
+                                <h5>
+                                    Options
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
     <section id="settings_panel" class="data" v-if="data_loaded==true">
 
 
@@ -169,12 +198,15 @@
         <button v-on:click="analize_btn" type="button" class="btn btn-primary">
             Analyze
         </button>
+        <button v-on:click="get_similar_tweets" type="button" class="btn btn-primary">
+            Find similar tweets
+        </button>
 
     </div>
 
 
 
-    <section id="top-users" class="tables" v-if="pressed_analyze==true">
+    <section id="top-users" class="tables" v-if="pressed_analyze">
         <div class="container">
             <div class="d-flex flex-row no-gutters">
                 <div class="col-md-6">
@@ -326,7 +358,7 @@
 
     <!-- "OTHER TWEETS FOUNDED SEDCTION" -->
 
-    <section id="other_tweets" class="data" v-if="retweets_retrieved==true">
+    <section id="other_tweets" class="data" v-if="similar_tweets_retrieved==true">
 
 
         <div class="container">
@@ -344,26 +376,46 @@
                                     <img class="own-card-img" v-bind:src="tweet.user.profile_image_url">
                                 </div>
 
-                                <div class="col-md-11">
-                                    <div class="card-body">
-                                        <div class="card-title">
-                                            <div class="d-flex flex-row">
+                                <div class="card-body">
+                                    <div class="d-flex flex-row">
+                                        <div class="col-md-11">
+                                            <div class="card-title">
+                                                <div class="d-flex flex-row">
 
-                                                <h5>
-                                                    ${tweet.user.name}
-                                                </h5>
+                                                    <h5>
+                                                        ${tweet.user.name}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
+                                            <p class="card-text">${tweet.full_text}</p>
+                                            <a v-if="tweet.urls.length>0" class="card-link"
+                                                v-bind:href="tweet.urls[0].expanded_url">link
+                                                to Tweet</a>
+                                            <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
+                                            <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
+                                            <p class="card-text"><small class="text-muted">Date:
+                                                    ${tweet.created_at}</small>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div>
+                                                <button v-on:click="add_to_list(tweet)" type="button"
+                                                    class="btn btn-dark">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <button v-on:click="remove_forever" type="button" class="btn btn-dark">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <button v-on:click="save_as_new" type="button" class="btn btn-dark">
+                                                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                                </button>
                                             </div>
                                         </div>
-                                        <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
-                                        <p class="card-text">${tweet.full_text}</p>
-                                        <a v-if="tweet.urls.length>0" class="card-link"
-                                            v-bind:href="tweet.urls[0].expanded_url">link
-                                            to Tweet</a>
-                                        <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
-                                        <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
-                                        <p class="card-text"><small class="text-muted">Date:
-                                                ${tweet.created_at}</small>
-                                        </p>
                                     </div>
                                 </div>
                             </div>

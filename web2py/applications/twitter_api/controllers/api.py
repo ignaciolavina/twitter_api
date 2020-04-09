@@ -2,7 +2,9 @@ import os, json
 import twitter
 import ast
 
-
+# For parsing the url and retrieveing the page title of a new
+import urllib.request
+from bs4 import BeautifulSoup
 
 # GET limits
 # https://tutorialedge.net/python/creating-twitter-bot-python/
@@ -389,39 +391,66 @@ def extract_title(url):
     # todo esto de acuerdo a la fecha de last_update
     # informo de los nuevos tweets encontrados
 
+def get_noticias_similares(url, exclude_retweets):
+    print("\n\nAPI method - Get Noticias Similares")
+
+    print("looking for similar news of: " + url)
+
+    # url = 'https://www.vozpopuli.com/opinion/lilith-verstrynge-injustos-pablo-iglesias_0_1344166589.html'
+    soup = BeautifulSoup(urllib.request.urlopen(url), "lxml")
+    # soup = BeautifulSoup(urllib.urlopen("https://www.google.com"))
+    print (soup.title.string)
+    title = soup.title.string
+
+    api = requires_twitter_auth()     
+    results = api.GetSearch(title, count = 5)
+    tweets = [tweet.AsDict() for tweet in results]
+
+    if (exclude_retweets):
+        print("excluir retweets")
+
+    return tweets
+
 def get_similar_tweets():   
     print(request.vars)
 
-    text = request.vars.text
-    id = request.vars.id
-    username = "-@" + str(request.vars.username)
-    text = text + username
+    results_article = []
+    if (request.vars.es_noticia):
+        results_article = get_noticias_similares(request.vars.url_noticia, request.vars.exclude_retweets)
 
-    # Si no hay texto que buscar
-    if((text is None) or (text == "")):
-        return response.json(dict(data = data, success = False))
+    return response.json(dict(results_article = results_article))
+    # return response.json(dict(similar_tweets = similar_tweets))
+
+    # text = request.vars.text
+    # id = request.vars.id
+    # username = "-@" + str(request.vars.username)
+    # text = text + username
+
+    # # Si no hay texto que buscar
+    # if((text is None) or (text == "")):
+    #     return response.json(dict(data = data, success = False))
 
 
-    # Si ya existen en la base de datos
-    if (False):
-        # NOT WORKING YET
-        print(id)
-        print(type(id))
-        results = db(db.master_case_table.tweet_id == id)
-        print("\n\nSIMILAR")
-        print(results)
-        similar_tweets = [tweet.AsDict() for tweet in results]
-        similar_tweets = json.dumps(results)
-    else:
-        api = requires_twitter_auth()   
-        results = api.GetSearch(text, count = 1)
+    # # Si ya existen en la base de datos
+    # if (False):
+    #     # NOT WORKING YET
+    #     print(id)
+    #     print(type(id))
+    #     results = db(db.master_case_table.tweet_id == id)
+    #     print("\n\nSIMILAR")
+    #     print(results)
+    #     similar_tweets = [tweet.AsDict() for tweet in results]
+    #     similar_tweets = json.dumps(results)
+    # else:
+    #     api = requires_twitter_auth()   
+    #     results = api.GetSearch(text, count = 1)
 
-        similar_tweets = [tweet.AsDict() for tweet in results]
-        # Falta guardarlo en la base de datos
+    #     similar_tweets = [tweet.AsDict() for tweet in results]
+    #     # Falta guardarlo en la base de datos
     
 
 
-    return response.json(dict(similar_tweets = similar_tweets))
+    # return response.json(dict(similar_tweets = similar_tweets))
 
 
 
