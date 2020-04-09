@@ -130,6 +130,65 @@ def fake_news():
 
 
 
+def panel_guardados():
+    links = []
+    links.append(
+        dict(
+            header='User',
+            body= lambda row : 
+            db(db.master_case_table.id == 45).select().first().user_name
+        )
+    )
+    links.append(
+        dict(
+            header='Text',
+            body= lambda row : 
+            db(db.master_case_table.id == 45).select().first().title
+        )
+    )
+    links.append(
+        dict(
+            header='Tweet',
+            body= lambda row : 
+            A('', _href=URL('/panel/view/master_case_table/' + str(row.tweet_id), vars=dict()), _class='fa fa-eye')
+            
+        )
+    )
+    links.append(
+        dict(
+            header='Fake news panel',
+            body= lambda row : 
+                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id])), _class='fa fa-pencil-square')
+                
+                # A('', _href=URL('default', 'index', args='camino'), _class='fa fa-pencil-square')
+                #     if row.user_id == auth.user.id else
+                # A('', _class='hidden')
+        )
+    )
+
+    # grid = SQLFORM.grid(db.master_case_table, deletable=True)
+    query = db.stored_tweets
+
+  
+    fields=[db.stored_tweets.id,db.stored_tweets.tweet_id
+    ]    
+
+    grid = SQLFORM.grid(
+    query,
+    fields = fields,
+    links=links,
+    searchable=True, 
+    details=True, 
+    create=False, 
+    deletable=True, 
+    editable=True,
+    csv=False,
+    user_signature=True,
+    )
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
 
 # Creado el 18 de Febrero con la nueva database
 def tracking_table():

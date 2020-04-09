@@ -26,6 +26,7 @@ if not configuration.get('app.production'):
         (T('tracking_table'), False, URL('default', 'tracking_table')),
         (T('alerted_tweets'), False, URL('default', 'alerted_tweets')),
         (T('Test'), False, URL('default', 'test')),
-        (T('Test_table'), False, URL('default', 'test_table'))
+        (T('Test_table'), False, URL('default', 'test_table')),
+        (T('panel_guardados'), False, URL('default', 'panel_guardados'))
     ]
 

@@ -166,7 +166,8 @@ def add_to_database():
     # status = api.GetStatus(int(tweet.id_str))
     
     # Get all the retweets
-    retweets = update_retweets(id)
+    number_of_retweets_to_retrieve = 20
+    retweets = get_retweets(id, number_of_retweets_to_retrieve)
 
     # Get the user to object to work with 
     user_string = json.dumps(tweet.user)
@@ -194,24 +195,20 @@ def add_to_database():
         tweet = tweet_json,
         retweets = json.dumps(retweets)
     )
+
+
+    
+    saved = db.stored_tweets.update_or_insert(db.stored_tweets.tweet_id == variable,
+        tweet_id = variable
+    )
+
     # Redirect not working
     # return redirect(URL('default', 'fake_news_panel'))
 
 
-# Actualizado a dia 7-abril
-# Working properly
-def update_retweets(id_tweet):
-    """
-        Este metodo (INTERNO API) recibe un id de un tweet, y realiza:
-            1. Recupera los retweets almacenados relacionados con ese id
-            2. Usa la API de Twitter para traer nuevos retweets
-            3. Actualiza la base de datos con todos los retweets (nuevos y antiguos)
-        Input: Id de un tweet
-        Output: lista con todos los retweets de ese tweet
-    """
 
-    number_of_retweets_to_retrieve = 20
-
+def get_retweets(id_tweet, number_of_retweets_to_retrieve):
+    
     # Recuperamos los retweets de la base de datos
     data = db(db.master_case_table.tweet_id == id_tweet).select().first()
     if (data):
@@ -252,6 +249,23 @@ def update_retweets(id_tweet):
             # print(i['id_str'])
         # else:
         #     print("Repetido: " + i['id_str'])
+    return list_final_retweets
+
+# Actualizado a dia 7-abril
+# ON review, cambiado ahora bebe de otro (para evitar guardar los tweets)
+def update_retweets(id_tweet):
+    """
+        Este metodo (INTERNO API) recibe un id de un tweet, y realiza:
+            1. Recupera los retweets almacenados relacionados con ese id
+            2. Usa la API de Twitter para traer nuevos retweets
+            3. Actualiza la base de datos con todos los retweets (nuevos y antiguos)
+        Input: Id de un tweet
+        Output: lista con todos los retweets de ese tweet
+    """
+
+    number_of_retweets_to_retrieve = 20
+
+    list_final_retweets = get_retweets(id_tweet, number_of_retweets_to_retrieve)
 
     # Hacemos UPDATE de la base de datos
     db.master_case_table.update_or_insert(db.master_case_table.tweet_id == id_tweet,

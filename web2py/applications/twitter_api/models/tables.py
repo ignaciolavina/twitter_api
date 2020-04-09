@@ -7,19 +7,17 @@ def get_user_full_name():
     return None if auth.user is None else auth.user.first_name + ' ' + auth.user.last_name
 
 
-db.define_table('test_table',
-    Field('retweets', 'text'),
-)
-
-
 
 db.define_table('tweet_users_table',
     Field('name', 'text'),
     Field('user_data', 'text')
 )
 
-# Set defaults!
 
+
+# Mejoras: Buscar el db.rollback() en la docu de web2py
+
+# Set defaults!
 db.define_table('master_case_table',
     Field('title', 'text'),
     Field('user_name', 'text'),
@@ -33,6 +31,19 @@ db.define_table('master_case_table',
     # Field('other_tweets', 'reference tweets')
 )
 # Respuestas, stats, etc
+
+
+db.define_table('stored_tweets',
+    Field('tweet_id', 'reference master_case_table')
+)
+
+
+
+db.define_table('test_table',
+    Field('retweets', 'text'),
+)
+
+
 
 db.define_table('tweet_table',
     Field('tweet_id', 'text'),
