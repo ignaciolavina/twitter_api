@@ -361,6 +361,66 @@ def get_data():
 
 
 
+def group_btn():
+    print("\n\nAPI method - Group btn")
+    # print(request.vars)
+    name = request.vars.group_name
+    # print("name " + name)
+
+    tweet_list_id = json.loads(request.vars.tweet_list_id)
+    tweet_list = json.loads(request.vars.tweet_list)
+
+    tweet_list_for_group = []
+    for tweet in tweet_list:
+        tweet= json.dumps(tweet)
+        tweet = Objeto_JSON(tweet)
+        print("\nuser: ")
+        print(tweet.user['screen_name'])
+        id = tweet.id_str
+
+    # for id in tweet_list_id:
+        print("id " + str(id))
+        tweet_recuperado = db(db.master_case_table.tweet_id == id, db.master_case_table.tweet_id).select().first()
+        if (tweet_recuperado is not None):
+            print("Encontrado, appending" + str(tweet_recuperado.id))
+            tweet_list_for_group.append(tweet_recuperado.id)
+        else:
+            print("tengo que insertar primero")
+
+            user_name = tweet.user['screen_name']
+            print(user_name)
+            stored_user = db.tweet_users_table.update_or_insert(db.tweet_users_table.name == user_name,
+                name = user_name,
+                user_data = json.dumps(tweet.user)
+            )
+
+            number_of_retweets_to_retrieve = 20
+            retweets = get_retweets(id, number_of_retweets_to_retrieve)
+
+            result = db.master_case_table.update_or_insert(db.master_case_table.tweet_id == id,
+            title = tweet.full_text,
+            user_name = user_name,
+            tweet_id = id,
+            tweet = tweet,
+            utls = tweet.urls,
+            tweet_user = stored_user,
+            retweets = json.dumps(retweets)
+            )
+
+            tweet_list_for_group.append(result)
+
+
+    for p in tweet_list_for_group:
+        print('retrieved' + str(p))
+
+
+    result = db.group_tweets.update_or_insert(db.group_tweets.id == 1,
+        name = name,
+        ids = tweet_list_for_group
+    )
+
+
+
 
 
 # TO-DO
@@ -417,7 +477,7 @@ def get_noticias_similares(url, exclude_retweets):
     title = soup.title.string
 
     api = requires_twitter_auth()     
-    results = api.GetSearch(title, count = 5)
+    results = api.GetSearch(title, count = 10)
     tweets = [tweet.AsDict() for tweet in results]
 
     if (exclude_retweets):

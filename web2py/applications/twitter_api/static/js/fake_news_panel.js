@@ -180,33 +180,33 @@ let get_similar_tweets = function () {
     let url_noticia = "";
     let exclude_retweets = true;
 
-    for (let i = 0; i < 5; i++) {
-        app.similar_tweets.push(app.tweet);
-    }
-    app.similar_tweets_retrieved = true;
-
-    // if (app.tweet.urls.length > 0) {
-    //     if (app.tweet.urls[0].expanded_url) {
-    //         console.log(app.tweet.urls[0].expanded_url);
-    //         es_noticia = 1;
-    //         url_noticia = app.tweet.urls[0].expanded_url;
-    //     }
+    // for (let i = 0; i < 5; i++) {
+    //     app.similar_tweets.push(app.tweet);
     // }
+    // app.similar_tweets_retrieved = true;
 
-    // $.getJSON(getSimilarTweetsURL, {
-    //     id: app.tweet.id,
-    //     text: app.tweet.full_text,
-    //     user: app.tweet.user.screen_name,
-    //     es_noticia: es_noticia,
-    //     url_noticia: url_noticia,
-    //     exclude_retweets: exclude_retweets
-    // }, function (response) {
-    //     // app.similar_tweets = response.similar_tweets;
-    //     // app.retweets_retrieved = true;
-    //     console.log(response.results_article);
-    //     app.similar_tweets = response.results_article;
-    //     app.similar_tweets_retrieved = true;
-    // });
+    if (app.tweet.urls.length > 0) {
+        if (app.tweet.urls[0].expanded_url) {
+            console.log(app.tweet.urls[0].expanded_url);
+            es_noticia = 1;
+            url_noticia = app.tweet.urls[0].expanded_url;
+        }
+    }
+
+    $.getJSON(getSimilarTweetsURL, {
+        id: app.tweet.id,
+        text: app.tweet.full_text,
+        user: app.tweet.user.screen_name,
+        es_noticia: es_noticia,
+        url_noticia: url_noticia,
+        exclude_retweets: exclude_retweets
+    }, function (response) {
+        // app.similar_tweets = response.similar_tweets;
+        // app.retweets_retrieved = true;
+        console.log(response.results_article);
+        app.similar_tweets = response.results_article;
+        app.similar_tweets_retrieved = true;
+    });
 };
 
 let add_to_list = function (tweet) {
@@ -231,6 +231,28 @@ let remove_from_list_agregated_tweets = function (index) {
     console.log("remove index" + index);
     app.list_agregated_tweets.splice(index, 1);
 
+}
+
+let group_btn = function () {
+    tweet_list_id = []
+    for (let i = 0; i < app.list_agregated_tweets.length; i++) {
+        tweet_list_id.push(app.list_agregated_tweets[i].id_str);
+    }
+
+    console.log("mandamos " + tweet_list_id);
+    console.log("mandamo22s " + tweet_list_id.length);
+
+
+
+    $.getJSON(groupURL, {
+        group_name: app.tweet.id_str,
+        tweet_list_id: JSON.stringify(tweet_list_id),
+        tweet_list: JSON.stringify(app.list_agregated_tweets)
+        // id: app.tweet.id_str, 
+    }, function (response) {
+        // app.similar_tweets = response.similar_tweets;
+        // app.retweets_retrieved = true;
+    });
 }
 
 let app = new Vue({
@@ -260,6 +282,7 @@ let app = new Vue({
         add_to_list: add_to_list,
         remove_forever: remove_forever,
         save_as_new: save_as_new
+
     },
     methods: {
         get_data: get_data,
@@ -271,7 +294,8 @@ let app = new Vue({
         update_retweets: update_retweets,
         prepare_message: prepare_message,
         analize_btn: analize_btn,
-        remove_from_list_agregated_tweets: remove_from_list_agregated_tweets
+        remove_from_list_agregated_tweets: remove_from_list_agregated_tweets,
+        group_btn: group_btn
     }
 });
 

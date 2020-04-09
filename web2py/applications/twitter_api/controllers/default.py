@@ -189,6 +189,25 @@ def panel_guardados():
     return dict(grid = grid)
 
 
+# Creado el 18 de Febrero con la nueva database
+def grouped_tweets():
+ 
+    query = db.group_tweets
+
+    grid = SQLFORM.grid(
+    query,
+    searchable=True, 
+    details=True, 
+    create=False, 
+    deletable=True, 
+    editable=False,
+    csv=False,
+    user_signature=True,
+    )
+    # grid = SQLFORM.smartgrid(db[tablename], args=[tablename], deletable=False, editable=False)
+    return dict(grid = grid)
+
+
 
 # Creado el 18 de Febrero con la nueva database
 def tracking_table():
