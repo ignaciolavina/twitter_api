@@ -77,7 +77,7 @@
                                     <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
                                     <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
                                     <p class="card-text"><small class="text-muted">Date:
-                                            ${tweet.user.created_at}</small>
+                                            ${tweet.created_at}</small>
                                     </p>
                                 </div>
                             </div>
@@ -198,14 +198,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <template v-for='top_user in top_users'>
+                                                <template v-for='retweet in top_fake_retweets'>
                                                     <tr>
                                                         <th scope="row">
-                                                            <!-- <img v-if="item.user.profile_image_url" class="own-card-img"
-                                                                v-bind:src="top_user.profile_image_url"> -->
+                                                            <img v-if="retweet.user.profile_image_url"
+                                                                class="own-card-img"
+                                                                v-bind:src="retweet.user.profile_image_url">
                                                         </th>
-                                                        <td>${top_user.name}</td>
-                                                        <td>${top_user.followers_count}</td>
+                                                        <td>${retweet.user.name}</td>
+                                                        <td>${retweet.user.followers_count}</td>
                                                         <td>...</td>
                                                     </tr>
                                                 </template>
@@ -227,7 +228,7 @@
                                 <div class="card-top-fake-users">
                                     <div class="card-title">
                                         <h4 style="margin: 20px">
-                                            Top first users
+                                            First retweeters
                                         </h4>
                                     </div>
                                     <div class="table-wrapper-scroll-y my-custom-scrollbar">
@@ -241,14 +242,16 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <template v-for='item in top_first_users'>
+                                                <template v-for='retweet in top_first_retweets'>
                                                     <tr>
                                                         <th scope="row">
-                                                            <!-- <img v-if="item.user.profile_image_url" class="own-card-img"
-                                                                v-bind:src="item.profile_image_url"> -->
+                                                            <img v-if="retweet.user.profile_image_url"
+                                                                class="own-card-img"
+                                                                v-bind:src="retweet.user.profile_image_url">
                                                         </th>
-                                                        <td>${item.name}</td>
-                                                        <td>${item.favourites_count}</td>
+                                                        <td>${retweet.user.name}</td>
+                                                        <td>${retweet.user.followers_count}</td>
+                                                        <td>${retweet.user.favourites_count}</td>
                                                         <td>...</td>
                                                     </tr>
                                                 </template>
@@ -306,7 +309,7 @@
                                         <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
                                         <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
                                         <p class="card-text"><small class="text-muted">Date:
-                                                ${tweet.user.created_at}</small>
+                                                ${tweet.created_at}</small>
                                         </p>
                                     </div>
                                 </div>
@@ -359,7 +362,7 @@
                                         <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
                                         <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
                                         <p class="card-text"><small class="text-muted">Date:
-                                                ${tweet.user.created_at}</small>
+                                                ${tweet.created_at}</small>
                                         </p>
                                     </div>
                                 </div>

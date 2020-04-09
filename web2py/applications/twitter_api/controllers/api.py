@@ -208,7 +208,7 @@ def update_retweets(id_tweet):
         Output: lista con todos los retweets de ese tweet
     """
 
-    number_of_retweets_to_retrieve = 10
+    number_of_retweets_to_retrieve = 20
 
     # Recuperamos los retweets de la base de datos
     data = db(db.master_case_table.tweet_id == id_tweet).select().first()
@@ -320,9 +320,9 @@ def refresh_retweets():
 
     tweet_id = str(request.vars.id)
     # Llamada al metodo update_retweets para actualizar los tweets
-    list_final_retweets = update_retweets(tweet_id)
+    retweets_list = update_retweets(tweet_id)
 
-    return response.json(dict(retweets_list=list_final_retweets))
+    return response.json(dict(retweets_list=retweets_list))
 
 
 # Updated 07-Abr-2020, 
@@ -517,7 +517,7 @@ def get_tweet():
         for tweet in tweets:
             tweet_json = json.dumps(tweet)
             tweet_objeto = Objeto_JSON(tweet_json)
-            print (tweet_objeto.id)
+            # print (tweet_objeto.id)
             
             # Get retweets
             number_of_rt = 50

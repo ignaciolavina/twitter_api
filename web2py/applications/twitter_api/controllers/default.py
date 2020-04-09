@@ -35,8 +35,9 @@ def panel():
     query = db.master_case_table
 
     fields=[db.master_case_table.id,
+    db.master_case_table.user_name,
     db.master_case_table.title,
-    db.master_case_table.tweet]     
+    db.master_case_table.tracking]     
 
     grid = SQLFORM.grid(
     query,
