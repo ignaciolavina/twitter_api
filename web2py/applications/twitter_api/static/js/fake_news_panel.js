@@ -43,11 +43,24 @@ let get_data = function (id, origin) {
         console.log(response);
         // app.data = response.data;
         app.tweet = JSON.parse(response.main_tweet.tweet);
-        app.retweets = JSON.parse(response.main_tweet.retweets);
-        // list_agregated_tweets = []
+        main_retweets = JSON.parse(response.main_tweet.retweets);
+
+        app.list_tweet_entities.push([app.tweet, main_retweets]);
+
+
         list_agregated_tweets = response.list_agregated_tweets;
+
         for (let i = 0; i < list_agregated_tweets.length; i++) {
-            app.list_agregated_tweets.push(JSON.parse(list_agregated_tweets[i].tweet))
+            tweet = JSON.parse(list_agregated_tweets[i].tweet);
+            retweets = JSON.parse(list_agregated_tweets[i].retweets)
+            // if (retweets.length == 0) {
+            //     retweets = []
+            // }
+            app.list_tweet_entities.push([tweet, retweets]);
+            // for the list dislpayed
+            app.list_agregated_tweets.push(tweet);
+
+
         }
 
         app.test = response.data;
@@ -281,6 +294,128 @@ let group_btn = function () {
     });
 }
 
+
+// ____________________  GRAPHS SECTION _______________________
+
+
+let create_graphs = function () {
+    create_agregated_graph();
+    create_multiple_graph();
+}
+
+
+
+// ____________________ AGREGATED GRAPH _______________________
+
+var data_agregated_graph = [];
+// var timeFormat = 'YYYY-MM-DDTHH:mm:ss.sssZ';
+var timeFormat = "ddd MMM dd HH:mm:ss Z yyyy"
+
+let create_agregated_graph = function () {
+    lista = []
+
+    for (let i = 0; i < app.list_tweet_entities.length; i++) {
+        lista.push(app.list_tweet_entities[i][0]);
+
+        if (app.list_tweet_entities[i][1].length > 0) {
+            aux_list = app.list_tweet_entities[i][1];
+            for (let j = 0; j < aux_list.length; j++) {
+                lista.push(aux_list[j]);
+            }
+        }
+    }
+
+    // // Sorting the list according to Data (to display it in order on the agregated graph)
+    lista.sort(function (a, b) { return (new Date(a.created_at) - new Date(b.created_at)).toString() });
+
+    let counter = 0;
+    // Agregating each retweet to the list "data" that is used for the graph
+    lista.forEach(function (tweet) {
+        data_agregated_graph.push(
+            {
+                x: tweet.created_at, y: counter
+            }
+        );
+        counter++;
+    });
+
+    app.list_agregated_retweets_graph = lista;
+    // Creating and displaying the graph
+    var ctx = document.getElementById("canvas").getContext("2d");
+    window.myLine = new Chart(ctx, config_agregated_graph);
+}
+
+
+var config_agregated_graph = {
+    type: 'line',
+    data: {
+        datasets: [
+            {
+                label: 'Date ',
+                data: data_agregated_graph,
+                fill: true,
+                borderColor: '#212529'
+            },
+        ]
+    },
+    options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: "Chart.js Time Scale"
+        },
+
+        layout: {
+            padding: {
+                left: 10,
+                right: 10,
+                bottom: 30
+            },
+            // margin: {
+            //     bottom: 60
+            // },
+        },
+        scales: {
+            xAxes: [{
+                type: "time",
+                time: {
+                    displayFormats: {
+                        'millisecond': 'h:mm:ss',
+                        'second': 'HH:mm:ss',
+                        'minute': 'HH:mm',
+                        'hour': 'D MMM - HH:mm',
+                        'day': 'D MMM',
+                        'week': 'D MMM',
+                        'month': 'D MMM',
+                        'quarter': 'D MMM',
+                        'year': 'DD MMM YYYY',
+                    },
+                    // format: timeFormat,
+                    tooltipFormat: 'll'
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                },
+                ticks: {
+                    // beginAtZero: true
+                    minRotation: 30
+                }
+            }],
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'value'
+                }
+            }]
+        }
+    }
+};
+
+
+
+
+
 let app = new Vue({
     el: "#index",
     delimiters: ['${', '}'],
@@ -303,6 +438,12 @@ let app = new Vue({
         pressed_analyze: false,
         top_first_retweets: [],
         top_fake_retweets: [],
+        // Graphs
+        list_agregated_retweets_graph: [],
+        list_agregated_retweets: [],
+        list_of_retweets_entities: [],
+        // Teeet entities
+        list_tweet_entities: [],
         // nuevos
         list_agregated_tweets: [],
         add_to_list: add_to_list,

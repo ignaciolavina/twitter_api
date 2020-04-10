@@ -40,7 +40,33 @@
 <!-- <input v-model="num=8" name="search" type="text" class="form-control" id="word_search" placeholder="user name">
  -->
 
+<style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
+
+
 <div id="index">
+    <div class="container">
+        <div class="own-card">
+            <div class="card">
+                <div class="card-title">
+                    <h4 style="margin: 20px">
+                        Agregated graph
+                    </h4>
+                </div>
+                <div class="agregated-chart">
+                    <div class="chart-container">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
     <div v-on:load="get_data()"></div>
 
     <section id="data_panel" class="data" v-if="data_loaded==true">
