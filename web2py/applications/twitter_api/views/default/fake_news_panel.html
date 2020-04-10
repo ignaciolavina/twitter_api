@@ -89,14 +89,13 @@
     </section>
 
 
-    <section id="info_pannel" class="data" v-if="data_loaded==true">
+    <!-- <section id="info_pannel" class="data" v-if="data_loaded==true">
         <div class="container">
             <h2 style="margin: 20px">
             </h2>
             <div class="own-card">
                 <div class="card">
                     <div class="d-flex flex-row no-gutters">
-                        <!-- <div class="col-md-11"> -->
                         <div class="card-body">
                             <div class="card-title">
                                 <div class="d-flex flex-row">
@@ -115,7 +114,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
 
     <section id="settings_panel" class="data" v-if="data_loaded==true">
@@ -207,7 +206,7 @@
     </div>
 
 
-    <section id="list_similar_tweets_pannel" class="data" v-if="data_loaded==true">
+    <section id="list_similar_tweets_pannel" class="data" v-if="list_agregated_tweets.length>0">
         <div class="container">
             <h2 style="margin: 20px">
             </h2>
@@ -235,15 +234,15 @@
                                     <template v-for='(tweet, index) in list_agregated_tweets'>
                                         <tr>
                                             <th scope="row">
-                                                <!-- <img v-if="tweet.user.profile_image_url" class="own-card-img"
-                                                    v-bind:src="tweet.user.profile_image_url"> -->
+                                                <img v-if="tweet.user.profile_image_url" class="own-card-img"
+                                                    v-bind:src="tweet.user.profile_image_url">
                                             </th>
                                             <td>${tweet.user.name}</td>
                                             <td>${tweet.full_text}</td>
                                             <td>${tweet.user.followers_count}</td>
                                             <td>${tweet.user.favourites_count}</td>
                                             <td>
-                                                <button v-on:click="remove_from_list_agregated_tweets(index)"
+                                                <button v-on:click="remove_from_list_agregated_tweets(tweet, index)"
                                                     type="button" class="btn btn-dark">
                                                     <i class="fa fa-times" aria-hidden="true"></i>
                                                 </button>
@@ -454,7 +453,7 @@
                                         </div>
                                         <div class="col-md-1">
                                             <div>
-                                                <button v-on:click="add_to_list(tweet)" type="button"
+                                                <button v-on:click="add_to_list(tweet, index)" type="button"
                                                     class="btn btn-dark">
                                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                                 </button>

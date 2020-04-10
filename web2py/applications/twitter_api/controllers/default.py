@@ -24,7 +24,7 @@ def panel():
         dict(
             header='',
             body= lambda row : 
-                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id])), _class='fa fa-pencil-square')
+                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id], origin="panel")), _class='fa fa-pencil-square')
                 
                 # A('', _href=URL('default', 'index', args='camino'), _class='fa fa-pencil-square')
                 #     if row.user_id == auth.user.id else
@@ -128,7 +128,21 @@ def fake_news():
     )
     return dict(grid = grid)
 
+# Puede que estas dos no sean necesarias
+# def function_aux_user_name(id):
+#     result = db(db.master_case_table.id == id).select().first()
+#     if (result is not None):
+#         return result.user_name
+#     else:
+#         return result
 
+# def function_aux_title(id):
+#     print(id)
+#     result = db(db.master_case_table.id == id).select().first()
+#     if (result is not None):
+#         return result.title
+#     else:
+#         return result
 
 def panel_guardados():
     links = []
@@ -136,14 +150,16 @@ def panel_guardados():
         dict(
             header='User',
             body= lambda row : 
-            db(db.master_case_table.id == 45).select().first().user_name
+            # function_aux_user_name(row.tweet_id)
+            db(db.master_case_table.id == row.tweet_id).select().first().user_name
         )
     )
     links.append(
         dict(
             header='Text',
             body= lambda row : 
-            db(db.master_case_table.id == 45).select().first().title
+            # function_aux_title(row.tweet_id)
+            db(db.master_case_table.id == row.tweet_id).select().first().title
         )
     )
     links.append(
@@ -158,7 +174,7 @@ def panel_guardados():
         dict(
             header='Fake news panel',
             body= lambda row : 
-                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id])), _class='fa fa-pencil-square')
+                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id], origin="stored")), _class='fa fa-pencil-square')
                 
                 # A('', _href=URL('default', 'index', args='camino'), _class='fa fa-pencil-square')
                 #     if row.user_id == auth.user.id else
@@ -192,10 +208,24 @@ def panel_guardados():
 # Creado el 18 de Febrero con la nueva database
 def grouped_tweets():
  
+    links=[]
+    links.append(
+        dict(
+            header='Fake news panel',
+            body= lambda row : 
+                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id], origin="groups")), _class='fa fa-pencil-square')
+                
+                # A('', _href=URL('default', 'index', args='camino'), _class='fa fa-pencil-square')
+                #     if row.user_id == auth.user.id else
+                # A('', _class='hidden')
+        )
+    )
+
     query = db.group_tweets
 
     grid = SQLFORM.grid(
     query,
+    links=links,
     searchable=True, 
     details=True, 
     create=False, 

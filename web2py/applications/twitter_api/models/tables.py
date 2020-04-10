@@ -40,6 +40,7 @@ db.define_table('stored_tweets',
 
 db.define_table('group_tweets',
     Field('name', 'text'),
+    Field('main_id', 'reference: master_case_table'),
     Field('ids', 'list:reference master_case_table')
 )
 

@@ -11,25 +11,48 @@ let on_page_load = function () {
     var url_string = window.location.href
     var url = new URL(url_string);
     app.url_id = url.searchParams.get("id");
+    origin = url.searchParams.get("origin");
+
+    console.log("Params: " + app.url_id + ", " + origin);
 
     // Api method for pull the data
     if (app.url_id == null) {
-        alert("redirect");
+        alert("redirect A");
     } else {
-        get_data(app.url_id);
+        get_data(app.url_id, origin);
+        // if (origin == "groups") {
+        //     get_data_groups(app.url_id, origin);
+        //     alert("from groups");
+        // } else if (origin == "panel") {
+        //     // get_data(app.url_id); No pasar ese ID sino que buscar el de master
+        // } else if (origin == "stored") {
+        //     get_data(app.url_id);
+        // } else {
+        //     alert("redirect B");
+        // }
     }
 };
 
 
-let get_data = function (id) {
+let get_data = function (id, origin) {
     console.log('get data');
     $.getJSON(getDataFakeNewsPanelURL, {
-        id: id
+        id: id,
+        origin: origin
     }, function (response) {
-        app.data = response.data;
-        app.tweet = JSON.parse(response.data.tweet);
-        app.retweets = JSON.parse(response.data.retweets);
+        console.log(response);
+        // app.data = response.data;
+        app.tweet = JSON.parse(response.main_tweet.tweet);
+        app.retweets = JSON.parse(response.main_tweet.retweets);
+        // list_agregated_tweets = []
+        list_agregated_tweets = response.list_agregated_tweets;
+        for (let i = 0; i < list_agregated_tweets.length; i++) {
+            app.list_agregated_tweets.push(JSON.parse(list_agregated_tweets[i].tweet))
+        }
+
+        app.test = response.data;
         app.data_loaded = true;
+
 
         prepare_message()
         // test_function();
@@ -209,9 +232,10 @@ let get_similar_tweets = function () {
     });
 };
 
-let add_to_list = function (tweet) {
+let add_to_list = function (tweet, index) {
     console.log("added");
     app.list_agregated_tweets.push(tweet);
+    app.similar_tweets.splice(index, 1);
 };
 
 
@@ -226,9 +250,10 @@ let save_as_new = function (tweet) {
     // app.list_agregated_tweets.push(tweet);
 };
 
-let remove_from_list_agregated_tweets = function (index) {
+let remove_from_list_agregated_tweets = function (tweet, index) {
     console.log("remove_from_list_agregated_tweets");
     console.log("remove index" + index);
+    app.similar_tweets.unshift(tweet);
     app.list_agregated_tweets.splice(index, 1);
 
 }
@@ -246,6 +271,7 @@ let group_btn = function () {
 
     $.getJSON(groupURL, {
         group_name: app.tweet.id_str,
+        main_id: app.tweet.id_str,
         tweet_list_id: JSON.stringify(tweet_list_id),
         tweet_list: JSON.stringify(app.list_agregated_tweets)
         // id: app.tweet.id_str, 
@@ -282,6 +308,8 @@ let app = new Vue({
         add_to_list: add_to_list,
         remove_forever: remove_forever,
         save_as_new: save_as_new
+        //test
+        , test: ""
 
     },
     methods: {

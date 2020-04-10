@@ -166,8 +166,7 @@ def add_to_database():
     # status = api.GetStatus(int(tweet.id_str))
     
     # Get all the retweets
-    number_of_retweets_to_retrieve = 20
-    retweets = get_retweets(id, number_of_retweets_to_retrieve)
+    retweets = get_retweets(id)
 
     # Get the user to object to work with 
     user_string = json.dumps(tweet.user)
@@ -207,8 +206,10 @@ def add_to_database():
 
 
 
-def get_retweets(id_tweet, number_of_retweets_to_retrieve):
+def get_retweets(id_tweet):    
     
+    number_of_retweets_to_retrieve = 20
+
     # Recuperamos los retweets de la base de datos
     data = db(db.master_case_table.tweet_id == id_tweet).select().first()
     if (data):
@@ -263,9 +264,7 @@ def update_retweets(id_tweet):
         Output: lista con todos los retweets de ese tweet
     """
 
-    number_of_retweets_to_retrieve = 20
-
-    list_final_retweets = get_retweets(id_tweet, number_of_retweets_to_retrieve)
+    list_final_retweets = get_retweets(id_tweet)
 
     # Hacemos UPDATE de la base de datos
     db.master_case_table.update_or_insert(db.master_case_table.tweet_id == id_tweet,
@@ -351,12 +350,39 @@ def get_data():
     # Get the Params
     # Row number coincide siempre con el ID de la tabla master, de la que se quiere recuperar el tweet concreto
     row_number = int(request.vars.id)
+    origin = request.vars.origin
 
-    # Get data from database
-    data = db(db.master_case_table.id == row_number).select().first()
+    print(request.vars)
+    data = []
+    list_agregated_tweets = []
+
+    if (origin == "groups"):
+        group_data = db(db.group_tweets.id == row_number).select().first()
+        main_id = group_data.main_id
+        tweet_ids = group_data.ids
+        print(tweet_ids)
+        list_agregated_tweets = []
+        for id in tweet_ids:
+            print(id)
+            tweet_retrieved = db(db.master_case_table.id == id).select().first()
+            list_agregated_tweets.append(tweet_retrieved)
+
+        main_tweet = db(db.master_case_table.id == main_id).select().first()
+    else:
+        # (origin != "groups"):
+        # Get data from database
+        main_tweet = db(db.master_case_table.id == row_number).select().first()
+
     # print(data)
+    # main_complete_tweet = dict(main_tweet = data, main_reteets = data.retweets)
 
-    return response.json(dict(data = data))
+
+    #     dict_list = []
+    # for (item in list_agregated_tweets):
+    #     new_dict = {}
+    #     dict_list.append()
+
+    return response.json(dict(main_tweet = main_tweet, list_agregated_tweets=list_agregated_tweets))
 
 
 
@@ -369,11 +395,12 @@ def group_btn():
 
     tweet_list_id = json.loads(request.vars.tweet_list_id)
     tweet_list = json.loads(request.vars.tweet_list)
+    main_id = request.vars.main_id
 
     tweet_list_for_group = []
     for tweet in tweet_list:
-        tweet= json.dumps(tweet)
-        tweet = Objeto_JSON(tweet)
+        tweet_json= json.dumps(tweet)
+        tweet = Objeto_JSON(tweet_json)
         print("\nuser: ")
         print(tweet.user['screen_name'])
         id = tweet.id_str
@@ -394,14 +421,13 @@ def group_btn():
                 user_data = json.dumps(tweet.user)
             )
 
-            number_of_retweets_to_retrieve = 20
-            retweets = get_retweets(id, number_of_retweets_to_retrieve)
+            retweets = get_retweets(id)
 
             result = db.master_case_table.update_or_insert(db.master_case_table.tweet_id == id,
             title = tweet.full_text,
             user_name = user_name,
             tweet_id = id,
-            tweet = tweet,
+            tweet = tweet_json,
             utls = tweet.urls,
             tweet_user = stored_user,
             retweets = json.dumps(retweets)
@@ -413,11 +439,39 @@ def group_btn():
     for p in tweet_list_for_group:
         print('retrieved' + str(p))
 
+    print("looking for main")
+    main_id = db(db.master_case_table.tweet_id == main_id).select().first().id
 
-    result = db.group_tweets.update_or_insert(db.group_tweets.id == 1,
+
+    result = db.group_tweets.update_or_insert(db.group_tweets.main_id == main_id,
+        main_id = main_id,
         name = name,
         ids = tweet_list_for_group
     )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
