@@ -174,7 +174,7 @@ def panel_guardados():
         dict(
             header='Fake news panel',
             body= lambda row : 
-                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id], origin="stored")), _class='fa fa-pencil-square')
+                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.tweet_id], origin="stored")), _class='fa fa-pencil-square')
                 
                 # A('', _href=URL('default', 'index', args='camino'), _class='fa fa-pencil-square')
                 #     if row.user_id == auth.user.id else
