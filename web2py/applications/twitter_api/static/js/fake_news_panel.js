@@ -149,6 +149,10 @@ let analize_btn = function () {
         app.top_first_retweets.push(lista[i]);
 
     }
+
+    if (app.list_tweet_entities.length > 1) {
+        app.display_multiline_graph = true;
+    }
 }
 
 
@@ -157,7 +161,7 @@ let get_similar_tweets = function () {
     console.log("get_similar_tweets");
 
     // Boolean 0 | 1, poner asi porque en Python va con mayuscula
-    let es_noticia = 0;
+    let es_noticia = false;
     let url_noticia = "";
     let exclude_retweets = true;
 
@@ -165,7 +169,7 @@ let get_similar_tweets = function () {
     if (app.tweet.urls.length > 0) {
         if (app.tweet.urls[0].expanded_url) {
             console.log(app.tweet.urls[0].expanded_url);
-            es_noticia = 1;
+            es_noticia = true;
             url_noticia = app.tweet.urls[0].expanded_url;
         }
     }
@@ -191,7 +195,12 @@ let get_similar_tweets = function () {
         }
 
         // app.similar_tweets = response.results_article;
-        app.similar_tweets_retrieved = true;
+        if (app.similar_tweets.length == 0) {
+            alert("Not similar tweets were found");
+        } else {
+            alert("Found: " + app.similar_tweets.length + " similar tweets");
+            app.similar_tweets_retrieved = true;
+        }
     });
 };
 
@@ -207,13 +216,14 @@ let add_to_list = function (tweet, index) {
 };
 
 
-let remove_forever = function (tweet) {
+let remove_forever = function (tweet, index) {
     console.log("remove forever");
+    app.similar_tweets.splice(index, 1);
     // app.list_agregated_tweets.push(tweet);
 };
 
 
-let save_as_new = function (tweet) {
+let save_as_new = function (tweet, index) {
     console.log("save as new");
     // app.list_agregated_tweets.push(tweet);
 };
@@ -295,7 +305,10 @@ let prepare_data = function () {
 
 let create_graphs = function () {
     create_agregated_graph();
-    create_multiple_graph();
+    if (app.list_tweet_entities.length > 1) {
+        app.display_multiline_graph = true;
+        create_multiple_graph();
+    }
 }
 
 
@@ -543,6 +556,7 @@ let app = new Vue({
 
         // Graphs
         list_agregated_retweets_graph: [],
+        display_multiline_graph: false,
         list_agregated_retweets: [],
 
         // TWEETS AGRUPADOS (cambiar nombre)

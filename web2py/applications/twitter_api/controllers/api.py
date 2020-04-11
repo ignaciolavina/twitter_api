@@ -525,26 +525,36 @@ def get_noticias_similares(url, exclude_retweets):
     print("looking for similar news of: " + url)
 
     # url = 'https://www.vozpopuli.com/opinion/lilith-verstrynge-injustos-pablo-iglesias_0_1344166589.html'
-    soup = BeautifulSoup(urllib.request.urlopen(url), "lxml")
-    # soup = BeautifulSoup(urllib.urlopen("https://www.google.com"))
-    print (soup.title.string)
-    title = soup.title.string
+    try:
+        soup = BeautifulSoup(urllib.request.urlopen(url), "lxml")
+        # soup = BeautifulSoup(urllib.urlopen("https://www.google.com"))
+        print (soup.title.string)
+        title = soup.title.string
 
-    api = requires_twitter_auth()     
-    results = api.GetSearch(title, count = 10)
-    tweets = [tweet.AsDict() for tweet in results]
+        api = requires_twitter_auth()
+   
+        results = api.GetSearch(title, count = 20)
+        tweets = [tweet.AsDict() for tweet in results]
+    except:
+        tweets = []
 
-    if (exclude_retweets):
-        print("excluir retweets")
 
     return tweets
 
 def get_similar_tweets():   
     print(request.vars)
 
+    results_raw = []
+    if (request.vars.es_noticia=='true'):
+        results_raw = get_noticias_similares(request.vars.url_noticia, request.vars.exclude_retweets)
+
+
     results_article = []
-    if (request.vars.es_noticia):
-        results_article = get_noticias_similares(request.vars.url_noticia, request.vars.exclude_retweets)
+    for tweet in results_raw:
+        if ("RT" not in tweet['full_text']):
+            print(tweet['full_text'])
+            results_article.append(tweet)
+            
 
     return response.json(dict(results_article = results_article))
     # return response.json(dict(similar_tweets = similar_tweets))

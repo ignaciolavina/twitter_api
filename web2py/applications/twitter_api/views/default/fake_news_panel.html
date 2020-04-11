@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="col-md-4 d-flex justify-content-center">
                                     <button v-on:click="group_btn" type="button" class="btn btn-dark">
-                                        Group
+                                        Save data
                                     </button>
 
                                 </div>
@@ -128,7 +128,7 @@
         </section>
 
         <!-- multiline graph -->
-        <section id="multiline_graph" class="data" v-if="">
+        <section id="multiline_graph" class="data" v-if="display_multiline_graph">
             <div class="container">
                 <div class="own-card">
                     <div class="card">
@@ -530,12 +530,14 @@
                                                 </button>
                                             </div>
                                             <div>
-                                                <button v-on:click="remove_forever" type="button" class="btn btn-dark">
+                                                <button v-on:click="remove_forever(tweet, index)" type="button"
+                                                    class="btn btn-dark">
                                                     <i class="fa fa-times" aria-hidden="true"></i>
                                                 </button>
                                             </div>
                                             <div>
-                                                <button v-on:click="save_as_new" type="button" class="btn btn-dark">
+                                                <button v-on:click="save_as_new(tweet, index)" type="button"
+                                                    class="btn btn-dark">
                                                     <i class="fa fa-floppy-o" aria-hidden="true"></i>
                                                 </button>
                                             </div>
