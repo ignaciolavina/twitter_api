@@ -1,6 +1,13 @@
 
 const TWITTER_CHARACTER_LIMIT = 280;
 
+// let test_function = function () {
+//     for (let i = 0; i < app.retweets.length; i++) {
+//         console.log(app.retweets[i].retweeted_status.id_str);
+//     }
+// }
+
+
 let on_page_load = function () {
     // To get retrieve data
     console.log('************url******');
@@ -8,25 +15,24 @@ let on_page_load = function () {
     console.log('************End******');
 
     // Retrieveing the params from the url
-    var url_string = window.location.href
-    var url = new URL(url_string);
-    app.url_id = url.searchParams.get("id");
+    let url = new URL(window.location.href);
+    let url_id = url.searchParams.get("id");
     origin = url.searchParams.get("origin");
 
-    console.log("Params: " + app.url_id + ", " + origin);
+    console.log("Params: " + url_id + ", " + origin);
 
     // Api method for pull the data
-    if (app.url_id == null) {
+    if (url_id == null) {
         alert("redirect A");
     } else {
-        get_data(app.url_id, origin);
+        get_data(url_id, origin);
         // if (origin == "groups") {
-        //     get_data_groups(app.url_id, origin);
+        //     get_data_groups(url_id, origin);
         //     alert("from groups");
         // } else if (origin == "panel") {
-        //     // get_data(app.url_id); No pasar ese ID sino que buscar el de master
+        //     // get_data(url_id); No pasar ese ID sino que buscar el de master
         // } else if (origin == "stored") {
-        //     get_data(app.url_id);
+        //     get_data(url_id);
         // } else {
         //     alert("redirect B");
         // }
@@ -60,49 +66,38 @@ let get_data = function (id, origin) {
             app.list_agregated_tweets.push(tweet);
         }
 
-        app.test = response.data;
         app.data_loaded = true;
 
-
+        // Preparing the respond messaje
         prepare_message()
-        // test_function();
-        // create_graphs();
     });
 }
 
+// DEPRECATED 
+// let get_retweets = function () {
+//     // DEPRECATED??? yA HAY UNO PARA UPDATE RETWEETS, E INICIALMENTE YA NOS TRAEMOS LOS RETWEETS
+//     // onrejectionhandled, REVISAR XQ EL GETTWEET YA TRAE LOS RETWEEETS!
+//     console.log("get retweets");
+//     // $.getJSON(getRetweetsURL, {
+//     //     id: app.tweet.id_str,
+//     // }, function (response) {
+//     //     app.retweets = response.retweets;
+//     //     app.retweets_retrieved = true;
+//     // });
+// }
 
-
-let get_retweets = function () {
-    // DEPRECATED??? yA HAY UNO PARA UPDATE RETWEETS, E INICIALMENTE YA NOS TRAEMOS LOS RETWEETS
-    // onrejectionhandled, REVISAR XQ EL GETTWEET YA TRAE LOS RETWEEETS!
-    console.log("get retweets");
-    // $.getJSON(getRetweetsURL, {
-    //     id: app.tweet.id_str,
-    // }, function (response) {
-    //     app.retweets = response.retweets;
-    //     app.retweets_retrieved = true;
-    // });
-}
 
 let update_retweets = function () {
     console.log("update retweets");
     $.getJSON(updateRetweetsURL, {
         id: app.tweet.id_str,
     }, function (response) {
-        console.log("respuesta");
-        console.log(response);
+        // console.log(response);
         app.retweets = response.retweets_list;
         app.retweets_retrieved = true;
     });
 }
 
-let test_function = function () {
-
-    for (let i = 0; i < app.retweets.length; i++) {
-        console.log(app.retweets[i].retweeted_status.id_str);
-    }
-
-}
 
 let start_tracking = function () {
     console.log('start tracking');
@@ -123,40 +118,39 @@ let delete_tracking = function () {
     console.log('delete tracking');
 }
 
-let check_request = function () {
-    console.log("aaaaa");
-}
 
 
-// ______________________ VUE COMPONENT ______________________
 
-let prepare_message = function () {
-    let user = app.tweet.user.screen_name;
-    let text = "Hola! Soy parte de un proyecto de investigación sobre Fake News, y el sistema parece detectar que tu tweet como falso, ¿Podrías revisar su veracidad y eliminarlo si es falso?. Si me equivoco, o quires opt-out (Responde <NO>) y así mejoraré. Muchas Gracias!";
-    let fuente_o_link = app.fuente_o_link;
-    app.text_response = "@" + user + text + " " + fuente_o_link;
-}
 
-let print_cola = function (cola) {
-    for (let i = 0; i < cola.length; i++) {
-        console.log(cola[i].user.followers_count);
+
+
+// ______________________ MAIN MENU ______________________
+
+
+let analize_btn = function () {
+    prepare_data();
+    // To swich between graphs section or tweet section
+    app.display_section = !app.display_section;
+    if (app.display_section) {
+        setTimeout(() => { create_graphs(); }, 500);
+    } else {
+        // Cleaning the datasets of the graphs so we don't display them twice
+        data_agregated_graph = [];
+        dataset_multiline = [];
+    }
+
+    lista = app.list_agregated_retweets_graph;
+    //  Sorting the list according to Data (to display it in order on the agregated graph)
+    lista.sort(function (a, b) { return (new Date(a.created_at) - new Date(b.created_at)).toString() });
+
+    // Display the top X users that were the first ones (tweet or retweets)
+    const top_number = 5;
+    for (let i = 0; i < top_number; i++) {
+        app.top_first_retweets.push(lista[i]);
+
     }
 }
 
-let order_queue = function (cola) {
-    for (let i = cola.length - 1; i >= 0; i--) {
-        for (let j = i - 1; j >= 0; j--) {
-            // Si encuentra uno mayor, se intercambia
-            if (cola[j].user.followers_count > cola[i].user.followers_count) {
-                aux = cola[i];
-                cola[i] = cola[j];
-                cola[j] = aux;
-            }
-        }
-    }
-
-    return cola;
-}
 
 
 let get_similar_tweets = function () {
@@ -167,11 +161,7 @@ let get_similar_tweets = function () {
     let url_noticia = "";
     let exclude_retweets = true;
 
-    // for (let i = 0; i < 5; i++) {
-    //     app.similar_tweets.push(app.tweet);
-    // }
-    // app.similar_tweets_retrieved = true;
-
+    // Si detectamos que puede ser una NOTICIA (si tiene url)
     if (app.tweet.urls.length > 0) {
         if (app.tweet.urls[0].expanded_url) {
             console.log(app.tweet.urls[0].expanded_url);
@@ -180,6 +170,7 @@ let get_similar_tweets = function () {
         }
     }
 
+    // llamamos a la api API.get_similar_tweets
     $.getJSON(getSimilarTweetsURL, {
         id: app.tweet.id,
         text: app.tweet.full_text,
@@ -192,46 +183,42 @@ let get_similar_tweets = function () {
         // app.retweets_retrieved = true;
         console.log(response.results_article);
         // SI ya estan en la lista los eliminamos
-        // NOT WORKING YET 
+        // NOT WORKING !!!
         for (let i = 0; i < response.results_article.length; i++) {
             if (!app.similar_tweets.includes(response.results_article[i])) {
                 app.similar_tweets.push(response.results_article[i]);
             }
         }
-        // response.results_article.forEach(element => {
-        //     if (!app.similar_tweets.includes(element)) {
-        //         app.similar_tweets.push(element);
-        //     }
-        // }
-        // app.similar_tweets.includes(element);
-        // console.log(element)
-        // );
+
         // app.similar_tweets = response.results_article;
         app.similar_tweets_retrieved = true;
     });
 };
 
+
 let add_to_list = function (tweet, index) {
-    console.log("added");
     // Si esta repetido no lo anadimos
-    if (!app.similar_tweets.includes(tweet)) {
-        app.list_agregated_tweets.push(tweet);
-    }
+    // if (!app.similar_tweets.includes(tweet)) {
+    //     app.list_agregated_tweets.push(tweet);
+    // }
+    app.list_agregated_tweets.push(tweet);
+    // Eliminamos de la otra lista el tweet
     app.similar_tweets.splice(index, 1);
 };
 
 
 let remove_forever = function (tweet) {
-    console.log("added");
+    console.log("remove forever");
     // app.list_agregated_tweets.push(tweet);
 };
 
 
 let save_as_new = function (tweet) {
-    console.log("added");
+    console.log("save as new");
     // app.list_agregated_tweets.push(tweet);
 };
 
+// Remove from the list that form the group, the specific tweet
 let remove_from_list_agregated_tweets = function (tweet, index) {
     console.log("remove_from_list_agregated_tweets");
     console.log("remove index" + index);
@@ -245,11 +232,6 @@ let group_btn = function () {
     for (let i = 0; i < app.list_agregated_tweets.length; i++) {
         tweet_list_id.push(app.list_agregated_tweets[i].id_str);
     }
-
-    console.log("mandamos " + tweet_list_id);
-    console.log("mandamo22s " + tweet_list_id.length);
-
-
 
     $.getJSON(groupURL, {
         group_name: app.tweet.id_str,
@@ -266,150 +248,17 @@ let group_btn = function () {
 
 
 
-let analize_btn = function () {
-    prepare_data();
-    app.display_section = !app.display_section;
-    if (app.display_section) {
-        setTimeout(() => { create_graphs(); }, 500);
-    } else {
-        data_agregated_graph = [];
-        dataset_multiline = [];
-    }
-
-
-    lista = app.list_agregated_retweets_graph;
-    //     // // Sorting the list according to Data (to display it in order on the agregated graph)
-    lista.sort(function (a, b) { return (new Date(a.created_at) - new Date(b.created_at)).toString() });
-
-
-
-    // console.log("analize_btn");
-    // console.log(app.pressed_analyze);
-    // // app.pressed_analyze = !app.pressed_analyze;
-    // app.pressed_analyze = true;
-    const top_number = 5;
-
-    for (let i = 0; i < top_number; i++) {
-        app.top_first_retweets.push(lista[i]);
-
-    }
-
-
-    // // Calculamos los usuarios con mas followers que han hecho retweet
-    // let cola = []
-    // let k = 0;
-    // let max_value_followers = 0;
-    // while (k < app.retweets.length && k < top_number) {
-    //     cola.push(app.retweets[k]);
-    //     console.log("k " + k);
-    //     if (app.retweets[k].user.followers_count > max_value_followers) {
-    //         max_value_followers = app.retweets[k].user.followers_count;
-    //     }
-    //     k++;
-    // }
-
-    // cola = order_queue(cola);
-    // max_value_followers = cola[0].user.followers_count
-    // for (let i = 0; i < cola.length; i++) {
-    //     console.log(cola[i].user.followers_count);
-    // }
-    // console.log("max value followers" + max_value_followers);
-
-    // for (let i = k; i < app.retweets.length; i++) {
-    //     followers_number = app.retweets[i].user.followers_count;
-    //     console.log("Comparando " + max_value_followers + " con " + followers_number);
-    //     print_cola(cola);
-    //     if (followers_number > max_value_followers) {
-    //         max_value_followers = cola[0].user.followers_count;
-    //         cola.unshift(app.retweets[i]);
-    //         cola.pop();
-    //     }
-    // }
-    // console.log("max value" + max_value_followers);
-    // app.top_fake_retweets = cola;
-}
-
-
-
-let app = new Vue({
-    el: "#index",
-    delimiters: ['${', '}'],
-    unsafeDelimiters: ['!{', '}'],
-    data: {
-        data_loaded: false,
-        tweet: [],
-        switch1: true,
-        switch2: true,
-        top_fake_users: [],
-        top_first_users: [],
-        other_tweets: [],
-        url_id: "",
-        similar_tweets_retrieved: false,
-        similar_tweets: [],
-        retweets: [],
-        retweets_retrieved: false,
-        fuente_o_link: "",
-        text_response: "",
-        pressed_analyze: false,
-        top_first_retweets: [],
-        top_fake_retweets: [],
-        // Graphs
-        list_agregated_retweets_graph: [],
-        list_agregated_retweets: [],
-        list_of_retweets_entities: [],
-        // Teeet entities
-        list_tweet_entities: [],
-        // nuevos
-        list_agregated_tweets: [],
-        // for single page view
-        display_section: false
-        //test
-        , test: ""
-
-    },
-    methods: {
-        get_data: get_data,
-        start_tracking: start_tracking,
-        delete_tracking: delete_tracking,
-        check_request: check_request,
-        get_similar_tweets: get_similar_tweets,
-        get_retweets: get_retweets,
-        update_retweets: update_retweets,
-        prepare_message: prepare_message,
-        analize_btn: analize_btn,
-        remove_from_list_agregated_tweets: remove_from_list_agregated_tweets,
-        group_btn: group_btn,
-        // nuevos
-        add_to_list: add_to_list,
-        remove_forever: remove_forever,
-        save_as_new: save_as_new
-    }
-});
-
-
-on_page_load();
-
 
 
 
 // ____________________  GRAPHS SECTION _______________________
 
 
-let create_graphs = function () {
-    create_agregated_graph();
-    create_multiple_graph();
-}
-
-
-
-
-
-// ____________________ AGREGATED GRAPH _______________________
-
 var data_agregated_graph = [];
 // var timeFormat = 'YYYY-MM-DDTHH:mm:ss.sssZ';
 var timeFormat = "ddd MMM dd HH:mm:ss Z yyyy"
 
+var dataset_multiline = [];
 
 
 let prepare_data = function () {
@@ -439,12 +288,21 @@ let prepare_data = function () {
     }
 
     // Sorting the list according to Data (to display it in order on the agregated graph)
-    lista2.sort(function (a, b) { return ((a.user.followers_count) - (b.user.followers_count)) });
+    lista2.sort(function (a, b) { return ((b.user.followers_count) - (a.user.followers_count)) });
     app.top_fake_retweets = lista2;
 }
 
 
+let create_graphs = function () {
+    create_agregated_graph();
+    create_multiple_graph();
+}
 
+
+
+
+
+// ____________________ AGREGATED GRAPH _______________________
 
 let create_agregated_graph = function () {
 
@@ -536,7 +394,6 @@ var config_agregated_graph = {
 
 // ____________________ MULTIPLE LINE GRAPH _______________________
 
-var dataset_multiline = [];
 
 let prepare_multiline_graph = function () {
     // For each list of retweets, we must a dataset entry with all the retweets as data
@@ -648,3 +505,70 @@ var config_multiple_graph = {
     }
 };
 
+
+let prepare_message = function () {
+    let user = app.tweet.user.screen_name;
+    let text = "Hola! Soy parte de un proyecto de investigación sobre Fake News, y el sistema parece detectar que tu tweet como falso, ¿Podrías revisar su veracidad y eliminarlo si es falso?. Si me equivoco, o quires opt-out (Responde <NO>) y así mejoraré. Muchas Gracias!";
+    let fuente_o_link = app.fuente_o_link;
+    app.text_response = "@" + user + text + " " + fuente_o_link;
+}
+
+
+
+
+let app = new Vue({
+    el: "#index",
+    delimiters: ['${', '}'],
+    unsafeDelimiters: ['!{', '}'],
+    data: {
+        data_loaded: false,
+        // Teeet entities
+        list_tweet_entities: [],
+        // Main tweet
+        tweet: [],
+        retweets: [],
+        // Settings panel 
+        switch1: true,
+        switch2: true,
+        fuente_o_link: "", // Not used yet
+        text_response: "",
+        // Similar tweets section
+        similar_tweets_retrieved: false,
+        similar_tweets: [],
+        // Update retweets
+        retweets_retrieved: false,
+        // Display section
+        top_first_retweets: [],
+        top_fake_retweets: [],
+
+        // Graphs
+        list_agregated_retweets_graph: [],
+        list_agregated_retweets: [],
+
+        // TWEETS AGRUPADOS (cambiar nombre)
+        list_agregated_tweets: [],
+        // for single page view
+        display_section: false
+        //test
+
+    },
+    methods: {
+        get_data: get_data,
+        start_tracking: start_tracking,
+        delete_tracking: delete_tracking,
+        get_similar_tweets: get_similar_tweets,
+        // get_retweets: get_retweets,
+        update_retweets: update_retweets,
+        prepare_message: prepare_message,
+        analize_btn: analize_btn,
+        remove_from_list_agregated_tweets: remove_from_list_agregated_tweets,
+        group_btn: group_btn,
+        // nuevos
+        add_to_list: add_to_list,
+        remove_forever: remove_forever,
+        save_as_new: save_as_new
+    }
+});
+
+
+on_page_load();
