@@ -72,9 +72,12 @@
                             </div>
                             <div class="d-flex flex-row">
                                 <div class="col-md-4 d-flex justify-content-center">
-
-                                    <button v-on:click="analize_btn" type="button" class="btn btn-dark">
+                                    <button v-if="display_section" v-on:click="analize_btn" type="button"
+                                        class="btn btn-dark">
                                         Analyze
+                                    </button>
+                                    <button v-else v-on:click="analize_btn" type="button" class="btn btn-dark">
+                                        To Tweet section
                                     </button>
                                 </div>
                                 <div class="col-md-4 d-flex justify-content-center">

@@ -256,6 +256,9 @@ let analize_btn = function () {
     app.display_section = !app.display_section;
     if (app.display_section) {
         setTimeout(() => { create_graphs(); }, 500);
+    } else {
+        data_agregated_graph = [];
+        dataset_multiline = [];
     }
 
 
@@ -523,6 +526,8 @@ var dataset_multiline = [];
 let prepare_multiline_graph = function () {
     // For each list of retweets, we must a dataset entry with all the retweets as data
     // Therefore, each tweet's retweets are display as diferent values on the graph
+
+
 
     for (let i = 0; i < app.list_tweet_entities.length; i++) {
         lista = []
