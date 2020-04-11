@@ -41,26 +41,23 @@ let get_data = function (id, origin) {
         origin: origin
     }, function (response) {
         console.log(response);
-        // app.data = response.data;
+        // main tweet entity
         app.tweet = JSON.parse(response.main_tweet.tweet);
         main_retweets = JSON.parse(response.main_tweet.retweets);
+        // (entity = {tweet, retweets})
 
+        // list_tweet_entities contains ALL tweet entities (main + others)
+        // first we include the main tweet
         app.list_tweet_entities.push([app.tweet, main_retweets]);
-
-
+        // then we include the others
         list_agregated_tweets = response.list_agregated_tweets;
-
+        // agregating the rest of the entities (we have to JSON parse first)
         for (let i = 0; i < list_agregated_tweets.length; i++) {
             tweet = JSON.parse(list_agregated_tweets[i].tweet);
             retweets = JSON.parse(list_agregated_tweets[i].retweets)
-            // if (retweets.length == 0) {
-            //     retweets = []
-            // }
             app.list_tweet_entities.push([tweet, retweets]);
             // for the list dislpayed
             app.list_agregated_tweets.push(tweet);
-
-
         }
 
         app.test = response.data;
@@ -194,14 +191,32 @@ let get_similar_tweets = function () {
         // app.similar_tweets = response.similar_tweets;
         // app.retweets_retrieved = true;
         console.log(response.results_article);
-        app.similar_tweets = response.results_article;
+        // SI ya estan en la lista los eliminamos
+        // NOT WORKING YET 
+        for (let i = 0; i < response.results_article.length; i++) {
+            if (!app.similar_tweets.includes(response.results_article[i])) {
+                app.similar_tweets.push(response.results_article[i]);
+            }
+        }
+        // response.results_article.forEach(element => {
+        //     if (!app.similar_tweets.includes(element)) {
+        //         app.similar_tweets.push(element);
+        //     }
+        // }
+        // app.similar_tweets.includes(element);
+        // console.log(element)
+        // );
+        // app.similar_tweets = response.results_article;
         app.similar_tweets_retrieved = true;
     });
 };
 
 let add_to_list = function (tweet, index) {
     console.log("added");
-    app.list_agregated_tweets.push(tweet);
+    // Si esta repetido no lo anadimos
+    if (!app.similar_tweets.includes(tweet)) {
+        app.list_agregated_tweets.push(tweet);
+    }
     app.similar_tweets.splice(index, 1);
 };
 
