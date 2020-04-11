@@ -69,6 +69,7 @@ let get_data = function (id, origin) {
 
         prepare_message()
         // test_function();
+        // create_graphs();
     });
 }
 
@@ -137,53 +138,6 @@ let prepare_message = function () {
     let text = "Hola! Soy parte de un proyecto de investigación sobre Fake News, y el sistema parece detectar que tu tweet como falso, ¿Podrías revisar su veracidad y eliminarlo si es falso?. Si me equivoco, o quires opt-out (Responde <NO>) y así mejoraré. Muchas Gracias!";
     let fuente_o_link = app.fuente_o_link;
     app.text_response = "@" + user + text + " " + fuente_o_link;
-}
-
-let analize_btn = function () {
-    console.log("analize_btn");
-    console.log(app.pressed_analyze);
-    // app.pressed_analyze = !app.pressed_analyze;
-    app.pressed_analyze = true;
-    const top_number = 5;
-
-    for (let i = 0; i < top_number; i++) {
-        app.top_first_retweets.push(app.retweets[i]);
-
-    }
-
-
-    // Calculamos los usuarios con mas followers que han hecho retweet
-    let cola = []
-    let k = 0;
-    let max_value_followers = 0;
-    while (k < app.retweets.length && k < top_number) {
-        cola.push(app.retweets[k]);
-        console.log("k " + k);
-        if (app.retweets[k].user.followers_count > max_value_followers) {
-            max_value_followers = app.retweets[k].user.followers_count;
-        }
-        k++;
-    }
-
-    cola = order_queue(cola);
-    max_value_followers = cola[0].user.followers_count
-    for (let i = 0; i < cola.length; i++) {
-        console.log(cola[i].user.followers_count);
-    }
-    console.log("max value followers" + max_value_followers);
-
-    for (let i = k; i < app.retweets.length; i++) {
-        followers_number = app.retweets[i].user.followers_count;
-        console.log("Comparando " + max_value_followers + " con " + followers_number);
-        print_cola(cola);
-        if (followers_number > max_value_followers) {
-            max_value_followers = cola[0].user.followers_count;
-            cola.unshift(app.retweets[i]);
-            cola.pop();
-        }
-    }
-    console.log("max value" + max_value_followers);
-    app.top_fake_retweets = cola;
 }
 
 let print_cola = function (cola) {
@@ -295,6 +249,131 @@ let group_btn = function () {
 }
 
 
+
+
+let analize_btn = function () {
+    prepare_data();
+    app.display_section = !app.display_section;
+    if (app.display_section) {
+        setTimeout(() => { create_graphs(); }, 500);
+    }
+
+
+    lista = app.list_agregated_retweets_graph;
+    //     // // Sorting the list according to Data (to display it in order on the agregated graph)
+    lista.sort(function (a, b) { return (new Date(a.created_at) - new Date(b.created_at)).toString() });
+
+
+
+    // console.log("analize_btn");
+    // console.log(app.pressed_analyze);
+    // // app.pressed_analyze = !app.pressed_analyze;
+    // app.pressed_analyze = true;
+    const top_number = 5;
+
+    for (let i = 0; i < top_number; i++) {
+        app.top_first_retweets.push(lista[i]);
+
+    }
+
+
+    // // Calculamos los usuarios con mas followers que han hecho retweet
+    // let cola = []
+    // let k = 0;
+    // let max_value_followers = 0;
+    // while (k < app.retweets.length && k < top_number) {
+    //     cola.push(app.retweets[k]);
+    //     console.log("k " + k);
+    //     if (app.retweets[k].user.followers_count > max_value_followers) {
+    //         max_value_followers = app.retweets[k].user.followers_count;
+    //     }
+    //     k++;
+    // }
+
+    // cola = order_queue(cola);
+    // max_value_followers = cola[0].user.followers_count
+    // for (let i = 0; i < cola.length; i++) {
+    //     console.log(cola[i].user.followers_count);
+    // }
+    // console.log("max value followers" + max_value_followers);
+
+    // for (let i = k; i < app.retweets.length; i++) {
+    //     followers_number = app.retweets[i].user.followers_count;
+    //     console.log("Comparando " + max_value_followers + " con " + followers_number);
+    //     print_cola(cola);
+    //     if (followers_number > max_value_followers) {
+    //         max_value_followers = cola[0].user.followers_count;
+    //         cola.unshift(app.retweets[i]);
+    //         cola.pop();
+    //     }
+    // }
+    // console.log("max value" + max_value_followers);
+    // app.top_fake_retweets = cola;
+}
+
+
+
+let app = new Vue({
+    el: "#index",
+    delimiters: ['${', '}'],
+    unsafeDelimiters: ['!{', '}'],
+    data: {
+        data_loaded: false,
+        tweet: [],
+        switch1: true,
+        switch2: true,
+        top_fake_users: [],
+        top_first_users: [],
+        other_tweets: [],
+        url_id: "",
+        similar_tweets_retrieved: false,
+        similar_tweets: [],
+        retweets: [],
+        retweets_retrieved: false,
+        fuente_o_link: "",
+        text_response: "",
+        pressed_analyze: false,
+        top_first_retweets: [],
+        top_fake_retweets: [],
+        // Graphs
+        list_agregated_retweets_graph: [],
+        list_agregated_retweets: [],
+        list_of_retweets_entities: [],
+        // Teeet entities
+        list_tweet_entities: [],
+        // nuevos
+        list_agregated_tweets: [],
+        // for single page view
+        display_section: false
+        //test
+        , test: ""
+
+    },
+    methods: {
+        get_data: get_data,
+        start_tracking: start_tracking,
+        delete_tracking: delete_tracking,
+        check_request: check_request,
+        get_similar_tweets: get_similar_tweets,
+        get_retweets: get_retweets,
+        update_retweets: update_retweets,
+        prepare_message: prepare_message,
+        analize_btn: analize_btn,
+        remove_from_list_agregated_tweets: remove_from_list_agregated_tweets,
+        group_btn: group_btn,
+        // nuevos
+        add_to_list: add_to_list,
+        remove_forever: remove_forever,
+        save_as_new: save_as_new
+    }
+});
+
+
+on_page_load();
+
+
+
+
 // ____________________  GRAPHS SECTION _______________________
 
 
@@ -305,15 +384,20 @@ let create_graphs = function () {
 
 
 
+
+
 // ____________________ AGREGATED GRAPH _______________________
 
 var data_agregated_graph = [];
 // var timeFormat = 'YYYY-MM-DDTHH:mm:ss.sssZ';
 var timeFormat = "ddd MMM dd HH:mm:ss Z yyyy"
 
-let create_agregated_graph = function () {
-    lista = []
 
+
+let prepare_data = function () {
+
+    // PREPARAMOS LA LSITA AGREAGADA
+    lista = []
     for (let i = 0; i < app.list_tweet_entities.length; i++) {
         lista.push(app.list_tweet_entities[i][0]);
 
@@ -325,12 +409,30 @@ let create_agregated_graph = function () {
         }
     }
 
-    // // Sorting the list according to Data (to display it in order on the agregated graph)
+    // Sorting the list according to Data (to display it in order on the agregated graph)
     lista.sort(function (a, b) { return (new Date(a.created_at) - new Date(b.created_at)).toString() });
+    app.list_agregated_retweets_graph = lista;
+
+    let lista2 = lista.slice();
+    for (let j = 0; j < lista2.length; j++) {
+        if (!lista2[j].user.followers_count) {
+            lista2[j].user.followers_count = 0;
+        }
+    }
+
+    // Sorting the list according to Data (to display it in order on the agregated graph)
+    lista2.sort(function (a, b) { return ((a.user.followers_count) - (b.user.followers_count)) });
+    app.top_fake_retweets = lista2;
+}
+
+
+
+
+let create_agregated_graph = function () {
 
     let counter = 0;
     // Agregating each retweet to the list "data" that is used for the graph
-    lista.forEach(function (tweet) {
+    app.list_agregated_retweets_graph.forEach(function (tweet) {
         data_agregated_graph.push(
             {
                 x: tweet.created_at, y: counter
@@ -339,7 +441,7 @@ let create_agregated_graph = function () {
         counter++;
     });
 
-    app.list_agregated_retweets_graph = lista;
+
     // Creating and displaying the graph
     var ctx = document.getElementById("canvas").getContext("2d");
     window.myLine = new Chart(ctx, config_agregated_graph);
@@ -351,7 +453,7 @@ var config_agregated_graph = {
     data: {
         datasets: [
             {
-                label: 'Date ',
+                label: 'Tweet',
                 data: data_agregated_graph,
                 fill: true,
                 borderColor: '#212529'
@@ -414,60 +516,115 @@ var config_agregated_graph = {
 
 
 
+// ____________________ MULTIPLE LINE GRAPH _______________________
 
+var dataset_multiline = [];
 
-let app = new Vue({
-    el: "#index",
-    delimiters: ['${', '}'],
-    unsafeDelimiters: ['!{', '}'],
-    data: {
-        data_loaded: false,
-        tweet: [],
-        switch1: true,
-        switch2: true,
-        top_fake_users: [],
-        top_first_users: [],
-        other_tweets: [],
-        url_id: "",
-        similar_tweets_retrieved: false,
-        similar_tweets: [],
-        retweets: [],
-        retweets_retrieved: false,
-        fuente_o_link: "",
-        text_response: "",
-        pressed_analyze: false,
-        top_first_retweets: [],
-        top_fake_retweets: [],
-        // Graphs
-        list_agregated_retweets_graph: [],
-        list_agregated_retweets: [],
-        list_of_retweets_entities: [],
-        // Teeet entities
-        list_tweet_entities: [],
-        // nuevos
-        list_agregated_tweets: [],
-        add_to_list: add_to_list,
-        remove_forever: remove_forever,
-        save_as_new: save_as_new
-        //test
-        , test: ""
+let prepare_multiline_graph = function () {
+    // For each list of retweets, we must a dataset entry with all the retweets as data
+    // Therefore, each tweet's retweets are display as diferent values on the graph
 
-    },
-    methods: {
-        get_data: get_data,
-        start_tracking: start_tracking,
-        delete_tracking: delete_tracking,
-        check_request: check_request,
-        get_similar_tweets: get_similar_tweets,
-        get_retweets: get_retweets,
-        update_retweets: update_retweets,
-        prepare_message: prepare_message,
-        analize_btn: analize_btn,
-        remove_from_list_agregated_tweets: remove_from_list_agregated_tweets,
-        group_btn: group_btn
+    for (let i = 0; i < app.list_tweet_entities.length; i++) {
+        lista = []
+        multiline_data = []
+        lista.push(app.list_tweet_entities[i][0]);
+
+        if (app.list_tweet_entities[i][1].length > 0) {
+            aux_list = app.list_tweet_entities[i][1];
+            for (let j = 0; j < aux_list.length; j++) {
+                lista.push(aux_list[j]);
+            }
+        }
+
+        // // Sorting the list according to Data (to display it in order on the agregated graph)
+        lista.sort(function (a, b) { return (new Date(a.created_at) - new Date(b.created_at)).toString() });
+
+        let counter = 0;
+        // Agregating each retweet to the list "data" that is used for the graph
+        lista.forEach(function (tweet) {
+            multiline_data.push(
+                {
+                    x: tweet.created_at, y: counter
+                }
+            );
+            counter++;
+        });
+
+        // data = app.list_tweets_and_retweets[i][1];
+        dataset_multiline.push({
+            label: 'Tweet ' + i,
+            data: multiline_data,
+            fill: true,
+            borderColor: '#212529'
+        });
     }
-});
+}
+
+let create_multiple_graph = function () {
+    // Isolate the preparation of the data in other method
+    prepare_multiline_graph();
+    var graph_two = document.getElementById("canvas_two").getContext("2d");
+    window.myLine = new Chart(graph_two, config_multiple_graph);
+};
 
 
-on_page_load();
+
+var config_multiple_graph = {
+    type: 'line',
+    data: {
+        datasets: dataset_multiline
+    },
+    options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: "Chart.js Time Scale"
+        },
+
+        layout: {
+            padding: {
+                left: 10,
+                right: 10,
+                bottom: 30
+            },
+            // margin: {
+            //     bottom: 60
+            // },
+        },
+        scales: {
+            xAxes: [{
+                type: "time",
+                time: {
+                    displayFormats: {
+                        'millisecond': 'h:mm:ss',
+                        'second': 'HH:mm:ss',
+                        'minute': 'HH:mm',
+                        'hour': 'D MMM - HH:mm',
+                        'day': 'D MMM',
+                        'week': 'D MMM',
+                        'month': 'D MMM',
+                        'quarter': 'D MMM',
+                        'year': 'DD MMM YYYY',
+                    },
+                    // format: timeFormat,
+                    tooltipFormat: 'll'
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                },
+                ticks: {
+                    // beginAtZero: true
+                    minRotation: 30
+                }
+            }],
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'value'
+                }
+            }]
+        }
+    }
+};
 
