@@ -25,7 +25,7 @@ let fetch_data = function (tweet) {
 
 
 let app = new Vue({
-    el: "#buscador",
+    el: "#explorador",
     delimiters: ['${', '}'],
     unsafeDelimiters: ['!{', '}'],
     data: {
