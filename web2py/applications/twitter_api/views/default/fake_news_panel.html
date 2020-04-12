@@ -293,215 +293,164 @@
                 </div>
             </div>
         </div>
-    </section>
 
 
 
 
-    <section id="settings_panel" class="data" v-if="data_loaded==true">
-        <div class="container">
-            <h2 style="margin: 20px">
-            </h2>
-            <div class="own-card">
-                <div class="card">
-                    <div class="d-flex flex-row no-gutters">
-                        <!-- <div class="col-md-11"> -->
-                        <div class="card-body">
-                            <div class="card-title">
-                                <div class="d-flex flex-row">
-                                    <h2>
-                                        Settings Pannel
-                                    </h2>
-                                </div>
-                                <div class="d-flex flex-row" style="margin-top: 20px;">
-                                    <div class="col-md-8">
-                                        <h5>
-                                            Message
-                                        </h5>
-                                        <textarea v-model="text_response" class="form-control"
-                                            id="exampleFormControlTextarea1" placeholder="Insert message here" rows="5">
+
+        <section id="settings_panel" class="data" v-if="data_loaded==true">
+            <div class="container">
+                <h2 style="margin: 20px">
+                </h2>
+                <div class="own-card">
+                    <div class="card">
+                        <div class="d-flex flex-row no-gutters">
+                            <!-- <div class="col-md-11"> -->
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <div class="d-flex flex-row">
+                                        <h2>
+                                            Settings Pannel
+                                        </h2>
+                                    </div>
+                                    <div class="d-flex flex-row" style="margin-top: 20px;">
+                                        <div class="col-md-8">
+                                            <h5>
+                                                Message
+                                            </h5>
+                                            <textarea v-model="text_response" class="form-control"
+                                                id="exampleFormControlTextarea1" placeholder="Insert message here"
+                                                rows="5">
 
                                         </textarea>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <h5>
-                                            Options
-                                        </h5>
-                                        <div class="d-flex flex-row justify-content-between">
-                                            <p>Alert Source</p>
-                                            <p>Yes</p>
-                                            <label class="switch">
-                                                <input type="checkbox" v-model="switch1">
-                                                <span class="slider round"></span>
-                                            </label>
-                                            <p>NO</p>
                                         </div>
-                                        <div class="d-flex flex-row justify-content-between">
-                                            <p>Alert Past users</p>
-                                            <p>Yes</p>
-                                            <label class="switch">
-                                                <input type="checkbox" v-model="switch2">
-                                                <span class="slider round"></span>
-                                            </label>
-                                            <p>NO</p>
-                                        </div>
-                                        <div class="d-flex flex-row justify-content-around" style="margin-top: 20px;">
-                                            <div>
-                                                <button v-on:click="start_tracking" type="button"
+                                        <div class="col-md-4">
+                                            <h5>
+                                                Options
+                                            </h5>
+                                            <div class="d-flex flex-row justify-content-between">
+                                                <p>Alert Source</p>
+                                                <p>Yes</p>
+                                                <label class="switch">
+                                                    <input type="checkbox" v-model="switch1">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <p>NO</p>
+                                            </div>
+                                            <div class="d-flex flex-row justify-content-between">
+                                                <p>Alert Past users</p>
+                                                <p>Yes</p>
+                                                <label class="switch">
+                                                    <input type="checkbox" v-model="switch2">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <p>NO</p>
+                                            </div>
+                                            <div class="d-flex flex-row justify-content-around"
+                                                style="margin-top: 20px;">
+                                                <div>
+                                                    <button v-on:click="start_tracking" type="button"
+                                                        class="btn btn-primary">
+                                                        Track
+                                                </div>
+                                                <button v-on:click="update_retweets" type="button"
                                                     class="btn btn-primary">
-                                                    Track
-                                            </div>
-                                            <button v-on:click="update_retweets" type="button" class="btn btn-primary">
-                                                Update Retweets
-                                            </button>
-                                            <div>
-                                                <button v-on:click="delete_tracking" type="button"
-                                                    class="btn btn-primary">Delete
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-    <section id="list_similar_tweets_pannel" class="data" v-if="list_agregated_tweets.length>0">
-        <div class="container">
-            <h2 style="margin: 20px">
-            </h2>
-            <div class="">
-                <div class="card">
-                    <div class="card-top-fake-users">
-                        <div class="card-title">
-                            <h4 style="margin: 20px">
-                                Similar tweets
-                            </h4>
-                        </div>
-                        <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                            <table class="table table-hover">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th scope="col">pic</th>
-                                        <th scope="col">user name</th>
-                                        <th scope="col">text</th>
-                                        <th scope="col">followers</th>
-                                        <th scope="col">scope</th>
-                                        <th scope="col">Options</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <template v-for='(tweet, index) in list_agregated_tweets'>
-                                        <tr>
-                                            <th scope="row">
-                                                <img v-if="tweet.user.profile_image_url" class="own-card-img"
-                                                    v-bind:src="tweet.user.profile_image_url">
-                                            </th>
-                                            <td>${tweet.user.name}</td>
-                                            <td>${tweet.full_text}</td>
-                                            <td>${tweet.user.followers_count}</td>
-                                            <td>${tweet.user.favourites_count}</td>
-                                            <td>
-                                                <button v-on:click="remove_from_list_agregated_tweets(tweet, index)"
-                                                    type="button" class="btn btn-dark">
-                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                    Update Retweets
                                                 </button>
-                                            </td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-
-    <!-- "RETWEETS SEDCTION" -->
-
-    <section id="retweets" class="data" v-if="retweets_retrieved==true">
-
-
-        <div class="container">
-            <h2 style="margin: 20px">
-                Retweets
-            </h2>
-            <p>This section displays similar tweets founded (other initial sources of the same fake new)</p>
-            <div v-for="tweet in retweets">
-                <div v-if=tweet>
-                    <div class="own-card">
-                        <div class="card">
-
-                            <div class="d-flex flex-row no-gutters">
-                                <div class="d-flex justify-content-center align-items-start card-image">
-                                    <img class="own-card-img" v-bind:src="tweet.user.profile_image_url">
-                                </div>
-
-                                <div class="col-md-11">
-                                    <div class="card-body">
-                                        <div class="card-title">
-                                            <div class="d-flex flex-row">
-
-                                                <h5>
-                                                    ${tweet.user.name}
-                                                </h5>
+                                                <div>
+                                                    <button v-on:click="delete_tracking" type="button"
+                                                        class="btn btn-primary">Delete
+                                                </div>
                                             </div>
                                         </div>
-                                        <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
-                                        <p class="card-text">${tweet.full_text}</p>
-                                        <a v-if="tweet.urls.length>0" class="card-link"
-                                            v-bind:href="tweet.urls[0].expanded_url">link
-                                            to Tweet</a>
-                                        <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
-                                        <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
-                                        <p class="card-text"><small class="text-muted">Date:
-                                                ${tweet.created_at}</small>
-                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-        </div>
-    </section>
+        </section>
 
 
 
-    <!-- "OTHER TWEETS FOUNDED SEDCTION" -->
+        <section id="list_similar_tweets_pannel" class="data" v-if="list_agregated_tweets.length>0">
+            <div class="container">
+                <h2 style="margin: 20px">
+                </h2>
+                <div class="">
+                    <div class="card">
+                        <div class="card-top-fake-users">
+                            <div class="card-title">
+                                <h4 style="margin: 20px">
+                                    Similar tweets
+                                </h4>
+                            </div>
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table class="table table-hover">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">pic</th>
+                                            <th scope="col">user name</th>
+                                            <th scope="col">text</th>
+                                            <th scope="col">followers</th>
+                                            <th scope="col">scope</th>
+                                            <th scope="col">Options</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template v-for='(tweet, index) in list_agregated_tweets'>
+                                            <tr>
+                                                <th scope="row">
+                                                    <img v-if="tweet.user.profile_image_url" class="own-card-img"
+                                                        v-bind:src="tweet.user.profile_image_url">
+                                                </th>
+                                                <td>${tweet.user.name}</td>
+                                                <td>${tweet.full_text}</td>
+                                                <td>${tweet.user.followers_count}</td>
+                                                <td>${tweet.user.favourites_count}</td>
+                                                <td>
+                                                    <button v-on:click="remove_from_list_agregated_tweets(tweet, index)"
+                                                        type="button" class="btn btn-dark">
+                                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section id="other_tweets" class="data" v-if="similar_tweets_retrieved==true">
 
 
-        <div class="container">
-            <h2 style="margin: 20px">
-                Other Tweet Sources
-            </h2>
-            <p>This section displays similar tweets founded (other initial sources of the same fake new)</p>
-            <div v-for="(tweet, index) in similar_tweets">
-                <div v-if=tweet>
-                    <div class="own-card">
-                        <div class="card">
 
-                            <div class="d-flex flex-row no-gutters">
-                                <div class="d-flex justify-content-center align-items-start card-image">
-                                    <img class="own-card-img" v-bind:src="tweet.user.profile_image_url">
-                                </div>
+        <!-- "RETWEETS SEDCTION" -->
 
-                                <div class="card-body">
-                                    <div class="d-flex flex-row">
-                                        <div class="col-md-11">
+        <section id="retweets" class="data" v-if="retweets_retrieved==true">
+
+
+            <div class="container">
+                <h2 style="margin: 20px">
+                    Retweets
+                </h2>
+                <p>This section displays similar tweets founded (other initial sources of the same fake new)</p>
+                <div v-for="tweet in retweets">
+                    <div v-if=tweet>
+                        <div class="own-card">
+                            <div class="card">
+
+                                <div class="d-flex flex-row no-gutters">
+                                    <div class="d-flex justify-content-center align-items-start card-image">
+                                        <img class="own-card-img" v-bind:src="tweet.user.profile_image_url">
+                                    </div>
+
+                                    <div class="col-md-11">
+                                        <div class="card-body">
                                             <div class="card-title">
                                                 <div class="d-flex flex-row">
 
@@ -510,8 +459,7 @@
                                                     </h5>
                                                 </div>
                                             </div>
-                                            <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}
-                                            </h6>
+                                            <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
                                             <p class="card-text">${tweet.full_text}</p>
                                             <a v-if="tweet.urls.length>0" class="card-link"
                                                 v-bind:href="tweet.urls[0].expanded_url">link
@@ -522,24 +470,80 @@
                                                     ${tweet.created_at}</small>
                                             </p>
                                         </div>
-                                        <div class="col-md-1">
-                                            <div>
-                                                <button v-on:click="add_to_list(tweet, index)" type="button"
-                                                    class="btn btn-dark">
-                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- "OTHER TWEETS FOUNDED SEDCTION" -->
+
+        <section id="other_tweets" class="data" v-if="similar_tweets_retrieved==true">
+
+
+            <div class="container">
+                <h2 style="margin: 20px">
+                    Other Tweet Sources
+                </h2>
+                <p>This section displays similar tweets founded (other initial sources of the same fake new)</p>
+                <div v-for="(tweet, index) in similar_tweets">
+                    <div v-if=tweet>
+                        <div class="own-card">
+                            <div class="card">
+
+                                <div class="d-flex flex-row no-gutters">
+                                    <div class="d-flex justify-content-center align-items-start card-image">
+                                        <img class="own-card-img" v-bind:src="tweet.user.profile_image_url">
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="d-flex flex-row">
+                                            <div class="col-md-11">
+                                                <div class="card-title">
+                                                    <div class="d-flex flex-row">
+
+                                                        <h5>
+                                                            ${tweet.user.name}
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                                <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}
+                                                </h6>
+                                                <p class="card-text">${tweet.full_text}</p>
+                                                <a v-if="tweet.urls.length>0" class="card-link"
+                                                    v-bind:href="tweet.urls[0].expanded_url">link
+                                                    to Tweet</a>
+                                                <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
+                                                <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
+                                                <p class="card-text"><small class="text-muted">Date:
+                                                        ${tweet.created_at}</small>
+                                                </p>
                                             </div>
-                                            <div>
-                                                <button v-on:click="remove_forever(tweet, index)" type="button"
-                                                    class="btn btn-dark">
-                                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <button v-on:click="save_as_new(tweet, index)" type="button"
-                                                    class="btn btn-dark">
-                                                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                                                </button>
+                                            <div class="col-md-1">
+                                                <div>
+                                                    <button v-on:click="add_to_list(tweet, index)" type="button"
+                                                        class="btn btn-dark">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button v-on:click="remove_forever(tweet, index)" type="button"
+                                                        class="btn btn-dark">
+                                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button v-on:click="save_as_new(tweet, index)" type="button"
+                                                        class="btn btn-dark">
+                                                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -547,10 +551,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
+        </section>
     </section>
 </div>
 

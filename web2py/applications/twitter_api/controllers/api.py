@@ -454,6 +454,12 @@ def group_btn():
 
 
 
+def fetch_data():
+            
+    data = db(db.master_case_table).select()
+
+    return response.json(dict(data = data))
+
 
 
 

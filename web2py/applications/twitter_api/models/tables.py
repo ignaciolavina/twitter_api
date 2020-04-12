@@ -44,8 +44,13 @@ db.define_table('group_tweets',
     Field('ids', 'list:reference master_case_table')
 )
 
+db.define_table('suggested_accounts',
+    Field('user_screen_name', 'text'),
+)
 
 
+
+# _____________________________________
 db.define_table('test_table',
     Field('retweets', 'text'),
 )

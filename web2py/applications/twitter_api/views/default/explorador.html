@@ -1,0 +1,62 @@
+{{extend 'layout.html'}}
+
+
+<link rel="stylesheet" type="text/css" href="{{ = URL('static/css', 'app.css') }}" />
+<link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
+<script src="{{ = URL('static','js/vue.min.js') }}"></script>
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+
+<!-- For the graphs -->
+<script src='//unpkg.com/vue-chartjs@2.6.0/dist/vue-chartjs.full.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js'></script>
+<script src='//unpkg.com/hchs-vue-charts@1.2.8'></script>
+
+<style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
+
+
+<!-- Api calls -->
+<script>
+    let fetchDataURL = "{{ = URL('api', 'fetch_data') }}";
+    let guardarTweetURL = "{{ = URL('api', 'add_to_database') }}";    
+</script>
+
+
+
+
+<div id="buscador">
+    <h2>
+        Recent tweets from relevant accounts
+    </h2>
+
+    <!-- Data Section -->
+    <section id="data_panel" class="data" v-if="data_loaded==true">
+        <div class="d-flex flex-wrap">
+            <div v-for="tweet in tweets">
+                <div class="card" style="width: 25rem; margin:20px">
+                    <!-- <img class="own-card-img" v-bind:src="tweet.user.profile_image_url"> -->
+                    <div class="card-body">
+                        <h5 class="card-title">@${tweet.user.screen_name}</h5>
+                        <p class="card-text">${tweet.full_text}</p>
+                        <div class="d-flex justify-content-center">
+                            <button v-on:click="" type="button" class="btn btn-dark">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<!-- Own vue.js files -->
+<!-- <script src=" {{ = URL('static/js', 'index_graph.js') }}"></script> -->
+<script src=" {{ = URL('static/js', 'explorador.js') }}"></script>
+<!-- <script src=" {{ = URL('static/js', 'index_agregated_graph.js') }}"></script> -->

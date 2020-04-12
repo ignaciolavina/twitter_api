@@ -259,6 +259,8 @@ def tracking_table():
 
 
 
+def explorador():
+    return dict()
 
 
 # Creado el 18 de Febrero con la nueva database
