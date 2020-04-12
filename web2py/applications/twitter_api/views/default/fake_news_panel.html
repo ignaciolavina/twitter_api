@@ -30,6 +30,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
 
 
+
 <!-- Fix style on html! -->
 <!-- Search for all the style ctrl+f; and move them to css  -->
 
@@ -93,7 +94,8 @@
                         <div class="card  bg-light mb-3" style=" margin:20px">
                             <div class="card-header">Number of retweets</div>
                             <div class="card-body">
-                                <h2 class="card-title">16.302</h2>
+                                <h2 class="card-title" id="odometer_retweets">0
+                                </h2>
                             </div>
                         </div>
                     </section>
@@ -123,7 +125,7 @@
             <!-- COLUMNA DERECHA (DATOS) -->
             <div class="col-md-9">
                 <!-- _______________  DISPLAY SECTION _______________ -->
-                <section id="display_section" v-if="display_section==true">
+                <section id="display_section" v-if="display_section">
                     <!-- agregated graph -->
                     <section id="agregated_graph">
                         <div class="">
@@ -270,7 +272,7 @@
 
     <!-- INICIO SECCION PANEL Y TWEETS  -->
     <section id="data_panel" class="data" v-if="display_section==false">
-        <div class="container">
+        <div class="container" v-if="data_loaded">
             <!-- <h2 style="margin: 20px">
                 Tweets Source
             </h2> -->
@@ -317,7 +319,7 @@
 
 
         <!-- OPTIONS SECTION  -->
-        <section id="data_panel" class="data" v-if="data_loaded==true">
+        <section id="data_panel" class="data" v-if="data_loaded">
             <!-- <h2 style="margin: 20px">
                 Tweets Source
             </h2> -->
@@ -618,7 +620,8 @@
             </div>
         </section>
     </section>
-
+    <h2 style="display:none" class="card-title" id="odometer_retweets">
+    </h2>
 </div>
 
 
@@ -691,3 +694,23 @@
         border-radius: 50%;
     }
 </style>
+
+<!-- 
+<script>
+    function animateValue(id, start, end, duration) {
+        var range = end - start;
+        var current = start;
+        var increment = end > start ? 1 : +1;
+        var stepTime = Math.abs(Math.floor(duration / range));
+        var obj = document.getElementById(id);
+        var timer = setInterval(function () {
+            current += increment;
+            obj.innerHTML = current;
+            if (current == end) {
+                clearInterval(timer);
+            }
+        }, stepTime);
+    }
+
+    animateValue("odometer", 100, 25, 5000);
+</script> -->

@@ -153,6 +153,11 @@ let analize_btn = function () {
     if (app.list_tweet_entities.length > 1) {
         app.display_multiline_graph = true;
     }
+
+    start = 0;
+    end = app.list_agregated_retweets_graph.length;
+    setTimeout(() => { animateValue("odometer_retweets", start, end, 500); }, 500);
+
 }
 
 
@@ -530,6 +535,23 @@ let prepare_message = function () {
 
 
 
+let animateValue = function (id, start, end, duration) {
+    var range = end - start;
+    var current = start;
+    var increment = end > start ? 1 : +1;
+    var stepTime = Math.abs(Math.floor(duration / range));
+    var obj = document.getElementById(id);
+    var timer = setInterval(function () {
+        current += increment;
+        obj.innerHTML = current;
+        if (current == end) {
+            clearInterval(timer);
+        }
+    }, stepTime);
+}
+
+
+
 let app = new Vue({
     el: "#index",
     delimiters: ['${', '}'],
@@ -581,7 +603,8 @@ let app = new Vue({
         // nuevos
         add_to_list: add_to_list,
         remove_forever: remove_forever,
-        save_as_new: save_as_new
+        save_as_new: save_as_new,
+        animateValue: animateValue
     }
 });
 
