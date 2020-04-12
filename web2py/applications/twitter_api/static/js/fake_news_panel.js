@@ -304,6 +304,7 @@ let prepare_data = function () {
 
 
 let create_graphs = function () {
+    console.log("creating graphs");
     create_agregated_graph();
     if (app.list_tweet_entities.length > 1) {
         app.display_multiline_graph = true;

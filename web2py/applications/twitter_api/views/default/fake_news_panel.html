@@ -53,8 +53,223 @@
 
     <div v-on:load="get_data()"></div>
 
-    <!-- OPTIONS SECTION  -->
-    <section id="data_panel" class="data" v-if="data_loaded==true">
+    <!-- SECCION DE GRAFICOS Y ESTADISTICAS -->
+    <section id="stats_graphs_view" v-if="display_section">
+
+        <div class="d-flex flex-row">
+            <!-- COLUMNA DE LA IZQUIERDA -->
+            <div class="col-md-3">
+
+                <div class="col">
+
+                    <!-- RETURN BTN  -->
+                    <section id="" class="data">
+                        <div class="card" style=" margin:20px; margin-top: 3px; ">
+                            <div class="card-body">
+                                <!-- <h5 class="card-title">Settings</h5> -->
+                                <div class="d-flex justify-content-center">
+                                    </button>
+                                    <button v-on:click="analize_btn" type="button" class="btn btn-dark">
+                                        Return
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CARDS -->
+                    <section id="" class="data">
+                        <div class="card" style="margin:20px">
+                            <div class="card-body">
+                                <h5 class="card-title">Fake New</h5>
+                                <p class="card-text">${tweet.full_text}</p>
+                                <div class="d-flex justify-content-center">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="" class="data">
+                        <div class="card  bg-light mb-3" style=" margin:20px">
+                            <div class="card-header">Number of retweets</div>
+                            <div class="card-body">
+                                <h2 class="card-title">16.302</h2>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="" class="data">
+                        <div class="card  bg-dark text-white mb-3" style=" margin:20px">
+                            <div class="card-header">Number of retweets</div>
+                            <div class="card-body">
+                                <h2 class="card-title">16.302</h2>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <section id="" class="data">
+                        <div class="card  bg-light mb-3" style=" margin:20px">
+                            <div class="card-header">Number of retweets</div>
+                            <div class="card-body">
+                                <h2 class="card-title">16.302</h2>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- FIN COLUMNA IXQUIERDA -->
+
+            <!-- COLUMNA DERECHA (DATOS) -->
+            <div class="col-md-9">
+                <!-- _______________  DISPLAY SECTION _______________ -->
+                <section id="display_section" v-if="display_section==true">
+                    <!-- agregated graph -->
+                    <section id="agregated_graph">
+                        <div class="">
+                            <div class="own-card">
+                                <div class="card">
+                                    <div class="card-title">
+                                        <h4 style="margin: 20px">
+                                            Agregated graph
+                                        </h4>
+                                    </div>
+                                    <div class="agregated-chart">
+                                        <div class="chart-container">
+                                            <canvas id="canvas"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- multiline graph -->
+                    <section id="multiline_graph" class="data" v-if="display_multiline_graph">
+                        <div class="">
+                            <div class="own-card">
+                                <div class="card">
+                                    <div class="card-title">
+                                        <h4 style="margin: 20px">
+                                            Multiline graph
+                                        </h4>
+                                    </div>
+                                    <div class="agregated-chart">
+                                        <div class="chart-container">
+                                            <canvas id="canvas_two"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <!-- USERS TABLES -->
+                    <section id="top-users" class="tables" v-if="">
+                        <div class="">
+                            <div class="d-flex flex-row no-gutters">
+
+                                <!-- TOP USERS -->
+                                <div class="col-md-6">
+                                    <section class="top_users">
+                                        <div class="" style="margin-right: 20px;">
+                                            <div class="card">
+                                                <div class="card-top-fake-users">
+                                                    <div class="card-title">
+                                                        <h4 style="margin: 20px">
+                                                            Top fake spreaders
+                                                        </h4>
+                                                    </div>
+                                                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                                        <table class="table table-hover">
+                                                            <thead class="thead-dark">
+                                                                <tr>
+                                                                    <th scope="col">pic</th>
+                                                                    <th scope="col">user name</th>
+                                                                    <th scope="col">followers</th>
+                                                                    <th scope="col">scope</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <template v-for='retweet in top_fake_retweets'>
+                                                                    <tr>
+                                                                        <th scope="row">
+                                                                            <img v-if="retweet.user.profile_image_url"
+                                                                                class="own-card-img"
+                                                                                v-bind:src="retweet.user.profile_image_url">
+                                                                        </th>
+                                                                        <td>${retweet.user.name}</td>
+                                                                        <td>${retweet.user.followers_count}</td>
+                                                                        <td>...</td>
+                                                                    </tr>
+                                                                </template>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+
+                                <!-- FIRST USERS -->
+                                <div class="col-md-6">
+                                    <section id="first_users">
+                                        <div class="">
+                                            <div class="card">
+                                                <div class="card-top-fake-users">
+                                                    <div class="card-title">
+                                                        <h4 style="margin: 20px">
+                                                            First retweeters
+                                                        </h4>
+                                                    </div>
+                                                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                                        <table class="table table-hover">
+                                                            <thead class="thead-dark">
+                                                                <tr>
+                                                                    <th scope="col">pic</th>
+                                                                    <th scope="col">user name</th>
+                                                                    <th scope="col">followers</th>
+                                                                    <th scope="col">scope</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <template v-for='retweet in top_first_retweets'>
+                                                                    <tr>
+                                                                        <th scope="row">
+                                                                            <img v-if="retweet.user.profile_image_url"
+                                                                                class="own-card-img"
+                                                                                v-bind:src="retweet.user.profile_image_url">
+                                                                        </th>
+                                                                        <td>${retweet.user.name}</td>
+                                                                        <td>${retweet.user.followers_count}</td>
+                                                                        <td>${retweet.user.favourites_count}</td>
+                                                                        <td>...</td>
+                                                                    </tr>
+                                                                </template>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- <div v-on:load="create_graphs()"></div> -->
+                </section>
+                <!-- END OF DISPLAY SECTION  -->
+            </div>
+        </div>
+    </section>
+    <!-- FIN SECCION DE GRAFICOS Y ESTADISTICAS -->
+
+
+    <!-- INICIO SECCION PANEL Y TWEETS  -->
+    <section id="data_panel" class="data" v-if="display_section==false">
         <div class="container">
             <!-- <h2 style="margin: 20px">
                 Tweets Source
@@ -62,204 +277,7 @@
             <div v-if=tweet>
                 <div class="own-card">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <!-- <div class="d-flex flex-row">
-                                    <h2>
-                                        Options Pannel
-                                    </h2> -->
-                            </div>
-                            <div class="d-flex flex-row">
-                                <div class="col-md-4 d-flex justify-content-center">
-                                    <button v-if="display_section==false" v-on:click="analize_btn" type="button"
-                                        class="btn btn-dark">
-                                        Analyze
-                                    </button>
-                                    <button v-else v-on:click="analize_btn" type="button" class="btn btn-dark">
-                                        To Tweet section
-                                    </button>
-                                </div>
-                                <div class="col-md-4 d-flex justify-content-center">
-                                    <button v-on:click="get_similar_tweets" type="button" class="btn btn-dark">
-                                        Find similar tweets
-                                    </button>
-
-                                </div>
-                                <div class="col-md-4 d-flex justify-content-center">
-                                    <button v-on:click="group_btn" type="button" class="btn btn-dark">
-                                        Save data
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-
-
-
-    <!-- _______________  DISPLAY SECTION _______________ -->
-    <section id="display_section" v-if="display_section==true">
-
-        <!-- agregated graph -->
-        <section id="agregated_graph">
-            <div class="container">
-                <div class="own-card">
-                    <div class="card">
-                        <div class="card-title">
-                            <h4 style="margin: 20px">
-                                Agregated graph
-                            </h4>
-                        </div>
-                        <div class="agregated-chart">
-                            <div class="chart-container">
-                                <canvas id="canvas"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- multiline graph -->
-        <section id="multiline_graph" class="data" v-if="display_multiline_graph">
-            <div class="container">
-                <div class="own-card">
-                    <div class="card">
-                        <div class="card-title">
-                            <h4 style="margin: 20px">
-                                Multiline graph
-                            </h4>
-                        </div>
-                        <div class="agregated-chart">
-                            <div class="chart-container">
-                                <canvas id="canvas_two"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- USERS TABLES -->
-        <section id="top-users" class="tables" v-if="">
-            <div class="container">
-                <div class="d-flex flex-row no-gutters">
-
-                    <!-- TOP USERS -->
-                    <div class="col-md-6">
-                        <section class="top_users">
-                            <div class="">
-                                <div class="card">
-                                    <div class="card-top-fake-users">
-                                        <div class="card-title">
-                                            <h4 style="margin: 20px">
-                                                Top fake spreaders
-                                            </h4>
-                                        </div>
-                                        <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                                            <table class="table table-hover">
-                                                <thead class="thead-dark">
-                                                    <tr>
-                                                        <th scope="col">pic</th>
-                                                        <th scope="col">user name</th>
-                                                        <th scope="col">followers</th>
-                                                        <th scope="col">scope</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <template v-for='retweet in top_fake_retweets'>
-                                                        <tr>
-                                                            <th scope="row">
-                                                                <img v-if="retweet.user.profile_image_url"
-                                                                    class="own-card-img"
-                                                                    v-bind:src="retweet.user.profile_image_url">
-                                                            </th>
-                                                            <td>${retweet.user.name}</td>
-                                                            <td>${retweet.user.followers_count}</td>
-                                                            <td>...</td>
-                                                        </tr>
-                                                    </template>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-
-                    <!-- FIRST USERS -->
-                    <div class="col-md-6">
-                        <section id="first_users">
-                            <div class="">
-                                <div class="card">
-                                    <div class="card-top-fake-users">
-                                        <div class="card-title">
-                                            <h4 style="margin: 20px">
-                                                First retweeters
-                                            </h4>
-                                        </div>
-                                        <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                                            <table class="table table-hover">
-                                                <thead class="thead-dark">
-                                                    <tr>
-                                                        <th scope="col">pic</th>
-                                                        <th scope="col">user name</th>
-                                                        <th scope="col">followers</th>
-                                                        <th scope="col">scope</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <template v-for='retweet in top_first_retweets'>
-                                                        <tr>
-                                                            <th scope="row">
-                                                                <img v-if="retweet.user.profile_image_url"
-                                                                    class="own-card-img"
-                                                                    v-bind:src="retweet.user.profile_image_url">
-                                                            </th>
-                                                            <td>${retweet.user.name}</td>
-                                                            <td>${retweet.user.followers_count}</td>
-                                                            <td>${retweet.user.favourites_count}</td>
-                                                            <td>...</td>
-                                                        </tr>
-                                                    </template>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- <div v-on:load="create_graphs()"></div> -->
-    </section>
-    <!-- END OF DISPLAY SECTION  -->
-
-
-
-
-    <!-- PANEL SECTION  -->
-    <section id="data_panel" class="data" v-if="data_loaded==true">
-        <div class="container">
-            <h2 style="margin: 20px">
-                Tweets Source
-            </h2>
-            <div v-if=tweet>
-                <div class="own-card">
-                    <div class="card">
+                        <!-- <div class="card-header">hola</div> -->
 
                         <div class="d-flex flex-row no-gutters">
                             <div class="d-flex justify-content-center align-items-start card-image">
@@ -268,6 +286,8 @@
 
                             <div class="col-md-11">
                                 <div class="card-body">
+
+
                                     <div class="card-title">
                                         <div class="d-flex flex-row">
 
@@ -295,6 +315,48 @@
         </div>
 
 
+
+        <!-- OPTIONS SECTION  -->
+        <section id="data_panel" class="data" v-if="data_loaded==true">
+            <!-- <h2 style="margin: 20px">
+                Tweets Source
+            </h2> -->
+            <div class="container">
+                <div class="own-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <!-- <div class="d-flex flex-row">
+                                    <h2>
+                                        Options Pannel
+                                    </h2> -->
+                            </div>
+                            <div class="d-flex  flex-row">
+                                <div class="col-md-4 d-flex justify-content-center">
+                                    <button v-if="display_section==false" v-on:click="analize_btn" type="button"
+                                        class="btn btn-dark">
+                                        Analyze
+                                    </button>
+                                    <button v-else v-on:click="analize_btn" type="button" class="btn btn-dark">
+                                        To Tweet section
+                                    </button>
+                                </div>
+                                <div class="col-md-4 d-flex justify-content-center">
+                                    <button v-on:click="get_similar_tweets" type="button" class="btn btn-dark">
+                                        Find similar tweets
+                                    </button>
+                                </div>
+                                <div class="col-md-4 d-flex justify-content-center">
+                                    <button v-on:click="group_btn" type="button" class="btn btn-dark">
+                                        Save data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
 
 
@@ -459,7 +521,8 @@
                                                     </h5>
                                                 </div>
                                             </div>
-                                            <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}</h6>
+                                            <h6 class="card-subtitle mb-2 text-muted">by
+                                                @${tweet.user.screen_name}</h6>
                                             <p class="card-text">${tweet.full_text}</p>
                                             <a v-if="tweet.urls.length>0" class="card-link"
                                                 v-bind:href="tweet.urls[0].expanded_url">link
@@ -483,10 +546,7 @@
 
 
         <!-- "OTHER TWEETS FOUNDED SEDCTION" -->
-
         <section id="other_tweets" class="data" v-if="similar_tweets_retrieved==true">
-
-
             <div class="container">
                 <h2 style="margin: 20px">
                     Other Tweet Sources
@@ -513,13 +573,15 @@
                                                         </h5>
                                                     </div>
                                                 </div>
-                                                <h6 class="card-subtitle mb-2 text-muted">by @${tweet.user.screen_name}
+                                                <h6 class="card-subtitle mb-2 text-muted">by
+                                                    @${tweet.user.screen_name}
                                                 </h6>
                                                 <p class="card-text">${tweet.full_text}</p>
                                                 <a v-if="tweet.urls.length>0" class="card-link"
                                                     v-bind:href="tweet.urls[0].expanded_url">link
                                                     to Tweet</a>
-                                                <a href="#" class="card-link">Retweets: ${tweet.retweet_count}</a>
+                                                <a href="#" class="card-link">Retweets:
+                                                    ${tweet.retweet_count}</a>
                                                 <a href="#" class="card-link">Favs: ${tweet.favorite_count}</a>
                                                 <p class="card-text"><small class="text-muted">Date:
                                                         ${tweet.created_at}</small>
@@ -556,6 +618,7 @@
             </div>
         </section>
     </section>
+
 </div>
 
 
