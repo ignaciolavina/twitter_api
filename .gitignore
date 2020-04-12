@@ -13,7 +13,10 @@
 /web2py/applications/*/uploads/*
 /web2py/applications/*/.hg/
 !/web2py/applications/
- 
+
+/web2py/applications/twitter_api/databases/sql.log
+
+
 ### To include only specific apps, uncomment:
 #/applications/*
 #!/applications/{myapp}/
