@@ -527,7 +527,7 @@ var config_multiple_graph = {
 
 let prepare_message = function () {
     let user = app.tweet.user.screen_name;
-    let text = "Hola! Soy parte de un proyecto de investigación sobre Fake News, y el sistema parece detectar que tu tweet como falso, ¿Podrías revisar su veracidad y eliminarlo si es falso?. Si me equivoco, o quires opt-out (Responde <NO>) y así mejoraré. Muchas Gracias!";
+    let text = " Hola! Soy parte de un proyecto de investigación sobre Fake News, y el sistema parece detectar que tu tweet como falso, ¿Podrías revisar su veracidad y eliminarlo si es falso?. Si me equivoco, o quires opt-out (Responde <NO>) y así mejoraré. Muchas Gracias!";
     let fuente_o_link = app.fuente_o_link;
     app.text_response = "@" + user + text + " " + fuente_o_link;
 }

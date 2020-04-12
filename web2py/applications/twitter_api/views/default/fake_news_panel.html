@@ -318,54 +318,9 @@
 
 
 
-        <!-- OPTIONS SECTION  -->
-        <section id="data_panel" class="data" v-if="data_loaded">
-            <!-- <h2 style="margin: 20px">
-                Tweets Source
-            </h2> -->
-            <div class="container">
-                <div class="own-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <!-- <div class="d-flex flex-row">
-                                    <h2>
-                                        Options Pannel
-                                    </h2> -->
-                            </div>
-                            <div class="d-flex  flex-row">
-                                <div class="col-md-4 d-flex justify-content-center">
-                                    <button v-if="display_section==false" v-on:click="analize_btn" type="button"
-                                        class="btn btn-dark">
-                                        Analyze
-                                    </button>
-                                    <button v-else v-on:click="analize_btn" type="button" class="btn btn-dark">
-                                        To Tweet section
-                                    </button>
-                                </div>
-                                <div class="col-md-4 d-flex justify-content-center">
-                                    <button v-on:click="get_similar_tweets" type="button" class="btn btn-dark">
-                                        Find similar tweets
-                                    </button>
-                                </div>
-                                <div class="col-md-4 d-flex justify-content-center">
-                                    <button v-on:click="group_btn" type="button" class="btn btn-dark">
-                                        Save data
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-
+        <!-- SETTINGS PANEL  -->
         <section id="settings_panel" class="data" v-if="data_loaded==true">
             <div class="container">
-                <h2 style="margin: 20px">
-                </h2>
                 <div class="own-card">
                     <div class="card">
                         <div class="d-flex flex-row no-gutters">
@@ -380,7 +335,7 @@
                                     <div class="d-flex flex-row" style="margin-top: 20px;">
                                         <div class="col-md-8">
                                             <h5>
-                                                Message
+                                                Response alert message:
                                             </h5>
                                             <textarea v-model="text_response" class="form-control"
                                                 id="exampleFormControlTextarea1" placeholder="Insert message here"
@@ -412,25 +367,60 @@
                                             </div>
                                             <div class="d-flex flex-row justify-content-around"
                                                 style="margin-top: 20px;">
-                                                <div>
-                                                    <button v-on:click="start_tracking" type="button"
-                                                        class="btn btn-primary">
-                                                        Track
-                                                </div>
-                                                <button v-on:click="update_retweets" type="button"
-                                                    class="btn btn-primary">
-                                                    Update Retweets
-                                                </button>
-                                                <div>
-                                                    <button v-on:click="delete_tracking" type="button"
-                                                        class="btn btn-primary">Delete
-                                                </div>
+
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row justify-content-between" style="margin: 30px;">
+                                        <div class=" d-flex justify-content-center">
+                                            <button v-if="display_section==false" v-on:click="analize_btn" type="button"
+                                                class="btn btn-dark">
+                                                Analyze
+                                                <i class="fa fa-line-chart" aria-hidden="true"
+                                                    style="margin-left: 5px;"></i>
+                                            </button>
+                                            <button v-else v-on:click="analize_btn" type="button" class="btn btn-dark">
+                                                To Tweet section
+                                            </button>
+                                        </div>
+                                        <div class=" d-flex justify-content-center">
+                                            <button v-on:click="get_similar_tweets" type="button" class="btn btn-dark">
+                                                Find similar tweets
+                                                <i class="fa fa-search" aria-hidden="true"
+                                                    style="margin-left: 5px;"></i>
+                                            </button>
+                                        </div>
+                                        <div class=" d-flex justify-content-center">
+                                            <button v-on:click="group_btn" type="button" class="btn btn-dark">
+                                                Save data
+                                                <i class="fa fa-floppy-o" aria-hidden="true"
+                                                    style="margin-left: 5px;"></i>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button v-on:click="start_tracking" type="button" class="btn btn-dark">
+                                                Alert
+                                                <i class="fa fa-envelope" aria-hidden="true"
+                                                    style="margin-left: 5px;"></i>
+                                        </div>
+                                        <button v-on:click="update_retweets" type="button" class="btn btn-dark">
+                                            Update Retweets
+                                            <i class="fa fa-refresh" aria-hidden="true" style="margin-left: 5px;"></i>
+                                        </button>
+                                        <div>
+                                            <button v-on:click="delete_tracking" type="button" class="btn btn-danger">
+                                                Delete
+                                                <i class="fa fa-trash-o" aria-hidden="true"
+                                                    style="margin-left: 5px;"></i>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
