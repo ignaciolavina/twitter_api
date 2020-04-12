@@ -348,20 +348,20 @@
                                                 Options
                                             </h5>
                                             <div class="d-flex flex-row justify-content-between">
-                                                <p>Alert Source</p>
+                                                <p>Alert all sources</p>
                                                 <p>Yes</p>
                                                 <label class="switch">
                                                     <input type="checkbox" v-model="switch1">
-                                                    <span class="slider round"></span>
+                                                    <span class="slider round bg-dark"></span>
                                                 </label>
                                                 <p>NO</p>
                                             </div>
                                             <div class="d-flex flex-row justify-content-between">
-                                                <p>Alert Past users</p>
+                                                <p>Alert Retweets</p>
                                                 <p>Yes</p>
                                                 <label class="switch">
                                                     <input type="checkbox" v-model="switch2">
-                                                    <span class="slider round"></span>
+                                                    <span class="slider round bg-dark"></span>
                                                 </label>
                                                 <p>NO</p>
                                             </div>
@@ -405,7 +405,7 @@
                                                 <i class="fa fa-envelope" aria-hidden="true"
                                                     style="margin-left: 5px;"></i>
                                         </div>
-                                        <button v-on:click="update_retweets" type="button" class="btn btn-dark">
+                                        <button v-on:click="refresh_retweets" type="button" class="btn btn-dark">
                                             Update Retweets
                                             <i class="fa fa-refresh" aria-hidden="true" style="margin-left: 5px;"></i>
                                         </button>

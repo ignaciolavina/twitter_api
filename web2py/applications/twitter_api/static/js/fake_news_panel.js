@@ -87,10 +87,15 @@ let get_data = function (id, origin) {
 // }
 
 
-let update_retweets = function () {
+let refresh_retweets = function () {
     console.log("update retweets");
+    list_ids = []
+    for (let i = 0; i < app.list_tweet_entities.length; i++) {
+        list_ids.push(app.list_tweet_entities[i][0].id_str);
+    }
     $.getJSON(updateRetweetsURL, {
         id: app.tweet.id_str,
+        list_ids: JSON.stringify(list_ids)
     }, function (response) {
         // console.log(response);
         app.retweets = response.retweets_list;
@@ -150,7 +155,7 @@ let analize_btn = function () {
 
     }
 
-    if (app.list_tweet_entities.length > 1) {
+    if (app.list_agregated_retweets_graph.length > 1) {
         app.display_multiline_graph = true;
     }
 
@@ -171,11 +176,24 @@ let get_similar_tweets = function () {
     let exclude_retweets = true;
 
     // Si detectamos que puede ser una NOTICIA (si tiene url)
-    if (app.tweet.urls.length > 0) {
+    if (app.tweet.urls.length > 10) {
         if (app.tweet.urls[0].expanded_url) {
             console.log(app.tweet.urls[0].expanded_url);
             es_noticia = true;
             url_noticia = app.tweet.urls[0].expanded_url;
+        }
+    } else if (app.tweet.full_text.includes("https")) {
+        console.log("conntiene")
+        var splitted = app.tweet.full_text.split(" ");
+        console.log("index" + splitted.length)
+
+        var result = false;
+        for (let i = 0; i < splitted.length; i++) {
+            // console.log("aaaa" + i)
+            if (splitted[i].includes("http")) {
+                es_noticia = true;
+                url_noticia = splitted[i];
+            }
         }
     }
 
@@ -196,6 +214,7 @@ let get_similar_tweets = function () {
         for (let i = 0; i < response.results_article.length; i++) {
             if (!app.similar_tweets.includes(response.results_article[i])) {
                 app.similar_tweets.push(response.results_article[i]);
+                app.list_tweet_entities.push([response.results_article[i], []])
             }
         }
 
@@ -278,7 +297,9 @@ var dataset_multiline = [];
 
 let prepare_data = function () {
 
-    // PREPARAMOS LA LSITA AGREAGADA
+
+
+    // PREPARAMOS LA LISTA AGREAGADA
     lista = []
     for (let i = 0; i < app.list_tweet_entities.length; i++) {
         lista.push(app.list_tweet_entities[i][0]);
@@ -311,7 +332,7 @@ let prepare_data = function () {
 let create_graphs = function () {
     console.log("creating graphs");
     create_agregated_graph();
-    if (app.list_tweet_entities.length > 1) {
+    if (app.list_agregated_retweets_graph.length > 1) {
         app.display_multiline_graph = true;
         create_multiple_graph();
     }
@@ -595,7 +616,7 @@ let app = new Vue({
         delete_tracking: delete_tracking,
         get_similar_tweets: get_similar_tweets,
         // get_retweets: get_retweets,
-        update_retweets: update_retweets,
+        refresh_retweets: refresh_retweets,
         prepare_message: prepare_message,
         analize_btn: analize_btn,
         remove_from_list_agregated_tweets: remove_from_list_agregated_tweets,

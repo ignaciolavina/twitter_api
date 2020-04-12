@@ -122,7 +122,7 @@ def search_by_user():
     # user_to_search = ""
 
     # Number of retweets to retrieve
-    count = 10
+    count = 20
 
     # Api method to search the user. It is valid either by user Id or by @Twitter_shortname
     tweets_timeline = api.GetUserTimeline(screen_name = user_to_search, count = count)
@@ -208,7 +208,7 @@ def add_to_database():
 
 def get_retweets(id_tweet):    
     
-    number_of_retweets_to_retrieve = 20
+    number_of_retweets_to_retrieve = 35
 
     # Recuperamos los retweets de la base de datos
     data = db(db.master_case_table.tweet_id == id_tweet).select().first()
@@ -263,6 +263,7 @@ def update_retweets(id_tweet):
         Input: Id de un tweet
         Output: lista con todos los retweets de ese tweet
     """
+    print("API - update_retweets, updating retweets of: " + id_tweet)
 
     list_final_retweets = get_retweets(id_tweet)
 
@@ -335,7 +336,14 @@ def refresh_retweets():
 
     tweet_id = str(request.vars.id)
     # Llamada al metodo update_retweets para actualizar los tweets
-    retweets_list = update_retweets(tweet_id)
+
+
+    list_ids = json.loads(request.vars.list_ids)
+    for id in list_ids:
+        update_retweets(tweet_id)
+
+
+    # retweets_list = update_retweets(tweet_id)
 
     return response.json(dict(retweets_list=retweets_list))
 
@@ -393,6 +401,7 @@ def group_btn():
     name = request.vars.group_name
     # print("name " + name)
 
+    # Para cargar listas desde cliente arrays json parse 
     tweet_list_id = json.loads(request.vars.tweet_list_id)
     tweet_list = json.loads(request.vars.tweet_list)
     main_id = request.vars.main_id
@@ -556,13 +565,18 @@ def get_similar_tweets():
 
 
     results_article = []
+    retweets_results_article = []
     for tweet in results_raw:
         if ("RT" not in tweet['full_text']):
             print(tweet['full_text'])
             results_article.append(tweet)
+            # get the retwets from each one
+            # print("XXXX")
+            # print(tweet['id_str'])
+            # retweets_results_article.append(update_retweets(tweet['id_str']))
             
 
-    return response.json(dict(results_article = results_article))
+    return response.json(dict(results_article = results_article, retweets_results_article =retweets_results_article))
     # return response.json(dict(similar_tweets = similar_tweets))
 
     # text = request.vars.text
