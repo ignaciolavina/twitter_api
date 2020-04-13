@@ -169,7 +169,7 @@ def panel_guardados():
             A('', _href=URL('/panel/view/master_case_table/' + str(row.tweet_id), vars=dict()), _class='fa fa-eye')
             
         )
-    )
+    )    
     links.append(
         dict(
             header='Fake news panel',
@@ -211,9 +211,23 @@ def grouped_tweets():
     links=[]
     links.append(
         dict(
+            header='User',
+            body= lambda row : 
+            db(db.master_case_table.id == row.main_id).select().first().user_name
+        )
+    )
+    links.append(
+        dict(
+            header='Text',
+            body= lambda row : 
+            db(db.master_case_table.id == row.main_id).select().first().title
+        )
+    )
+    links.append(
+        dict(
             header='Fake news panel',
             body= lambda row : 
-                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id], origin="groups")), _class='fa fa-pencil-square')
+                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id], origin="groups")), _class='fa fa-pencil-square-o fa-2x')
                 
                 # A('', _href=URL('default', 'index', args='camino'), _class='fa fa-pencil-square')
                 #     if row.user_id == auth.user.id else
@@ -223,8 +237,11 @@ def grouped_tweets():
 
     query = db.group_tweets
 
+    fields=[db.group_tweets.main_id, db.group_tweets.ids, db.group_tweets.tracking]    
+
     grid = SQLFORM.grid(
-    query,
+    query,    
+    fields = fields,
     links=links,
     searchable=True, 
     details=True, 

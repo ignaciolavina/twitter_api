@@ -104,12 +104,12 @@ let refresh_retweets = function () {
 }
 
 
-let start_tracking = function () {
-    console.log('start tracking');
+let alert_sources = function () {
+    console.log('alert source');
     if (app.text_response.length > TWITTER_CHARACTER_LIMIT || app.text_response.length == 0) {
         alert("Cuidado, el mensaje no puede estar vacio ni superar el limite de caracteres de twitter(280), por favor, revisa el mensaje")
     } else {
-        $.getJSON(startTrackingURL, {
+        $.getJSON(alertSourcesURL, {
             tweet_id: app.tweet.id_str,
             text_response: app.text_response,
             username: app.tweet.user.name,
@@ -123,6 +123,19 @@ let delete_tracking = function () {
     console.log('delete tracking');
 }
 
+
+let start_tracking = function () {
+    console.log('delete tracking');
+    $.getJSON(startTrackingURL, {
+        tweet_id: app.tweet.id_str,
+    }, function (response) {
+        if (response.success) {
+            alert("Tracking started");
+        } else {
+            alert("Error on server, try again please");
+        }
+    });
+}
 
 
 
@@ -612,7 +625,7 @@ let app = new Vue({
     },
     methods: {
         get_data: get_data,
-        start_tracking: start_tracking,
+        alert_sources: alert_sources,
         delete_tracking: delete_tracking,
         get_similar_tweets: get_similar_tweets,
         // get_retweets: get_retweets,
@@ -625,7 +638,9 @@ let app = new Vue({
         add_to_list: add_to_list,
         remove_forever: remove_forever,
         save_as_new: save_as_new,
-        animateValue: animateValue
+        animateValue: animateValue,
+        // nuevos
+        start_tracking: start_tracking,
     }
 });
 

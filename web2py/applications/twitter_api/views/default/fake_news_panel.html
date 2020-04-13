@@ -10,6 +10,7 @@
     let getDataFakeNewsPanelURL = "{{ = URL('api', 'get_data') }}";
     let getSimilarTweetsURL = "{{ = URL('api', 'get_similar_tweets') }}";
     let startTrackingURL = "{{ = URL('api', 'start_tracking') }}";
+    let alertSourcesURL = "{{ = URL('api', 'alert_sources') }}";
     let updateRetweetsURL = "{{ = URL('api', 'refresh_retweets') }}";
     let groupURL = "{{ = URL('api', 'group_btn') }}";
     // let getRetweetsURL = "{{ = URL('api', 'get_retweets') }}";
@@ -360,7 +361,7 @@
                                                 <p>Alert Retweets</p>
                                                 <p>Yes</p>
                                                 <label class="switch">
-                                                    <input type="checkbox" v-model="switch2">
+                                                    <input type="checkbox" v-model="switch2" data-on="Tracking">
                                                     <span class="slider round bg-dark"></span>
                                                 </label>
                                                 <p>NO</p>
@@ -400,20 +401,31 @@
                                         </div>
 
                                         <div>
-                                            <button v-on:click="start_tracking" type="button" class="btn btn-dark">
+                                            <button v-on:click="alert_sources" type="button" class="btn btn-dark">
                                                 Alert
                                                 <i class="fa fa-envelope" aria-hidden="true"
                                                     style="margin-left: 5px;"></i>
                                         </div>
-                                        <button v-on:click="refresh_retweets" type="button" class="btn btn-dark">
-                                            Update Retweets
-                                            <i class="fa fa-refresh" aria-hidden="true" style="margin-left: 5px;"></i>
-                                        </button>
+                                        <div>
+
+                                            <button v-on:click="refresh_retweets" type="button" class="btn btn-dark">
+                                                Update Retweets
+                                                <i class="fa fa-refresh" aria-hidden="true"
+                                                    style="margin-left: 5px;"></i>
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button v-on:click="start_tracking" type="button" class="btn btn-dark">
+                                                Start tracking
+                                                <i class="fa fa-crosshairs" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
                                         <div>
                                             <button v-on:click="delete_tracking" type="button" class="btn btn-danger">
                                                 Delete
                                                 <i class="fa fa-trash-o" aria-hidden="true"
                                                     style="margin-left: 5px;"></i>
+                                            </button>
                                         </div>
 
                                     </div>

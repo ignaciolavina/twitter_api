@@ -33,16 +33,17 @@ db.define_table('master_case_table',
 # Respuestas, stats, etc
 
 
+db.define_table('group_tweets',
+    Field('name', 'text'),
+    Field('main_id', 'reference: master_case_table'),
+    Field('ids', 'list:reference master_case_table'),
+    Field('tracking', 'boolean', default=False)
+)
+
 db.define_table('stored_tweets',
     Field('tweet_id', 'reference master_case_table')
 )
 
-
-db.define_table('group_tweets',
-    Field('name', 'text'),
-    Field('main_id', 'reference: master_case_table'),
-    Field('ids', 'list:reference master_case_table')
-)
 
 db.define_table('suggested_accounts',
     Field('user_screen_name', 'text'),

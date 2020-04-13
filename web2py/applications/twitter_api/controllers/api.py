@@ -150,6 +150,7 @@ def get_logged_in_user():
 
 # ___________________________ SEARCH BY USER ____________________________________
 
+
 def search_by_user():
         
     api = requires_twitter_auth()      
@@ -316,7 +317,25 @@ def update_retweets(id_tweet):
 # ____________________________ FAKE NEWS PANEL _______________________________________
 
 def start_tracking():
-    print("\n\nSTART TRACKING API")
+    print("\n\nAPI - start tracking")
+    main_id = str(request.vars.tweet_id)
+
+    # Recuperamos el tweet de la base de datos
+    id_str = db(db.master_case_table.tweet_id == main_id).select().first().id
+
+    # hacemos update del atributo tracking
+    try:
+        stored_element = db.group_tweets.update_or_insert(db.group_tweets.main_id == id_str,
+            tracking = True,
+        )
+        return response.json(dict(success=True))
+    except:
+        return response.json(dict(success=False))
+
+
+
+def alert_sources():
+    print("\n\nAPI - alert sources")
     # print(request.vars)
     tweet_id = request.vars.tweet_id
     text_response =  request.vars.text_response
@@ -338,7 +357,7 @@ def start_tracking():
     # METODO ALERTA SOURCE ___________
     # https://python-twitter.readthedocs.io/en/latest/_modules/twitter/api.html#Api.PostDirectMessage
     print("\nAlerting the Source")
-    alert_source(tweet_id, text_response)
+    send_alert_to_source(tweet_id, text_response)
     alerted_tweet = db.alerted_tweets.update_or_insert(db.alerted_tweets.tweet_id == tweet_id,
         tweet_id = tweet_id
     )
@@ -348,7 +367,7 @@ def start_tracking():
 
 
 # DESACTIVADO TEMPORALMENTE
-def alert_source(tweet_id, text_response):    
+def send_alert_to_source(tweet_id, text_response):    
 
     print("Alerting source " + tweet_id)
     # Funsiona perfe
