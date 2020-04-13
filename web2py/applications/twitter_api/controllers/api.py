@@ -82,28 +82,28 @@ def test_function_from_index():
 
 
     
-def update_all(): 
-    # Por cada elemento guardado
+# def update_all(): 
+#     # Por cada elemento guardado
 
-    # results_retrieved = db(db.stored_tweets).select()
-    results_retrieved = db(db.master_case_table).select()
-    list_ids_of_master_table = []
+#     # results_retrieved = db(db.stored_tweets).select()
+#     results_retrieved = db(db.master_case_table).select()
+#     list_ids_of_master_table = []
 
-    for result in results_retrieved:
-        list_ids_of_master_table.append(result.id)
+#     for result in results_retrieved:
+#         list_ids_of_master_table.append(result.id)
 
     
     
     
-    print(list_ids_of_master_table)
+#     print(list_ids_of_master_table)
 
-    for id in list_ids_of_master_table:   
-        try:
-            print("updating: "+ str(id))
-            update_retweets(str(id))
-        except:
-            print("error on update: " + str(id))
-        time.sleep(60*3) 
+#     for id in list_ids_of_master_table:   
+#         try:
+#             print("updating: "+ str(id))
+#             update_retweets(str(id))
+#         except:
+#             print("error on update: " + str(id))
+#         time.sleep(60*3) 
 
     # print('test function')
 
@@ -127,14 +127,16 @@ def update_tracking_groups():
     for group in groups_on_tracking:
         has_updates = False
         print("updating" + str(group.main_id))
-        new_retweets = update_retweets(str(group.main_id))
+        id_main_tweet = db(db.master_case_table.id == group.main_id).select().first().tweet_id
+        new_retweets = update_retweets(str(id_main_tweet))
         print(new_retweets)
         if (new_retweets is not None):
             has_updates = True
 
-        for tweet_id in group.ids:
-            print("updating " + str(tweet_id))
-            new_retweets = update_retweets(str(tweet_id))
+        for id_tweet_master in group.ids:
+            print("updating " + str(id_tweet_master))
+            id = db(db.master_case_table.id == id_tweet_master).select().first().tweet_id
+            new_retweets = update_retweets(str(id))
             if (new_retweets is not None):
                 has_updates = True
         if (has_updates):
@@ -286,8 +288,9 @@ def add_to_database():
 
 
 def get_retweets(id_tweet):    
+    print("API Get Retweets")
     
-    number_of_retweets_to_retrieve = 5
+    number_of_retweets_to_retrieve = 15
 
     # Recuperamos los retweets de la base de datos
     data = db(db.master_case_table.tweet_id == id_tweet).select().first()
@@ -299,12 +302,16 @@ def get_retweets(id_tweet):
         # Si no hay data, creamos una lista vacia
         list_stored_retweets = []
 
+    print("lista recuperada - in get retweets")
+    # print(list_stored_retweets)
 
     # Recuperamos nuevos retweets
     try:
         api = requires_twitter_auth()     
         retweets_retrieved = api.GetRetweets(id_tweet, count=number_of_retweets_to_retrieve)
         new_retweets_list =  [retweet.AsDict() for retweet in retweets_retrieved]  
+
+        print("number of retweets retrieved: " + str(len(new_retweets_list)))
     except:
         print("ERROR - API Get Retweets no realizado con exito")
         return
@@ -326,10 +333,12 @@ def get_retweets(id_tweet):
     for i in new_retweets_list:
         if (i['id_str'] not in list_id_stored_retweets):
             list_final_retweets.append(i)
-            # print(i['id_str'])
-        # else:
-        #     print("Repetido: " + i['id_str'])
+            print("new reetweet retrieved")
+        else:
+            print("Repetido: " + i['id_str'])
     return list_final_retweets
+
+
 
 # Actualizado a dia 7-abril
 # ON review, cambiado ahora bebe de otro (para evitar guardar los tweets)
@@ -339,7 +348,7 @@ def update_retweets(id_tweet):
             1. Recupera los retweets almacenados relacionados con ese id
             2. Usa la API de Twitter para traer nuevos retweets
             3. Actualiza la base de datos con todos los retweets (nuevos y antiguos)
-        Input: Id de un tweet
+        Input: Id de la master_case_table relacianada con un tweet
         Output: lista con todos los retweets de ese tweet
     """
     print("API - update_retweets, updating retweets of: " + id_tweet)
@@ -433,6 +442,9 @@ def refresh_retweets():
 
     tweet_id = str(request.vars.id)
     # Llamada al metodo update_retweets para actualizar los tweets
+
+    print("refreshing")
+    print(request.vars.id)
 
 
     list_ids = json.loads(request.vars.list_ids)
@@ -537,6 +549,7 @@ def group_btn():
             tweet = tweet_json,
             utls = tweet.urls,
             tweet_user = stored_user,
+            # number_stored_retweets = len(retweets)
             retweets = json.dumps(retweets)
             )
 

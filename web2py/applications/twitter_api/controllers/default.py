@@ -39,6 +39,7 @@ def panel():
 
     fields=[db.master_case_table.id,
     db.master_case_table.user_name,
+    db.master_case_table.tweet_id,
     db.master_case_table.title,
     db.master_case_table.tracking]     
 
@@ -261,7 +262,7 @@ def grouped_tweets():
     details=True, 
     create=False, 
     deletable=True, 
-    editable=False,
+    editable=True,
     csv=False,
     user_signature=True,
     )
