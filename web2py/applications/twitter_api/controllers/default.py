@@ -8,6 +8,9 @@ def index():
     return dict(word = word)
 
 
+def delete_none():
+    db(db.master_case_table.user_name == None).delete()
+
 def graphic_test():
     return dict()
 
@@ -181,7 +184,6 @@ def panel_guardados():
                 # A('', _class='hidden')
         )
     )
-
     # grid = SQLFORM.grid(db.master_case_table, deletable=True)
     query = db.stored_tweets
 
@@ -234,10 +236,22 @@ def grouped_tweets():
                 # A('', _class='hidden')
         )
     )
+    # links.append(
+    #     dict(
+    #         header='Tracking',
+    #         body= lambda row : 
+    #             A('',  _class='fa fa-check-square-o')
+    #                 if row.tracking else
+    #             A('', _class='fa fa-square-o')
+    #             # No funciona xq el tweet_id que hay que pasar a start_tracking es el id_str, no el master_table.id
+    #             # A('', _href=URL('api', 'start_tracking', vars=dict(tweet_id=str(218))), _class='fa fa-square-o')
+
+    #     )
+    # )
 
     query = db.group_tweets
 
-    fields=[db.group_tweets.main_id, db.group_tweets.ids, db.group_tweets.tracking]    
+    fields=[db.group_tweets.main_id, db.group_tweets.ids, db.group_tweets.tracking, db.group_tweets.has_updates]    
 
     grid = SQLFORM.grid(
     query,    

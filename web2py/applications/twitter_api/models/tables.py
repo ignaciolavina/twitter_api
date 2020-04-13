@@ -37,7 +37,8 @@ db.define_table('group_tweets',
     Field('name', 'text'),
     Field('main_id', 'reference: master_case_table'),
     Field('ids', 'list:reference master_case_table'),
-    Field('tracking', 'boolean', default=False)
+    Field('tracking', 'boolean', default=False),
+    Field('has_updates', 'boolean', default=False)
 )
 
 db.define_table('stored_tweets',

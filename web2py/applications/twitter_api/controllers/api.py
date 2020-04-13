@@ -6,6 +6,8 @@ import ast
 import urllib.request
 from bs4 import BeautifulSoup
 
+# number_of_retweets_to_retrieve
+
 # GET limits
 # https://tutorialedge.net/python/creating-twitter-bot-python/
 # def get_limit():
@@ -79,8 +81,8 @@ def test_function_from_index():
     # ret = variable.retweets
 
 
-
-def test_function(): 
+    
+def update_all(): 
     # Por cada elemento guardado
 
     # results_retrieved = db(db.stored_tweets).select()
@@ -104,6 +106,47 @@ def test_function():
         time.sleep(60*3) 
 
     # print('test function')
+
+
+
+
+def test_function(): 
+    update_tracking_groups()
+
+
+
+
+def update_tracking_groups():
+    print("\n\nupdate_tracking_groups")
+
+    groups_on_tracking = db(db.group_tweets.tracking == True).select()
+    has_updates = False
+    new_retweets = []
+    
+
+    for group in groups_on_tracking:
+        has_updates = False
+        print("updating" + str(group.main_id))
+        new_retweets = update_retweets(str(group.main_id))
+        print(new_retweets)
+        if (new_retweets is not None):
+            has_updates = True
+
+        for tweet_id in group.ids:
+            print("updating " + str(tweet_id))
+            new_retweets = update_retweets(str(tweet_id))
+            if (new_retweets is not None):
+                has_updates = True
+        if (has_updates):
+            print("hay nuevso ret?")
+            print (has_updates)
+            print(group.id)
+            db.group_tweets.update_or_insert(db.group_tweets.id == group.id,
+                has_updates = True
+            )
+        else:
+            print("not ipdates")
+
 
 
 
@@ -244,7 +287,7 @@ def add_to_database():
 
 def get_retweets(id_tweet):    
     
-    number_of_retweets_to_retrieve = 99
+    number_of_retweets_to_retrieve = 5
 
     # Recuperamos los retweets de la base de datos
     data = db(db.master_case_table.tweet_id == id_tweet).select().first()
@@ -304,7 +347,7 @@ def update_retweets(id_tweet):
     list_final_retweets = get_retweets(id_tweet)
 
     # Hacemos UPDATE de la base de datos
-    db.master_case_table.update_or_insert(db.master_case_table.tweet_id == id_tweet,
+    db.master_case_table.update_or_insert(db.master_case_table.tweet_id == str(id_tweet),
         retweets = json.dumps(list_final_retweets)
     )
       
