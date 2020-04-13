@@ -57,6 +57,17 @@ from bs4 import BeautifulSoup
 
 
 
+import asyncio
+import datetime
+import time
+
+def get_time():
+  currentDT = datetime.datetime.now()
+  print (str(currentDT))
+
+
+
+
 def test_function_from_index():
     print ("TESTING FUNCTION FROM INDEX")
 
@@ -67,8 +78,32 @@ def test_function_from_index():
     # variable = db.master_case_table(db.master_case_table.tweet_id == tweet_id).select().first()
     # ret = variable.retweets
 
-def test_index_function():
-    print('test function')
+
+
+def test_function(): 
+    # Por cada elemento guardado
+
+    # results_retrieved = db(db.stored_tweets).select()
+    results_retrieved = db(db.master_case_table).select()
+    list_ids_of_master_table = []
+
+    for result in results_retrieved:
+        list_ids_of_master_table.append(result.id)
+
+    
+    
+    
+    print(list_ids_of_master_table)
+
+    for id in list_ids_of_master_table:   
+        try:
+            print("updating: "+ str(id))
+            update_retweets(str(id))
+        except:
+            print("error on update: " + str(id))
+        time.sleep(60*3) 
+
+    # print('test function')
 
 
 
@@ -208,7 +243,7 @@ def add_to_database():
 
 def get_retweets(id_tweet):    
     
-    number_of_retweets_to_retrieve = 35
+    number_of_retweets_to_retrieve = 99
 
     # Recuperamos los retweets de la base de datos
     data = db(db.master_case_table.tweet_id == id_tweet).select().first()
@@ -339,8 +374,9 @@ def refresh_retweets():
 
 
     list_ids = json.loads(request.vars.list_ids)
+    retweets_list = []
     for id in list_ids:
-        update_retweets(tweet_id)
+        retweets_list.append(update_retweets(tweet_id))
 
 
     # retweets_list = update_retweets(tweet_id)

@@ -6,7 +6,7 @@
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 
 <script>
-    let testURL = "{{ = URL('api', 'refresh_retweets') }}";
+    let testURL = "{{ = URL('api', 'test_function') }}";
 </script>
 
 <div id="index">
@@ -16,11 +16,11 @@
     </div>
 
 
-    <div v-for="t in retweets">
+    <!-- <div v-for="t in retweets">
         ${t.user.name}
         ${t.id}
         ${t.id_str}
-    </div>
+    </div> -->
 </div>
 
 

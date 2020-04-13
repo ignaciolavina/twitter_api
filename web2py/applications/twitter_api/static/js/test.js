@@ -19,7 +19,7 @@ let test_btn = function () {
     console.log("Testing function");
     $.getJSON(testURL, function (response) {
         console.log("Testing function");
-        app.retweets = response.retweets_list
+
     });
 }
 
