@@ -290,7 +290,7 @@ def add_to_database():
 def get_retweets(id_tweet):    
     print("API Get Retweets")
     
-    number_of_retweets_to_retrieve = 15
+    number_of_retweets_to_retrieve = 50
 
     # Recuperamos los retweets de la base de datos
     data = db(db.master_case_table.tweet_id == id_tweet).select().first()
@@ -549,7 +549,6 @@ def group_btn():
             tweet = tweet_json,
             utls = tweet.urls,
             tweet_user = stored_user,
-            # number_stored_retweets = len(retweets)
             retweets = json.dumps(retweets)
             )
 
