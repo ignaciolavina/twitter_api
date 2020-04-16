@@ -6,6 +6,7 @@ import ast
 import urllib.request
 from bs4 import BeautifulSoup
 
+import botometer
 # number_of_retweets_to_retrieve
 
 # GET limits
@@ -149,6 +150,9 @@ def update_tracking_groups():
         else:
             print("not ipdates")
 
+        # five minutes sleep for avoid API limits
+        # time.sleep(60*5) 
+
 
 
 
@@ -178,6 +182,76 @@ def requires_twitter_auth():
     # pprint(vars(twitter.ratelimit.RateLimit()))
 
     return api
+
+
+
+
+def auth_botometer():
+  consumer_key = 'dXj0dViDbK6VobzAD5P97iCrO'
+  consumer_secret = 'DwRbuw8rRgMBh6Gg9qORDXpDJ4RLp0wGq4RWj5SVw4KJT6nDZq'
+  access_token = '1164482563198636033-PMEvNG9Pz1aGL3SLKw1QX9TwjStdD5'
+  access_secret = '1sYd9Mp8IS6TTXaD0nzgtXguFiABf4eSjvXVPf8va05uG'
+
+  rapidapi_key = "a13030e496msh6b649e50ee08de9p15e359jsn11fd17f68109" # now it's called rapidapi key
+  twitter_app_auth = {
+      'consumer_key': consumer_key,
+      'consumer_secret': consumer_secret,
+      'access_token': access_token,
+      'access_token_secret': access_secret,
+    }
+  bom = botometer.Botometer(wait_on_ratelimit=False,
+                            rapidapi_key=rapidapi_key,
+                            **twitter_app_auth)
+  return bom
+
+
+def aux_fun(account):
+    has_error = 0
+    error_message = ''
+    result_score = ''
+    bom = auth_botometer()
+    # result = None
+
+    try:
+      result = bom.check_account(account)
+      print(result)
+      result_score = result['scores']['universal']
+    except:
+      print('Error on botometer api')
+      # print(result['error'])
+      has_error = 1
+      error_message = 'Error on botometer api'
+      result_score = -1
+    # else:
+
+    
+    return dict(result_score=result_score, has_error=has_error, error_message=error_message)
+
+
+def check_bot():
+    print('API - check - bot')
+    account = request.vars.user_to_search
+    print(account)
+
+    bom = auth_botometer()
+    result = bom.check_account(account)
+ 
+    return response.json(dict(result=result))
+    # try:
+    #   print(result)
+    #   result_score = result['scores']['universal']
+    # except:
+    #   print('Error on botometer api')
+    #   # print(result['error'])
+    #   has_error = 1
+    #   error_message = 'Error on botometer api'
+    #   result_score = -1
+    # else:
+
+    
+    # return dict(result_score=result_score, has_error=has_error, error_message=error_message)
+
+
 
 # definimos una clase, que convierte JSON en objeto
 class Objeto_JSON(object):
@@ -473,9 +547,11 @@ def get_data():
     print(request.vars)
     data = []
     list_agregated_tweets = []
+    group_id = -1
 
     if (origin == "groups"):
         group_data = db(db.group_tweets.id == row_number).select().first()
+        group_id = group_data.id
         main_id = group_data.main_id
         tweet_ids = group_data.ids
         print(tweet_ids)
@@ -500,7 +576,7 @@ def get_data():
     #     new_dict = {}
     #     dict_list.append()
 
-    return response.json(dict(main_tweet = main_tweet, list_agregated_tweets=list_agregated_tweets))
+    return response.json(dict(main_tweet = main_tweet, list_agregated_tweets=list_agregated_tweets, group_id=group_id))
 
 
 
@@ -668,6 +744,10 @@ def get_noticias_similares(url, exclude_retweets):
 
 def get_similar_tweets():   
     print(request.vars)
+
+    # Evitar repetidos
+    # group_id = request.vars.group_id
+    # group_data = db(db.group_tweets.id == group_id).select.first()
 
     results_raw = []
     if (request.vars.es_noticia=='true'):
@@ -858,6 +938,12 @@ def get_tweet():
     # Order list by ascendent date
     # retweets = retweets[::-1]
     return response.json(dict(tweets=tweets, retweets=retweets_two, list_tweets_and_retweets = list_tweets_and_retweets))
+
+
+
+
+
+
 
 
 

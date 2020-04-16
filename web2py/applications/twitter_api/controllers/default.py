@@ -20,6 +20,10 @@ def tweet_users_table():
     return dict(grid = grid)
 
 
+def check_bot_page():
+    return dict()
+
+
 # Creado el 18 de Febrero con la nueva database
 def panel():
     links = []

@@ -26,7 +26,7 @@ if not configuration.get('app.production'):
         (T('Fake News Panel'), False, URL('default', 'fake_news_panel')), 
         (T('tracking_table'), False, URL('default', 'tracking_table')),
         (T('alerted_tweets'), False, URL('default', 'alerted_tweets')),
-        # (T('Test'), False, URL('default', 'test')),
+        (T('Check bots'), False, URL('default', 'check_bot_page')),
         # (T('Test_table'), False, URL('default', 'test_table')),
         (T('panel_guardados'), False, URL('default', 'panel_guardados')),
         (T('Grupos'), False, URL('default', 'grouped_tweets'))

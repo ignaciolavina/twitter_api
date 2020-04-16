@@ -1,0 +1,104 @@
+{{extend 'layout.html'}}
+
+
+<link rel="stylesheet" type="text/css" href="{{ = URL('static/css', 'app.css') }}" />
+<link href="{{ = URL('static', '/open-iconic-master/font/css/open-iconic-bootstrap.css')}}" rel="stylesheet">
+<script src="{{ = URL('static','js/vue.min.js') }}"></script>
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+
+<!-- For the graphs -->
+<script src='//unpkg.com/vue-chartjs@2.6.0/dist/vue-chartjs.full.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js'></script>
+<script src='//unpkg.com/hchs-vue-charts@1.2.8'></script>
+
+<style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
+
+
+<!-- Api calls -->
+<script>
+    let checkBotURL = "{{ = URL('api', 'check_bot') }}";
+</script>
+
+
+
+
+<div id="buscador">
+    <!-- <button v-on:click="test_function" type="button" class="btn btn-primary">TEST BUTTON</button> -->
+    <!-- Search & advanced search panel -->
+    <div class="container" style="width: 50em;">
+        <div class="own-card">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Check bots</h2>
+                </div>
+                <div class="card-body">
+                    <div class="card-title">
+                        <h4>Introduce an account for checking the probability of being a bot</h4>
+                    </div>
+
+                    <div class="form-group">
+                        <div>
+                            <input v-model="user_to_search" name="search" type="text" class="form-control"
+                                id="word_search" placeholder="user name">
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button v-on:click="check_bot" type="button" class="btn btn-dark">Check Bot</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="d-flex flex-row justify-content-center">
+
+        <section id="" class="data">
+            <div class="card  bg-light mb-3" style="width: 15em; margin:20px">
+                <div class="card-header">Sentiment score (%)</div>
+                <div class="card-body">
+                    <h2 class="card-title" id="interactions">0
+                    </h2>
+                </div>
+            </div>
+        </section>
+
+        <section id="" class="data">
+            <div class="card bg-light mb-3" style="width: 15em; margin:20px">
+                <div class="card-header">Bot probability (%)</div>
+                <div class="card-body">
+                    <h2 class="card-title" id="bot_score">0
+                </div>
+            </div>
+        </section>
+
+
+        <section id="" class="data">
+            <div class="card  bg-light mb-3" style="width: 15em; margin:20px">
+                <div class="card-header">Activity score (%)</div>
+                <div class="card-body">
+                    <h2 class="card-title" id="followers">0
+                </div>
+            </div>
+        </section>
+
+
+
+    </div>
+
+</div>
+
+
+
+<!-- Own vue.js files -->
+<!-- <script src=" {{ = URL('static/js', 'index_graph.js') }}"></script> -->
+<script src=" {{ = URL('static/js', 'check_bots_page.js') }}"></script>
+<!-- <script src=" {{ = URL('static/js', 'index_agregated_graph.js') }}"></script> -->

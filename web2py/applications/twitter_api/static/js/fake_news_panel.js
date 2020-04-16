@@ -65,9 +65,9 @@ let get_data = function (id, origin) {
             // for the list dislpayed
             app.list_agregated_tweets.push(tweet);
         }
+        app.group_id = response.group_id;
 
         app.data_loaded = true;
-
         // Preparing the respond messaje
         prepare_message()
     });
@@ -217,7 +217,8 @@ let get_similar_tweets = function () {
         user: app.tweet.user.screen_name,
         es_noticia: es_noticia,
         url_noticia: url_noticia,
-        exclude_retweets: exclude_retweets
+        exclude_retweets: exclude_retweets,
+        group_id: app.group_id
     }, function (response) {
         // app.similar_tweets = response.similar_tweets;
         // app.retweets_retrieved = true;
@@ -619,8 +620,9 @@ let app = new Vue({
         // TWEETS AGRUPADOS (cambiar nombre)
         list_agregated_tweets: [],
         // for single page view
-        display_section: false
-        //test
+        display_section: false,
+        //group data
+        group_id: ""
 
     },
     methods: {
