@@ -18,18 +18,17 @@ if not configuration.get('app.production'):
     response.menu += [        
         (T('Search user'), False, URL('default', 'buscador_by_user')),    
         (T('Relevant accounts'), False, URL('default', 'explorador')),
-        
+        (T('Stored tweets'), False, URL('default', 'panel_guardados')),
+
         (T('panel'), False, URL('default', 'panel')),
         (T('Users_table'), False, URL('default', 'tweet_users_table')),        
         # (T('data_stored'), False, URL('default', 'data_stored')),          
-        # (T('Fake news table'), False, URL('default', 'fake_news')),      
-        (T('Data stored'), False, URL('default', 'data_stored2')),       
+        # (T('Fake news table'), False, URL('default', 'fake_news')),    
         (T('Fake News Panel'), False, URL('default', 'fake_news_panel')), 
         (T('tracking_table'), False, URL('default', 'tracking_table')),
         (T('alerted_tweets'), False, URL('default', 'alerted_tweets')),
         (T('Check bots'), False, URL('default', 'check_bot_page')),
         # (T('Test_table'), False, URL('default', 'test_table')),
-        (T('panel_guardados'), False, URL('default', 'panel_guardados')),
         (T('Grupos'), False, URL('default', 'grouped_tweets'))
     ]
 

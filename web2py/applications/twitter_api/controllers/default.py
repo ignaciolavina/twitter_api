@@ -170,19 +170,21 @@ def panel_guardados():
             db(db.master_case_table.id == row.tweet_id).select().first().title
         )
     )
-    links.append(
-        dict(
-            header='Tweet',
-            body= lambda row : 
-            A('', _href=URL('/panel/view/master_case_table/' + str(row.tweet_id), vars=dict()), _class='fa fa-eye')
+    # links.append(
+    #     dict(
+    #         header='Tweet',
+    #         body= lambda row : 
+    #         A('', _href=URL('/panel/view/master_case_table/' + str(row.tweet_id), vars=dict()), _class='fa fa-eye')
             
-        )
-    )    
+    #     )
+    # )    
+
+
     links.append(
         dict(
-            header='Fake news panel',
+            header='Analysis panel',
             body= lambda row : 
-                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.tweet_id], origin="stored")), _class='fa fa-pencil-square')
+                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.tweet_id], origin="stored")), _class='fa fa-line-chart fa-2x')
                 
                 # A('', _href=URL('default', 'index', args='camino'), _class='fa fa-pencil-square')
                 #     if row.user_id == auth.user.id else
@@ -193,8 +195,7 @@ def panel_guardados():
     query = db.stored_tweets
 
   
-    fields=[db.stored_tweets.id,db.stored_tweets.tweet_id
-    ]    
+    fields=[db.stored_tweets.tweet_id]    #db.stored_tweets.id,
 
     grid = SQLFORM.grid(
     query,
@@ -204,7 +205,7 @@ def panel_guardados():
     details=True, 
     create=False, 
     deletable=True, 
-    editable=True,
+    editable=False,
     csv=False,
     user_signature=True,
     )
