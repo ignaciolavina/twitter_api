@@ -885,7 +885,7 @@ def get_tweet():
         print ('\n\nUUU\n')
 
         # Get tweets
-        tweets = api.GetSearch(term=word, count=5)    
+        tweets = api.GetSearch(term=word, count=15)    
         tweets = [tweet.AsDict() for tweet in tweets]
 
         # list of couples [(tweet1, retweeets1), (tweet2, retweeets2), (...)]
