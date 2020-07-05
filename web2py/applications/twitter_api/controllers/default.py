@@ -90,11 +90,6 @@ def buscador_by_user():
     return dict()
 
 
-def graphic_test_two():
-    return dict()
-
-def index_cuatro():
-    return dict()
 
 def data_stored():
     # form = SQLFORM(db.tabla_tweets_retweets)
@@ -233,9 +228,9 @@ def grouped_tweets():
     )
     links.append(
         dict(
-            header='Fake news panel',
+            header='Analysis panel',
             body= lambda row : 
-                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id], origin="groups")), _class='fa fa-pencil-square-o fa-2x')
+                A('', _href=URL('default', 'fake_news_panel', vars=dict(id=[row.id], origin="groups")), _class='fa fa-line-chart fa-2x')
                 
                 # A('', _href=URL('default', 'index', args='camino'), _class='fa fa-pencil-square')
                 #     if row.user_id == auth.user.id else

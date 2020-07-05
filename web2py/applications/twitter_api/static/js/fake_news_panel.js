@@ -189,7 +189,7 @@ let get_similar_tweets = function () {
     let exclude_retweets = true;
 
     // Si detectamos que puede ser una NOTICIA (si tiene url)
-    if (app.tweet.urls.length > 10) {
+    if (app.tweet.urls.length > 0) {
         if (app.tweet.urls[0].expanded_url) {
             console.log(app.tweet.urls[0].expanded_url);
             es_noticia = true;
