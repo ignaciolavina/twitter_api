@@ -48,16 +48,8 @@
 </style>
 
 
-<!-- Display request args -->
-<div class="row">
-    <h4>Request args</h4>
-    {{=request.args}}
-</div>
-
 
 <div id="index">
-
-    <button v-on:click="test_function" type="button" class="btn btn-primary">TEST BUTTON</button>
 
     <!-- Search & advanced search panel -->
     <div class="container">
@@ -90,30 +82,21 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <div class="d-flex justify-content-center">
                                 <button v-on:click="pressed_analyze_btn" type="button"
                                     class="btn btn-primary">Analyze</button>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="row">
-                                <div class="d-flex justify-content-center" style="margin-right: 10px">
+                                <div class="d-flex justify-content-right" style="margin-right: 10px">
                                     <span>
                                         <a href="#" v-on:click="show_advanced_search">
                                             Advanced Search</a>
                                     </span>
                                 </div>
-                                <a href="#" v-if="test_mode" v-on:click="change_test_mode">
-                                    Desactivate Test mode
-                                </a>
-                                <a href="#" v-else="" v-on:click="change_test_mode">
-                                    Activate Test mode
-                                </a>
-
-
                             </div>
-
                         </div>
                     </div>
 
@@ -122,29 +105,6 @@
         </div>
     </div>
 
-    <!-- Action panel -->
-    <!-- Save button & mark as fake button -->
-    <section id="action_panel">
-        <div class="container">
-            <div class="own-card">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title">
-                            <h4>Action panel</h4>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="d-flex flex-row d-flex justify-content-around">
-                                <button v-on:click="" type="button" class="btn btn-dark">Save
-                                    [Deprecated]</button>
-                                <button v-on:click="mark_as_fake" type="button" class="btn btn-dark">Mark as
-                                    Fake</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
     <!-- Data Section  -->
@@ -188,7 +148,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-12">
                                             <div class="d-flex justify-content-center">
                                                 <button v-on:click="guardar_tweet(tweet)" type="button"
                                                     class="btn btn-primary">Guardar</button>
@@ -205,135 +165,9 @@
         </div>
 
 
-        <div class="container">
-            <div class="own-card">
-                <div class="card">
-                    <div class="card-title">
-                        <h4 style="margin: 20px">
-                            Agregated graph
-                        </h4>
-                    </div>
-                    <div class="agregated-chart">
-                        <div class="chart-container">
-                            <canvas id="canvas"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
-        <div class="container">
-            <div class="own-card">
-                <div class="card">
-                    <div class="card-title">
-                        <h4 style="margin: 20px">
-                            Agregated graph
-                        </h4>
-                    </div>
-                    <div class="agregated-chart">
-                        <div class="chart-container">
-                            <canvas id="canvas_two"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-        </div>
-
-
-        <section id="top-users" class="tables">
-            <div class="container">
-                <div class="d-flex flex-row no-gutters">
-                    <div class="col-md-6">
-                        <section class="">
-                            <div class="">
-                                <div class="card">
-                                    <div class="card-top-fake-users">
-                                        <div class="card-title">
-                                            <h4 style="margin: 20px">
-                                                Top fake spreaders
-                                            </h4>
-                                        </div>
-                                        <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                                            <table class="table table-hover">
-                                                <thead class="thead-dark">
-                                                    <tr>
-                                                        <th scope="col">pic</th>
-                                                        <th scope="col">user name</th>
-                                                        <th scope="col">followers</th>
-                                                        <th scope="col">scope</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <template v-for='top_user in top_users'>
-                                                        <tr>
-                                                            <th scope="row">
-                                                                <img class="own-card-img"
-                                                                    v-bind:src="top_user.profile_image_url">
-                                                            </th>
-                                                            <td>${top_user.name}</td>
-                                                            <td>${top_user.followers_count}</td>
-                                                            <td>...</td>
-                                                        </tr>
-                                                    </template>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </section>
-                    </div>
-
-                    <div class="col-md-6">
-                        <section id="top-users">
-                            <div class="">
-                                <div class="card">
-                                    <div class="card-top-fake-users">
-                                        <div class="card-title">
-                                            <h4 style="margin: 20px">
-                                                Top first users
-                                            </h4>
-                                        </div>
-                                        <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                                            <table class="table table-hover">
-                                                <thead class="thead-dark">
-                                                    <tr>
-                                                        <th scope="col">pic</th>
-                                                        <th scope="col">user name</th>
-                                                        <th scope="col">followers</th>
-                                                        <th scope="col">scope</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <template v-for='item in top_first_users'>
-                                                        <tr>
-                                                            <th scope="row">
-                                                                <img class="own-card-img"
-                                                                    v-bind:src="item.user.profile_image_url">
-                                                            </th>
-                                                            <td>${item.user.name}</td>
-                                                            <td>${item.user.favourites_count}</td>
-                                                            <td>...</td>
-                                                        </tr>
-                                                    </template>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </section>
-                    </div>
-
-                </div>
-            </div>
-        </section>
 
 
 

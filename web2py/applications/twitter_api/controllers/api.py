@@ -9,56 +9,7 @@ from bs4 import BeautifulSoup
 import botometer
 # number_of_retweets_to_retrieve
 
-# GET limits
-# https://tutorialedge.net/python/creating-twitter-bot-python/
-# def get_limit():
-#     try:
-#         result = t.application.rate_limit_status()
-#         print result
-#     except TwitterHTTPError as e:
-#         print "Error: ", e
-#         return None
-
-
-
-# MANEJO JSON OBJECT DICT LIST 
-# tweet = db(db.master_case_table.tweet_id == tweet_id).select().first()
-# retweets = tweet.retweets
-# print(type(retweets)) # STRING
-# b = json.loads(retweets) # LIST (porque el string era una lista)
-# FORMA A 
-# for item in b:
-#     item = json.dumps(item) 
-#     obj = Objeto_JSON(item) #O BJETO MANEJABLE
-#     print(obj.id)
-
-# FORMA B 
-# print(type(b)) # LIST
-# for l in b:   # RECORRO la lista, viendo cada objeto de dentro (DICT)
-#    a = l["created_at"] # Accedo al atributo del dict
-#    print(type(a))
-
-
-# Texto respuesta fake news hola
-# Hola! Formo parte de un proyecto que se dedica a desmentir Fake News, y parece que el algoritmo ha detectado tu tweet como falso, 
-#  Si puedes, comprueba la fuente de nuevo, y si me he equivocado, házmelo saber (Responde con un "NO") y así puedo mejorar, gracias!
-
-
-
-# Salva a tres gatitos de morir congelados con ayuda de una taza de café - https://t.co/n1Qz4J8g0Z https://t.co/57iA2iVRbR
-# https://es.rt.com/7b5b esta url y esta llevan a la misma pag https://t.co/n1Qz4J8g0Z
-
-# El parlamento europeo obliga a retirar reconocimiento
-
-
-# ____________________________ RETRIEVE DATA TO JSON _________________________________________
-
-# tweets_timeline = api.GetUserTimeline(screen_name =user_to_search)
-# data = [tweet.AsDict() for tweet in tweets_timeline]
-# return response.json(dict(data = data))
-# ____________________________________________________________________________________________
-
-
+# Check general comments at the end
 
 import asyncio
 import datetime
@@ -885,7 +836,7 @@ def get_tweet():
         print ('\n\nUUU\n')
 
         # Get tweets
-        tweets = api.GetSearch(term=word, count=15)    
+        tweets = api.GetSearch(term=word, count=2)    
         tweets = [tweet.AsDict() for tweet in tweets]
 
         # list of couples [(tweet1, retweeets1), (tweet2, retweeets2), (...)]
@@ -1007,122 +958,6 @@ def get_list_tweets_and_retweets_json():
 
 
 
-# OLD METHODS ____________________________________
-
-
-
-
-
-# DEPRECATED!!!!!
-# def store_data():
-#     api = requires_twitter_auth()            
-#     print ('\n\nUUU\n')
-
-#     # Get tweets
-#     tweets = api.GetSearch(term="taza", count=1)
-#     tweets = [tweet.AsDict() for tweet in tweets]
-
-#     for tweet in tweets:
-#         tweet_json = json.dumps(tweet)
-#         tweet_objeto = Objeto_JSON(tweet_json)
-#         print (tweet_objeto.id)
-
-#         # get retweets
-#         number_of_rt = 50
-#         retweets = api.GetRetweets(tweet_objeto.id, count=number_of_rt, trim_user=False)
-#         retweets =  [retweet.AsDict() for retweet in retweets]    
-
-#         variable = db.data_table.update_or_insert(
-#             stored_data = json.dumps(tweet),
-#             retweets = json.dumps(retweets)
-#         )
-
-
-
-
-# """DEPRECATED"""
-# def update_retweets_OLD():
-#     print("\n\nupdate retweets")
-#     tweet_id = str(request.vars.id)
-
-#     # Recuperamos los retweets que ya existen 
-#     tweet = db(db.master_case_table.tweet_id == tweet_id).select().first()
-#     retweets_string = tweet.retweets
-#     retweets_list = json.loads(retweets_string)
-#     # print(type(retweets_list)) #LIST
-#     # past_retweets = [retweet.AsDict() for retweet in retweets_list]  
-
-# #     # buscamos los nuevos tweets 
-# #     # Get all the retweets anadir la fecha nueva
-#     api = requires_twitter_auth()     
-#     new_retweets = api.GetRetweets(tweet_id, count=15, trim_user=False)
-#     new_retweets_list =  [retweet.AsDict() for retweet in new_retweets]  
-#     # print(type(new_retweets)) # lIST
-#     # final_list = retweets_list
-    
-    
-#     print("len BEFORE" + str(len(new_retweets_list)))
-
-#     # Para evitar los repetidos, creamos una lista con los antiguos ids
-#     id_list = []
-#     for item in retweets_list:
-#         item = json.dumps(item)
-#         obj = Objeto_JSON(item)
-#         id_list.append(obj.id)
-#     # Si alguno de los nuevos retweets estaba en la lista, no se incluye
-#     print("lista ids")
-#     print(id_list)
-#     print("len BEFORE" + str(len(new_retweets_list)))
-#     for item in new_retweets_list:
-#         print("a")
-
-#         item_js = json.dumps(item)
-#         obj = Objeto_JSON(item_js)
-#         # print(type(item))
-
-#         if (obj.id in id_list):
-#             print("REPETIDO!! " + str(obj.id))
-#             new_retweets_list.remove(item)
-#         # else:
-#         #     print("NO TEPE!! " + str(obj.id))
-#         #     new_retweets_list.remove(item)
-
-#     print("len AFTER" + str(len(new_retweets_list)))
-#     # print()
-
-#     f = retweets_list + new_retweets_list
-#     # print(f)
-#     db.master_case_table.update_or_insert(db.master_case_table.tweet_id == tweet_id,
-#         retweets = json.dumps(f)
-#     )
-
-#     # # UPDATE PROCEDURE (Not working yet)    
-#     # lista_final_retweets = retweets_list
-#     # lista2 = []
-
-    
-#     # print("inicial len")
-#     # print(len(lista_final_retweets))
-
-
-#     # lista2_final =  [retweet.AsDict() for retweet in lista2] 
-#     # lista_final_retweets.append(lista2_final)
-
-#     # print("final len")
-#     # print(len(lista_final_retweets))
-
-#     # a = [retweet.AsDict() for retweet in lista_final_retweets]
-
-#     # PROBLEMA, NO SE GUARDA BIEN!!
-#     # # # json.dumps(lista_final_retweets) NO parece ser suficiente
-#     # variable = db.master_case_table.update_or_insert(db.master_case_table.tweet_id == tweet_id,
-#     #     retweets = json.dumps(lista_final_retweets)
-#     # )
-
-
-
-
-
 # # Store data on the database
 # def save_data():
 #     # Retrieve the data and prepare the variables
@@ -1151,212 +986,52 @@ def get_list_tweets_and_retweets_json():
 
 
 
+# GET limits
+# https://tutorialedge.net/python/creating-twitter-bot-python/
+# def get_limit():
+#     try:
+#         result = t.application.rate_limit_status()
+#         print result
+#     except TwitterHTTPError as e:
+#         print "Error: ", e
+#         return None
 
 
 
+# MANEJO JSON OBJECT DICT LIST 
+# tweet = db(db.master_case_table.tweet_id == tweet_id).select().first()
+# retweets = tweet.retweets
+# print(type(retweets)) # STRING
+# b = json.loads(retweets) # LIST (porque el string era una lista)
+# FORMA A 
+# for item in b:
+#     item = json.dumps(item) 
+#     obj = Objeto_JSON(item) #O BJETO MANEJABLE
+#     print(obj.id)
+
+# FORMA B 
+# print(type(b)) # LIST
+# for l in b:   # RECORRO la lista, viendo cada objeto de dentro (DICT)
+#    a = l["created_at"] # Accedo al atributo del dict
+#    print(type(a))
+
+
+# Texto respuesta fake news hola
+# Hola! Formo parte de un proyecto que se dedica a desmentir Fake News, y parece que el algoritmo ha detectado tu tweet como falso, 
+#  Si puedes, comprueba la fuente de nuevo, y si me he equivocado, házmelo saber (Responde con un "NO") y así puedo mejorar, gracias!
 
 
 
+# Salva a tres gatitos de morir congelados con ayuda de una taza de café - https://t.co/n1Qz4J8g0Z https://t.co/57iA2iVRbR
+# https://es.rt.com/7b5b esta url y esta llevan a la misma pag https://t.co/n1Qz4J8g0Z
+
+# El parlamento europeo obliga a retirar reconocimiento
 
 
+# ____________________________ RETRIEVE DATA TO JSON _________________________________________
 
+# tweets_timeline = api.GetUserTimeline(screen_name =user_to_search)
+# data = [tweet.AsDict() for tweet in tweets_timeline]
+# return response.json(dict(data = data))
+# ____________________________________________________________________________________________
 
-# ____________________________________________________________________________________
-# Methods for jugadores.html view
-def get_jugadores():
-    jugadores = db(db.jugador).select()
-    return response.json(dict(jugadores=jugadores))
-
-def change_pagado():
-    jugador = db(db.jugador.id == request.vars.id).update(pagado = request.vars.pagado)
-
-def change_regalo():
-    jugador = db(db.jugador.id == request.vars.id).update(regalo = request.vars.regalo)
-# ____________________________________________________________________________________
-
-
-# Methods for parejas.html
-# ____________________________________________________________________________________
-def get_parejas():
-    parejas = db().select(db.pareja.ALL, orderby=db.pareja.grupo)
-    for p in parejas:
-        jugador_uno = db(db.jugador.id == p.jugador_uno).select().first()
-        jugador_dos = db(db.jugador.id == p.jugador_dos).select().first()
-        p.nombre_jugador_uno = jugador_uno.nombre
-        p.restricciones_jugador_uno = jugador_uno.restricciones     
-        p.nombre_jugador_dos = jugador_dos.nombre
-        p.restricciones_jugador_dos = jugador_dos.restricciones      
-    return response.json(dict(parejas=parejas))
-
-def update_pareja():
-    pareja = db.pareja.update_or_insert(db.pareja.id == request.vars.id,
-    grupo = request.vars.grupo
-    )
-    db.jugador.update_or_insert(db.jugador.id == request.vars.jugador_uno,
-    nombre= request.vars.nombre_jugador_uno,
-    restricciones = request.vars.restricciones_jugador_uno
-    )
-    db.jugador.update_or_insert(db.jugador.id == request.vars.jugador_dos,
-    nombre= request.vars.nombre_jugador_dos,
-    restricciones = request.vars.restricciones_jugador_dos
-    )
-
-def delete_pareja():
-    id = request.vars.id
-    db(db.pareja.id == request.vars.id).delete()
-    db(db.jugador.id == request.vars.jugador_uno).delete()    
-    db(db.jugador.id == request.vars.jugador_dos).delete()
-
-# ____________________________________________________________________________________
-
-
-# ____________________________________________________________________________________
-# Methods for nueva_pareja.html view
-def save_pareja():
-        jug_uno = db.jugador.insert(
-            nombre=request.vars.jugador_uno,
-            restricciones = request.vars.restricciones_uno  
-        )
-        jug_dos = request.vars.jugador_dos
-        if (jug_dos == ''):
-            jug_dos = 'Por determinar'
-        jug_dos = db.jugador.insert(
-            nombre = jug_dos,
-            restricciones = request.vars.restricciones_dos
-            )
-        grupo = request.vars.grupo
-        if (grupo == ''):
-            grupo = 0
-        pareja = db.pareja.insert(
-            jugador_uno=jug_uno,
-            jugador_dos=jug_dos,
-            grupo = grupo
-        )
-        # print('pareja saved')
-
-        # return redirect(URL('default', 'jugadores'))
-
-        # print(jug_uno, jug_dos, grupo)
-        if (jug_uno and jug_dos and pareja):
-            return True
-        else:
-            return False
-# ____________________________________________________________________________________
-
-
-# ____________________________________________________________________________________
-# For grupos.html view
-def get_grupos():
-    lista = []
-    counter = 1 
-    max_group = 0
-
-    parejas_sin_grupo = db(db.pareja.grupo == 0).select()
-    for p in parejas_sin_grupo:
-        p.nombre_jugador_uno = db(db.jugador.id == p.jugador_uno).select().first().nombre                
-        p.nombre_jugador_dos = db(db.jugador.id == p.jugador_dos).select().first().nombre
-        
-
-    while (counter < 20):
-        parejas = db(db.pareja.grupo == counter).select()
-        if (parejas):
-            for p in parejas:
-                p.nombre_jugador_uno = db(db.jugador.id == p.jugador_uno).select().first().nombre                
-                p.nombre_jugador_dos = db(db.jugador.id == p.jugador_dos).select().first().nombre
-            crear_enfrentamientos(parejas)
-            lista.append(parejas)
-            counter+=1
-        else:
-            counter+=1
-    max_group = counter - 1
-    return response.json(dict(parejas = lista, max_group = max_group, parejas_sin_grupo = parejas_sin_grupo))
-
-def update_group_for_pareja():
-    id_pareja = request.vars.index
-    pareja = db.pareja.update_or_insert(db.pareja.id == id_pareja,
-    grupo = request.vars.grupo
-    )    
-
-    db(db.enfrentamiento).delete()
-    # pareja.nombre_jugador_uno = 'make' # db(db.jugador.id == p.jugador_uno).select().first().nombre                
-    # pareja.nombre_jugador_dos = 'lele' #db(db.jugador.id == p.jugador_dos).select().first().nombre
-
-
-# ____________________________________________________________________________________
-# Methods for partidos.html view
-def crear_enfrentamientos(parejas):
-    for i in range(len(parejas)):
-        for j in range(i+1, len(parejas)):
-            # print("enfrentamiento: ", parejas[i].id , " VS ", parejas[j].id )
-            db.enfrentamiento.update_or_insert(grupo = parejas[i].grupo, pareja_uno=parejas[i].id, pareja_dos=parejas[j].id)
-        
-
-def save_result():
-    stored = db.enfrentamiento.update_or_insert(
-        db.enfrentamiento.id == request.vars.index,
-        resultado_uno = request.vars.result_one,
-        resultado_dos = request.vars.result_two 
-    )
-# ____________________________________________________________________________________
-    
-    
-def get_partidos():
-    # retrieveing jugadores from DB for display the names in the view
-    jugadores = db(db.jugador).select()
-    parejas = db(db.pareja).select()
-
-    lista = []
-    counter = 1 
-    max_group = 0
-    # "problema cuando no falta un grupo"
-    while (counter < 20):
-        enfrentamiento = db(db.enfrentamiento.grupo == counter).select()
-        # print (parejas)
-        if (enfrentamiento):
-            for e in enfrentamiento:
-                # De cada enfrentamiento, extraer pareja uno y dos
-                p1_id = parejas.find(lambda pareja: pareja.id == e.pareja_uno)            
-                p2_id = parejas.find(lambda pareja: pareja.id == e.pareja_dos)
-                # De cada pareja, extraer los nombres uno y dos
-                nombres_pareja_uno = jugadores.find(lambda jugador: jugador.id == p1_id[0].jugador_uno)[0].nombre + ' & ' + jugadores.find(lambda jugador: jugador.id == p1_id[0].jugador_dos)[0].nombre
-                nombres_pareja_dos = jugadores.find(lambda jugador: jugador.id == p2_id[0].jugador_uno)[0].nombre + ' & ' + jugadores.find(lambda jugador: jugador.id == p2_id[0].jugador_dos)[0].nombre
-                # print(nombres_pareja_)
-                e.nombres_pareja_uno = nombres_pareja_uno
-                e.nombres_pareja_dos = nombres_pareja_dos
-            lista.append(enfrentamiento)
-            counter+=1
-        else:
-            counter+=1
-    max_group = counter - 1
-    return response.json(dict(enfrentamiento = lista, max_group = max_group))
-
-
-# Methdos for resultados.html view
-# ____________________________________________________________________________________
-
-def get_results():
-    # Partidos ganados, perdidos, JF jC Dif juegos, Posicion
-    # print('\n\nGET RESULTS')
-    lista_enfrentamientos = []
-    lista_parejas = []
-    counter = 1 
-    max_group = 0
-    # "problema cuando no falta un grupo"
-    while (counter < 20):
-        enfrentamientos = db(db.enfrentamiento.grupo == counter).select()        
-        parejas = db(db.pareja.grupo == counter).select()
-        for p in parejas:
-            p.nombre_jugador_uno = db(db.jugador.id == p.jugador_uno).select().first().nombre                
-            p.nombre_jugador_dos = db(db.jugador.id == p.jugador_dos).select().first().nombre
-        # print (parejas)
-        if (enfrentamientos):
-            lista_enfrentamientos.append(enfrentamientos)
-            lista_parejas.append(parejas)
-            counter+=1
-        else:
-            counter+=1
-    max_group = counter - 1
-    return response.json(dict(enfrentamientos = lista_enfrentamientos, parejas = lista_parejas, max_group = max_group))
-
-# def delete():    
-    # db(db.pareja.grupo == None).delete()
