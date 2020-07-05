@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 response.menu = [
-    (T('Dahboard'), False, URL('default', 'index'), [])
+    (T('Search term'), False, URL('default', 'index'), [])
 ]
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -16,9 +16,10 @@ response.menu = [
 if not configuration.get('app.production'):
     _app = request.application
     response.menu += [        
-        (T('buscador'), False, URL('default', 'buscador_by_user')),    
+        (T('Search user'), False, URL('default', 'buscador_by_user')),    
+        (T('Relevant accounts'), False, URL('default', 'explorador')),
+        
         (T('panel'), False, URL('default', 'panel')),
-        (T('Explorador'), False, URL('default', 'explorador')),
         (T('Users_table'), False, URL('default', 'tweet_users_table')),        
         # (T('data_stored'), False, URL('default', 'data_stored')),          
         # (T('Fake news table'), False, URL('default', 'fake_news')),      
