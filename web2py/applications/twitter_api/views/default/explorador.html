@@ -42,6 +42,14 @@
                 <div class="card" style="width: 25rem; margin:20px">
                     <!-- <img class="own-card-img" v-bind:src="tweet.user.profile_image_url"> -->
                     <div class="card-body">
+
+
+                        <div class="d-flex flex-row no-gutters">
+                            <div class="d-flex justify-content-center card-image">
+                                <img class="own-card-img" v-bind:src="tweet.user.profile_image_url">
+                            </div>
+                        </div>
+
                         <h5 class="card-title">@${tweet.user.screen_name}</h5>
                         <p class="card-text">${tweet.full_text}</p>
                         <div class="d-flex justify-content-center">
